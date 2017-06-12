@@ -1,1 +1,1 @@
-# DeepDiffusion
+# deep-diffusion

@@ -1,0 +1,7 @@
+numpy
+scipy
+matplotlib
+Theano
+Lasagne
+nibabel
+dipy
