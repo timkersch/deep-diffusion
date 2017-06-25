@@ -106,3 +106,5 @@ ENV/
 
 /other
 /data
+.env
+/articles

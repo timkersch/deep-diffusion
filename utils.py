@@ -1,14 +1,25 @@
 from __future__ import division
 import numpy as np
 import nibabel as nib
-from dipy.viz import window, actor
-
 
 file1 = './data/10000voxels_uniform_p=0_rad=1E-6_sep=2.1E-6_HPC-scheme.bfloat'
 file2 = './data/10000voxels_uniform_p=0_rad=1E-6_sep=2.1E-6_HPC-scheme2_seed=843276243.bfloat'
 hpcBfloat = '/Users/maq/Documents/School/deep-diffusion/other/data/HPC Subject 100307/T1w/Diffusion/dwi.Bfloat'
-
 hpcfile = '/Users/maq/Documents/School/deep-diffusion/other/data/HPC Subject 100307/T1w/Diffusion/data.nii.gz'
+
+fileList = ['./data/1000voxels_uniform_p=0_rad=0.1E-6_sep=1.1E-6_HPC-scheme.bfloat',
+			'./data/1000voxels_uniform_p=0_rad=0.1E-6_sep=2.1E-6_HPC-scheme.bfloat',
+			'./data/1000voxels_uniform_p=0_rad=0.5E-6_sep=1.1E-6_HPC-scheme.bfloat',
+			'./data/1000voxels_uniform_p=0_rad=1.5E-6_sep=3.1E-6_HPC-scheme.bfloat',
+			'./data/1000voxels_uniform_p=0_rad=1E-6_sep=3.1E-6_HPC-scheme.bfloat',
+			'./data/1000voxels_uniform_p=0_rad=2E-6_sep=4.1E-6_HPC-scheme.bfloat']
+
+targetList = [(0.1E-6, 1.1E-6),
+			  (0.1E-6, 2.1E-6),
+			  (0.5E-6, 1.1E-6),
+			  (1.5E-6, 3.1E-6),
+			  (1E-6, 3.1E-6),
+			  (2E-6, 4.1E-6)]
 
 
 def read_float(filename):
@@ -17,8 +28,13 @@ def read_float(filename):
 	return arr
 
 
-def to_voxels(arr, no_samples=10000, skip_ones=False):
-	# N = no samples = 10 000
+def read_ni(filename):
+	arr = nib.load(filename)
+	return arr
+
+
+def to_voxels(arr, no_samples=1000, skip_ones=False):
+	# N = no samples = 1000
 	# C = channels = 288
 	# W = width = 1
 	# H = height = 1
@@ -29,41 +45,30 @@ def to_voxels(arr, no_samples=10000, skip_ones=False):
 	return np.reshape(arr, (no_samples, 1, 1, 1, channels))
 
 
-def compute_stats():
-	f1 = read_float(file1)
-	f2 = read_float(file2)
 
-	f1 = to_voxels(f1, skip_ones=True)
-	f2 = to_voxels(f2, skip_ones=True)
+def load_data():
+	X = np.empty((len(fileList) * 1000, 288))
+	y = np.empty((len(fileList) * 1000, 2))
 
-	return np.abs(np.mean(f1, axis=0) - np.mean(f2, axis=0)), np.abs(np.std(f1, axis=0) - np.std(f2, axis=0))
+	start = 0
+	end = 1000
+	for i in xrange(0, len(fileList)):
+		file = fileList[i]
+		targetTuple = targetList[i]
+		vals = to_voxels(read_float(file), skip_ones=True)
+
+		X[start:end] = vals
+		y[start:end] = np.array(targetTuple)
+
+		start = end
+		end = end + 1000
+
+	return X, y
 
 
-def read_ni(filename):
-	arr = nib.load(filename)
-	return arr
-
-
-def visualize():
-	img = nib.load(hpcfile)
-	data = img.get_data()
-	affine = img.get_affine()
-	renderer = window.Renderer()
-	# renderer.background((1, 1, 1))
-
-	mean, std = data[data > 0].mean(), data[data > 0].std()
-	value_range = (mean - 0.5 * std, mean + 1.5 * std)
-
-	slice_actor = actor.slicer(data, affine, value_range)
-	renderer.add(slice_actor)
-	slice_actor2 = slice_actor.copy()
-
-	slice_actor2.display(slice_actor2.shape[0]//2, None, None)
-
-	renderer.add(slice_actor2)
-
-	renderer.reset_camera()
-	renderer.zoom(1.4)
-
-	window.show(renderer, size=(600, 600), reset_camera=False)
-
+def get_data(split_ratio=0.7):
+	X, y = load_data()
+	split = int(X.shape[0] * split_ratio)
+	indices = np.random.permutation(X.shape[0])
+	training_idx, test_idx = indices[:split], indices[split:]
+	return X[training_idx, :], y[training_idx, :], X[test_idx, :], y[test_idx, :]
