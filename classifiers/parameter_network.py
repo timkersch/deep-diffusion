@@ -1,3 +1,4 @@
+from __future__ import division
 import theano
 import theano.tensor as T
 import lasagne
@@ -11,12 +12,12 @@ class Network:
 		self.batch_size = batch_size
 
 		l_in = lasagne.layers.InputLayer(shape=(batch_size, 288), input_var=input_var)
-		l_in_drop = lasagne.layers.dropout(l_in, p=0.2)
+		l_in_drop = lasagne.layers.dropout(l_in, p=0.0)
 		l_hid1 = lasagne.layers.DenseLayer(l_in_drop, num_units=150, nonlinearity=lasagne.nonlinearities.rectify)
-		l_hid1_drop = lasagne.layers.dropout(l_hid1, p=0.5)
+		l_hid1_drop = lasagne.layers.dropout(l_hid1, p=0.0)
 		l_hid2 = lasagne.layers.DenseLayer(l_hid1_drop, num_units=150, nonlinearity=lasagne.nonlinearities.rectify)
-		l_hid2_drop = lasagne.layers.dropout(l_hid2, p=0.5)
-		l_out = lasagne.layers.DenseLayer(l_hid2_drop, 2, nonlinearity=lasagne.nonlinearities.linear)
+		l_hid2_drop = lasagne.layers.dropout(l_hid2, p=0.0)
+		l_out = lasagne.layers.DenseLayer(l_hid2_drop, 1, nonlinearity=lasagne.nonlinearities.linear)
 
 		self.network = l_out
 
@@ -29,10 +30,17 @@ class Network:
 		test_prediction = lasagne.layers.get_output(self.network, deterministic=True)
 		test_loss = lasagne.objectives.squared_error(test_prediction, target_var)
 		test_loss = test_loss.mean()
-		test_acc = T.mean(T.eq(T.argmax(test_prediction, axis=1), target_var), dtype=theano.config.floatX)
 
-		self.train_forward = theano.function([input_var, target_var], loss, updates=updates)
+		u_train = T.sum(T.pow(T.sub(target_var, prediction.reshape(target_var.shape)), 2))
+		u_test = T.sum(T.pow(T.sub(target_var, test_prediction.reshape(target_var.shape)), 2))
+		v = T.sum(T.pow(T.sub(target_var, T.mean(target_var, axis=0)), 2))
+
+		train_acc = 1 - (u_train/v)
+		test_acc = 1 - (u_test/v)
+
+		self.train_forward = theano.function([input_var, target_var], [loss, train_acc], updates=updates)
 		self.val_forward = theano.function([input_var, target_var], [test_loss, test_acc])
+
 		self.predict = theano.function([input_var], [test_prediction])
 
 	def predict(self, data):
@@ -41,28 +49,31 @@ class Network:
 	def train(self, X_train, y_train, X_val, y_val, no_epochs=100, shuffle=True, log_nth=None):
 		for epoch in xrange(no_epochs):
 			start_time = time.time()
-			print('Epoch {} of {}'.format(epoch + 1 , no_epochs))
 
-			train_err, train_batches = self._train(X_train, y_train, shuffle=shuffle, log_nth=log_nth)
+			train_acc, train_err, train_batches = self._train(X_train, y_train, shuffle=shuffle, log_nth=log_nth)
 			print("Epoch {} of {} took {:.3f}s".format(epoch + 1, no_epochs, time.time() - start_time))
 			print("  training loss:\t\t{:.6f}".format(train_err / train_batches))
+			print("  training accuracy:\t\t{:.6f}".format(train_acc / train_batches))
 
-			#val_acc, val_err, val_batches = self._val(X_val, y_val, shuffle=shuffle)
-			#print("  validation loss:\t\t{:.6f}".format(val_err / val_batches))
-			#print("  validation accuracy:\t\t{:.2f} %".format(val_acc / val_batches * 100))
+			val_acc, val_err, val_batches = self._val(X_val, y_val, shuffle=shuffle)
+			print("  validation loss:\t\t{:.6f}".format(val_err / val_batches))
+			print("  validation accuracy:\t\t{:.6f}".format(val_acc / val_batches))
 			print("")
 
 	def _train(self, X, y, shuffle=True, log_nth=None):
 		train_err = 0
+		train_acc = 0
 		batch_index = 0
 		for batch in self._iterate_minibatches(X, y, shuffle=shuffle):
 			inputs, targets = batch
-			train_err += self.train_forward(inputs, targets)
+			err, acc = self.train_forward(inputs, targets)
+			train_err += err
+			train_acc += acc
 			if log_nth is not None and batch_index % log_nth == 0:
 				print('Iteration {}'.format(batch_index + 1))
 				print("  training loss:\t\t{:.6f}".format(train_err / batch_index + 1))
 			batch_index += 1
-		return train_err, batch_index
+		return train_acc, train_err, batch_index
 
 	def _val(self, X, y, shuffle=True):
 		val_err = 0

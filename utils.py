@@ -45,7 +45,6 @@ def to_voxels(arr, no_samples=1000, skip_ones=False):
 	return np.reshape(arr, (no_samples, 1, 1, 1, channels))
 
 
-
 def load_data():
 	X = np.empty((len(fileList) * 1000, 288))
 	y = np.empty((len(fileList) * 1000, 2))
