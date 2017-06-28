@@ -4,8 +4,7 @@ import nibabel as nib
 
 file1 = './data/10000voxels_uniform_p=0_rad=1E-6_sep=2.1E-6_HPC-scheme.bfloat'
 file2 = './data/10000voxels_uniform_p=0_rad=1E-6_sep=2.1E-6_HPC-scheme2_seed=843276243.bfloat'
-hpcBfloat = '/Users/maq/Documents/School/deep-diffusion/other/data/HPC Subject 100307/T1w/Diffusion/dwi.Bfloat'
-hpcfile = '/Users/maq/Documents/School/deep-diffusion/other/data/HPC Subject 100307/T1w/Diffusion/data.nii.gz'
+hpc = '/Users/maq/Documents/School/deep-diffusion/other/data/HPC Subject 100307/T1w/Diffusion/dwi.Bfloat'
 
 fileList = ['./data/1000voxels_uniform_p=0_rad=0.1E-6_sep=1.1E-6_HPC-scheme.bfloat',
 			'./data/1000voxels_uniform_p=0_rad=0.1E-6_sep=2.1E-6_HPC-scheme.bfloat',
@@ -28,21 +27,37 @@ def read_float(filename):
 	return arr
 
 
+def read_floats(filenames):
+	files = []
+	for file in range(0, len(filenames)):
+		files.append(to_voxels(read_float(filenames[file])))
+	return files
+
+
 def read_ni(filename):
 	arr = nib.load(filename)
 	return arr
 
 
-def to_voxels(arr, no_samples=1000, skip_ones=False):
+def to_voxels(arr, channels=288, skip_ones=True):
 	# N = no samples = 1000
 	# C = channels = 288
 	# W = width = 1
 	# H = height = 1
 	# D = depth = 1
-	channels = int(arr.size / no_samples)
+	no_samples = int(arr.size / channels)
 	if skip_ones:
 		return np.reshape(arr, (no_samples, channels))
 	return np.reshape(arr, (no_samples, 1, 1, 1, channels))
+
+
+def get_pred_data(sample_size=None):
+	arr = read_float(hpc)
+	arr = arr.reshape(arr.shape[0]/288, 288)
+	if sample_size is not None:
+		arr = np.random.shuffle(arr)
+		return arr[0:sample_size, :]
+	return arr
 
 
 def load_data():
