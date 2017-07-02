@@ -12,12 +12,9 @@ class Network:
 		self.batch_size = batch_size
 
 		l_in = lasagne.layers.InputLayer(shape=(batch_size, 288), input_var=input_var)
-		l_in_drop = lasagne.layers.dropout(l_in, p=0.0)
-		l_hid1 = lasagne.layers.DenseLayer(l_in_drop, num_units=150, nonlinearity=lasagne.nonlinearities.rectify)
-		l_hid1_drop = lasagne.layers.dropout(l_hid1, p=0.0)
-		l_hid2 = lasagne.layers.DenseLayer(l_hid1_drop, num_units=150, nonlinearity=lasagne.nonlinearities.rectify)
-		l_hid2_drop = lasagne.layers.dropout(l_hid2, p=0.0)
-		l_out = lasagne.layers.DenseLayer(l_hid2_drop, 1, nonlinearity=lasagne.nonlinearities.linear)
+		l_norm = lasagne.layers.batch_norm(l_in)
+		l_hid1 = lasagne.layers.DenseLayer(l_norm, num_units=100, nonlinearity=lasagne.nonlinearities.rectify)
+		l_out = lasagne.layers.DenseLayer(l_hid1, 1, nonlinearity=lasagne.nonlinearities.linear)
 
 		self.network = l_out
 

@@ -1,10 +1,12 @@
 from __future__ import division
 import numpy as np
 import nibabel as nib
+from matplotlib.pyplot import hist
+import matplotlib.pyplot as plt
 
 file1 = './data/10000voxels_uniform_p=0_rad=1E-6_sep=2.1E-6_HPC-scheme.bfloat'
 file2 = './data/10000voxels_uniform_p=0_rad=1E-6_sep=2.1E-6_HPC-scheme2_seed=843276243.bfloat'
-hpc = '/Users/maq/Documents/School/deep-diffusion/other/data/HPC Subject 100307/T1w/Diffusion/dwi.Bfloat'
+hpc = './data/dwi.Bfloat'
 
 fileList = ['./data/1000voxels_uniform_p=0_rad=0.1E-6_sep=1.1E-6_HPC-scheme.bfloat',
 			'./data/1000voxels_uniform_p=0_rad=0.1E-6_sep=2.1E-6_HPC-scheme.bfloat',
@@ -52,10 +54,9 @@ def to_voxels(arr, channels=288, skip_ones=True):
 
 
 def get_pred_data(sample_size=None):
-	arr = read_float(hpc)
-	arr = arr.reshape(arr.shape[0]/288, 288)
+	arr = to_voxels(read_float(hpc))
 	if sample_size is not None:
-		arr = np.random.shuffle(arr)
+		np.random.shuffle(arr)
 		return arr[0:sample_size, :]
 	return arr
 
@@ -78,6 +79,14 @@ def load_data():
 		end = end + 1000
 
 	return X, y
+
+
+def plot_features():
+	X, y = load_data()
+	for i in range(0, X.shape[1]):
+		x = X[:,i]
+		n, bins, patches = hist(x, bins='auto', range=None, normed=False, weights=None, cumulative=False, bottom=None)
+		plt.show()
 
 
 def get_data(split_ratio=0.7):
