@@ -6,23 +6,39 @@ import matplotlib.pyplot as plt
 
 hpc = './data/dwi.Bfloat'
 
-fileList = ['./data/1000voxels_uniform_p=0_rad=0.1E-6_sep=1.1E-6_HPC-scheme.bfloat',
-			'./data/1000voxels_uniform_p=0_rad=0.1E-6_sep=2.1E-6_HPC-scheme.bfloat',
-			'./data/1000voxels_uniform_p=0_rad=0.5E-6_sep=1.1E-6_HPC-scheme.bfloat',
-			'./data/1000voxels_uniform_p=0_rad=1.5E-6_sep=3.1E-6_HPC-scheme.bfloat',
-			'./data/1000voxels_uniform_p=0_rad=1E-6_sep=3.1E-6_HPC-scheme.bfloat',
-			'./data/1000voxels_uniform_p=0_rad=2E-6_sep=4.1E-6_HPC-scheme.bfloat']
+fileList1 = ['./data/1000voxels_uniform_p=0_rad=0.1E-6_sep=1.1E-6_HPC-scheme.bfloat',
+            './data/1000voxels_uniform_p=0_rad=0.1E-6_sep=2.1E-6_HPC-scheme.bfloat',
+            './data/1000voxels_uniform_p=0_rad=0.5E-6_sep=1.1E-6_HPC-scheme.bfloat',
+            './data/1000voxels_uniform_p=0_rad=1.5E-6_sep=3.1E-6_HPC-scheme.bfloat',
+            './data/1000voxels_uniform_p=0_rad=1E-6_sep=3.1E-6_HPC-scheme.bfloat',
+            './data/1000voxels_uniform_p=0_rad=2E-6_sep=4.1E-6_HPC-scheme.bfloat']
 
-targetList = [(0.1E-6, 1.1E-6),
-			  (0.1E-6, 2.1E-6),
-			  (0.5E-6, 1.1E-6),
-			  (1.5E-6, 3.1E-6),
-			  (1E-6, 3.1E-6),
-			  (2E-6, 4.1E-6)]
+fileList2 = ['./data/finer/1000voxels_uniform_p=0_rad=1.5E-7_sep=1.1E-6_HPC-scheme.bfloat',
+             './data/finer/1000voxels_uniform_p=0_rad=1E-7_sep=1.1E-6_HPC-scheme.bfloat',
+             './data/finer/1000voxels_uniform_p=0_rad=1E-8_sep=1.1E-6_HPC-scheme.bfloat',
+             './data/finer/1000voxels_uniform_p=0_rad=2E-7_sep=1.1E-6_HPC-scheme.bfloat',
+             './data/finer/1000voxels_uniform_p=0_rad=5E-8_sep=1.1E-6_HPC-scheme.bfloat']
+
+files = fileList1 + fileList2
+
+targetList1 = [(0.1E-6, 1.1E-6),
+               (0.1E-6, 2.1E-6),
+               (0.5E-6, 1.1E-6),
+               (1.5E-6, 3.1E-6),
+               (1E-6, 3.1E-6),
+               (2E-6, 4.1E-6)]
+
+targetList2 = [(1.5E-7, 1.1E-6),
+               (1E-7, 1.1E-6),
+               (1E-8, 1.1E-6),
+               (2E-7, 1.1E-6),
+               (5E-8, 1.1E-6)]
+
+targets = targetList1 + targetList2
 
 
 def get_data(split_ratio=0.7):
-	X, y = _load_data()
+	X, y = _load_data(files, targets)
 	split = int(X.shape[0] * split_ratio)
 	indices = np.random.permutation(X.shape[0])
 	training_idx, test_idx = indices[:split], indices[split:]
@@ -38,26 +54,26 @@ def get_pred_data(sample_size=None):
 
 
 def plot_features():
-	X, y = _load_data()
+	X, y = _load_data(fileList2)
 	for i in range(0, X.shape[1]):
-		x = X[:,i]
+		x = X[:, i]
 		n, bins, patches = hist(x, bins='auto', range=None, normed=False, weights=None, cumulative=False, bottom=None)
 		plt.show()
 
 
-def _load_data():
-	X = np.empty((len(fileList) * 1000, 288))
-	y = np.empty((len(fileList) * 1000, 2))
+def _load_data(file_list, target_list):
+	X = np.empty((len(file_list) * 1000, 288))
+	y = np.empty((len(file_list) * 1000, 2))
 
 	start = 0
 	end = 1000
-	for i in xrange(0, len(fileList)):
-		file = fileList[i]
-		targetTuple = targetList[i]
+	for i in xrange(0, len(file_list)):
+		file = file_list[i]
+		target_tuple = target_list[i]
 		vals = _to_voxels(_read_float(file), skip_ones=True)
 
 		X[start:end] = vals
-		y[start:end] = np.array(targetTuple)
+		y[start:end] = np.array(target_tuple)
 
 		start = end
 		end = end + 1000

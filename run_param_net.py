@@ -43,13 +43,17 @@ def knn(class_index=0):
 	print('Min: ' + str(np.min(predictions)))
 	print('Mean: ' + str(np.mean(predictions)))
 	print('Max: ' + str(np.max(predictions)))
+
 	n, bins, patches = hist(predictions, bins='auto', range=None, normed=False, weights=None, cumulative=False, bottom=None)
+	print(n)
+	print(bins)
+
 	plt.show()
 
 
 if __name__ == '__main__':
 	print('Cylinder radius:')
 	knn(0)
-	print('')
-	print('Cylinder separation:')
-	knn(1)
+	#print('')
+	#print('Cylinder separation:')
+	#knn(1)
