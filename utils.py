@@ -4,37 +4,31 @@ import nibabel as nib
 from matplotlib.pyplot import hist
 import matplotlib.pyplot as plt
 
-hpc = './data/dwi.Bfloat'
+hpc = './data/hpc_scanned_voxels.Bfloat'
 
-fileList1 = ['./data/1000voxels_uniform_p=0_rad=0.1E-6_sep=1.1E-6_HPC-scheme.bfloat',
-            './data/1000voxels_uniform_p=0_rad=0.1E-6_sep=2.1E-6_HPC-scheme.bfloat',
-            './data/1000voxels_uniform_p=0_rad=0.5E-6_sep=1.1E-6_HPC-scheme.bfloat',
-            './data/1000voxels_uniform_p=0_rad=1.5E-6_sep=3.1E-6_HPC-scheme.bfloat',
-            './data/1000voxels_uniform_p=0_rad=1E-6_sep=3.1E-6_HPC-scheme.bfloat',
-            './data/1000voxels_uniform_p=0_rad=2E-6_sep=4.1E-6_HPC-scheme.bfloat']
+files = ['./data/old/1000voxels_uniform_p=0_rad=0.1E-6_sep=1.1E-6_HPC-scheme.bfloat',
+            './data/old/1000voxels_uniform_p=0_rad=0.1E-6_sep=2.1E-6_HPC-scheme.bfloat',
+            './data/old/1000voxels_uniform_p=0_rad=0.5E-6_sep=1.1E-6_HPC-scheme.bfloat',
+            './data/old/1000voxels_uniform_p=0_rad=1.5E-6_sep=3.1E-6_HPC-scheme.bfloat',
+            './data/old/1000voxels_uniform_p=0_rad=1E-6_sep=3.1E-6_HPC-scheme.bfloat',
+            './data/old/1000voxels_uniform_p=0_rad=2E-6_sep=4.1E-6_HPC-scheme.bfloat',
+			'./data/old/1000voxels_uniform_p=0_rad=1.5E-7_sep=1.1E-6_HPC-scheme.bfloat',
+             './data/old/1000voxels_uniform_p=0_rad=1E-7_sep=1.1E-6_HPC-scheme.bfloat',
+             './data/old/1000voxels_uniform_p=0_rad=1E-8_sep=1.1E-6_HPC-scheme.bfloat',
+             './data/old/1000voxels_uniform_p=0_rad=2E-7_sep=1.1E-6_HPC-scheme.bfloat',
+             './data/old/1000voxels_uniform_p=0_rad=5E-8_sep=1.1E-6_HPC-scheme.bfloat']
 
-fileList2 = ['./data/finer/1000voxels_uniform_p=0_rad=1.5E-7_sep=1.1E-6_HPC-scheme.bfloat',
-             './data/finer/1000voxels_uniform_p=0_rad=1E-7_sep=1.1E-6_HPC-scheme.bfloat',
-             './data/finer/1000voxels_uniform_p=0_rad=1E-8_sep=1.1E-6_HPC-scheme.bfloat',
-             './data/finer/1000voxels_uniform_p=0_rad=2E-7_sep=1.1E-6_HPC-scheme.bfloat',
-             './data/finer/1000voxels_uniform_p=0_rad=5E-8_sep=1.1E-6_HPC-scheme.bfloat']
-
-files = fileList1 + fileList2
-
-targetList1 = [(0.1E-6, 1.1E-6),
+targets = [(0.1E-6, 1.1E-6),
                (0.1E-6, 2.1E-6),
                (0.5E-6, 1.1E-6),
                (1.5E-6, 3.1E-6),
                (1E-6, 3.1E-6),
-               (2E-6, 4.1E-6)]
-
-targetList2 = [(1.5E-7, 1.1E-6),
+               (2E-6, 4.1E-6),
+               (1.5E-7, 1.1E-6),
                (1E-7, 1.1E-6),
                (1E-8, 1.1E-6),
                (2E-7, 1.1E-6),
                (5E-8, 1.1E-6)]
-
-targets = targetList1 + targetList2
 
 
 def get_data(split_ratio=0.7):
@@ -54,7 +48,7 @@ def get_pred_data(sample_size=None):
 
 
 def plot_features():
-	X, y = _load_data(fileList2)
+	X, y = _load_data(files)
 	for i in range(0, X.shape[1]):
 		x = X[:, i]
 		n, bins, patches = hist(x, bins='auto', range=None, normed=False, weights=None, cumulative=False, bottom=None)
