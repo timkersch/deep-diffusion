@@ -64,7 +64,7 @@ def _load_data(file_list, target_list):
 	for i in xrange(0, len(file_list)):
 		file = file_list[i]
 		target_tuple = target_list[i]
-		vals = _to_voxels(_read_float(file), skip_ones=True)
+		vals = to_voxels(read_float(file), skip_ones=True)
 
 		X[start:end] = vals
 		y[start:end] = np.array(target_tuple)
@@ -75,18 +75,18 @@ def _load_data(file_list, target_list):
 	return X, y
 
 
-def _read_float(filename):
+def read_float(filename):
 	f = open(filename, "r")
 	arr = np.fromfile(f, dtype='>f4')
 	return arr
 
 
-def _read_ni(filename):
+def read_ni(filename):
 	arr = nib.load(filename)
 	return arr
 
 
-def _to_voxels(arr, channels=288, skip_ones=True):
+def to_voxels(arr, channels=288, skip_ones=True):
 	# N = no samples = 1000
 	# C = channels = 288
 	# W = width = 1

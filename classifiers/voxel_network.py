@@ -15,7 +15,6 @@ class VoxNet:
 		l_norm = lasagne.layers.batch_norm(l_in)
 		l_hid1 = lasagne.layers.DenseLayer(l_norm, num_units=100, nonlinearity=lasagne.nonlinearities.rectify)
 		l_out = lasagne.layers.DenseLayer(l_hid1, 1, nonlinearity=lasagne.nonlinearities.linear)
-
 		self.network = l_out
 
 		prediction = lasagne.layers.get_output(self.network)
@@ -38,10 +37,10 @@ class VoxNet:
 		self.train_forward = theano.function([input_var, target_var], [loss, train_acc], updates=updates)
 		self.val_forward = theano.function([input_var, target_var], [test_loss, test_acc])
 
-		self.predict = theano.function([input_var], [test_prediction])
+		self.predict_fun = theano.function([input_var], [test_prediction])
 
 	def predict(self, data):
-		return self.predict(data)
+		return self.predict_fun(data)
 
 	def train(self, X_train, y_train, X_val, y_val, no_epochs=100, shuffle=True, log_nth=None):
 		for epoch in xrange(no_epochs):
