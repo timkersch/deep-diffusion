@@ -1,5 +1,6 @@
 {
   "batch_size": 50,
+  "no_epochs": 100,
   "optimizer": {
     "type": "adam",
     "learning_rate": 0.001,

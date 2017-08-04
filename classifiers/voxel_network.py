@@ -8,10 +8,11 @@ import numpy as np
 
 class VoxNet:
 
-	def __init__(self, input_var, target_var, batch_size=50):
-		self.batch_size = batch_size
+	def __init__(self, input_var, target_var, config):
+		self.config = config
+		self.batch_size = config['batch_size']
 
-		l_in = lasagne.layers.InputLayer(shape=(batch_size, 288), input_var=input_var)
+		l_in = lasagne.layers.InputLayer(shape=(self.batch_size, 288), input_var=input_var)
 		l_norm = lasagne.layers.batch_norm(l_in)
 		l_hid1 = lasagne.layers.DenseLayer(l_norm, num_units=100, nonlinearity=lasagne.nonlinearities.rectify)
 		l_out = lasagne.layers.DenseLayer(l_hid1, 1, nonlinearity=lasagne.nonlinearities.linear)
@@ -21,7 +22,7 @@ class VoxNet:
 		loss = lasagne.objectives.squared_error(prediction, target_var)
 		loss = loss.mean()
 		params = lasagne.layers.get_all_params(self.network, trainable=True)
-		updates = lasagne.updates.adam(loss, params, learning_rate=0.001, beta1=0.9, beta2=0.999, epsilon=1e-8)
+		updates = lasagne.updates.adam(loss, params, config['optimizer']['learning_rate'], config['optimizer']['beta1'], config['optimizer']['beta2'], config['optimizer']['epsilon'])
 
 		test_prediction = lasagne.layers.get_output(self.network, deterministic=True)
 		test_loss = lasagne.objectives.squared_error(test_prediction, target_var)
@@ -84,6 +85,8 @@ class VoxNet:
 		return val_acc, val_err, batch_index
 
 	def _iterate_minibatches(self, X, y, shuffle=True):
+		print(X)
+		print(y)
 		assert len(X) == len(y)
 		if shuffle:
 			indices = np.arange(len(X))
@@ -94,3 +97,11 @@ class VoxNet:
 			else:
 				excerpt = slice(start_idx, start_idx + self.batch_size)
 			yield X[excerpt], y[excerpt]
+
+	def save(self, filename):
+		np.savez(filename, *lasagne.layers.get_all_param_values(self.network))
+
+	def load(self, filename):
+		with np.load(filename) as f:
+			param_values = [f['arr_%d' % i] for i in range(len(f.files))]
+			lasagne.layers.set_all_param_values(self.network, param_values)
