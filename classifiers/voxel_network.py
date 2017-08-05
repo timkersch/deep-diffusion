@@ -20,7 +20,10 @@ class VoxNet:
 			if layer['type'] == 'dropout':
 				prev_layer = lasagne.layers.DropoutLayer(prev_layer, p=layer['p'])
 			elif layer['type'] == 'fc':
-				prev_layer = lasagne.layers.DenseLayer(prev_layer, num_units=layer['units'], nonlinearity=lasagne.nonlinearities.rectify)
+				if config['batch_norm'] == True:
+					prev_layer = lasagne.layers.batch_norm(lasagne.layers.DenseLayer(prev_layer, num_units=layer['units'], W=lasagne.init.Normal(std=1E-3, mean=0.0), nonlinearity=lasagne.nonlinearities.rectify))
+				else:
+					prev_layer = lasagne.layers.DenseLayer(prev_layer, num_units=layer['units'], W=lasagne.init.Normal(std=5E-8, mean=0), nonlinearity=lasagne.nonlinearities.rectify)
 
 		l_out = lasagne.layers.DenseLayer(prev_layer, 1, nonlinearity=lasagne.nonlinearities.linear)
 		self.network = l_out
@@ -49,7 +52,7 @@ class VoxNet:
 		self.train_forward = theano.function([input_var, target_var], [loss, train_acc], updates=updates)
 		self.val_forward = theano.function([input_var, target_var], [test_loss, test_acc])
 
-		self.predict_fun = theano.function([input_var], [test_prediction])
+		self.predict_fun = theano.function([input_var], test_prediction)
 
 	def predict(self, data):
 		return self.predict_fun(data)

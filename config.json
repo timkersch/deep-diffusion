@@ -1,28 +1,12 @@
 {
   "no_dwis": 288,
   "batch_size": 128,
-  "no_epochs": 100,
-
+  "no_epochs": 300,
+  "batch_norm": false,
   "hidden_layers": [
     {
       "type": "fc",
-      "units": 150
-    },
-    {
-      "type": "dropout",
-      "p": 0.1
-    },
-    {
-      "type": "fc",
-      "units": 150
-    },
-    {
-      "type": "dropout",
-      "p": 0.1
-    },
-    {
-      "type": "fc",
-      "units": 150
+      "units": 300
     }
   ],
 
