@@ -86,7 +86,7 @@ def read_ni(filename):
 	return arr
 
 
-def to_voxels(arr, channels, skip_ones=True):
+def to_voxels(arr, channels=288, skip_ones=True):
 	no_samples = int(arr.size / channels)
 	if skip_ones:
 		return np.reshape(arr, (no_samples, channels))

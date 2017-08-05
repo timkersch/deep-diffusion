@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 
 
 def knn(X_train, y_train, X_val, y_val, X_hpc, class_index=0):
-	model = KNeighborsRegressor(n_neighbors=10, weights='uniform', algorithm='brute', leaf_size=30, p=2, metric='minkowski', metric_params=None, n_jobs=1)
+	model = KNeighborsRegressor(n_neighbors=10, weights='distance', algorithm='brute', leaf_size=30, p=2, metric='minkowski', metric_params=None, n_jobs=1)
 	model.fit(X_train, y_train[:, class_index])
 
 	print('Score train: ' + str(model.score(X_train, y_train[:, class_index])))

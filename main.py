@@ -14,7 +14,7 @@ def train():
 	with open('config.json') as data_file:
 		config = json.load(data_file)
 
-	train, validation, test = dataset.load_dataset(config['no_dwis'], split_ratio=(0.5, 0.5))
+	train, validation, test = dataset.load_dataset(config['no_dwis'], split_ratio=(0.8, 0.2, 0))
 
 	model_id = '1'
 	if not os.path.exists('models/' + model_id):
