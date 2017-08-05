@@ -105,6 +105,6 @@ ENV/
 *.idea
 
 /other
-/data
+/data/hpc_scanned_voxels.Bfloat
 .env
 /articles
