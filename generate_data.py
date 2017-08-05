@@ -8,10 +8,11 @@ import time
 np.random.seed(int(round(time.time())))
 
 
-def run(no_iter=1, no_voxels=1, cylinder_rad_from=1E-8, cylinder_rad_to=1E-7, cylinder_sep_from=2.1E-6, cylinder_sep_to=2.1E-6):
+def run(begin=20, no_iter=10, no_voxels=1000, cylinder_rad_from=1E-8, cylinder_rad_to=1E-6, cylinder_sep_from=2.1E-6, cylinder_sep_to=2.1E-6):
 	print 'Begin data generation with ' + str(no_iter) + ' iterations and ' + str(no_voxels) + ' in every iteration'
-	for i in range(0, no_iter):
-		print('Begin iteration ' + str(i+1) + ' of ' + str(no_iter))
+	for i in range(begin, begin + no_iter):
+		print('Running iteration ' + str(i+1 - begin) + ' of ' + str(no_iter))
+		print(time.strftime("%c"))
 		dirname = "./data/gen/" + str(i) + '/'
 
 		radius = (cylinder_rad_to - cylinder_rad_from) * np.random.random_sample() + cylinder_rad_from
@@ -33,9 +34,8 @@ def _generate_data(config):
 		json.dump(config, outfile, sort_keys=True, indent=4)
 
 	# Run camino and generate data
-	p = subprocess.Popen(['./run_camino.sh', str(config['walkers']), str(config['tmax']), str(config['voxels']), str(config['p']), str(config['scheme_path']), str(config['cylinder_rad']), str(config['cylinder_sep']), str(config['out_name'])])
-	p.communicate()
-	p.wait()
+	p = subprocess.Popen(['./run_camino.sh', str(config['walkers']), str(config['tmax']), str(config['voxels']), str(config['p']), str(config['scheme_path']), str(config['cylinder_rad']), str(config['cylinder_sep']), str(config['out_name'])], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+	out, err = p.communicate()
 
 	# Write the target file
 	rad = np.full(config['voxels'], config['cylinder_rad'])
@@ -57,3 +57,7 @@ def _get_config(walkers=100000, tmax=1000, voxels=1, p=0.0, scheme_path='hpc.sch
 		'out_name': out_name
 	}
 	return obj
+
+
+if __name__ == '__main__':
+	run()
