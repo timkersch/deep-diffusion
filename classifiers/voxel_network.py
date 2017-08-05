@@ -12,6 +12,11 @@ class VoxNet:
 		self.config = config
 		self.batch_size = config['batch_size']
 
+		self.val_loss = []
+		self.train_loss = []
+		self.val_acc = []
+		self.train_acc = []
+
 		l_in = lasagne.layers.InputLayer(shape=(self.batch_size, config['no_dwis']), input_var=input_var)
 
 		hidden_layers = config['hidden_layers']
@@ -20,10 +25,11 @@ class VoxNet:
 			if layer['type'] == 'dropout':
 				prev_layer = lasagne.layers.DropoutLayer(prev_layer, p=layer['p'])
 			elif layer['type'] == 'fc':
+				layer = lasagne.layers.DenseLayer(prev_layer, num_units=layer['units'], W=lasagne.init.Normal(std=1E-8, mean=0.0), nonlinearity=lasagne.nonlinearities.sigmoid)
 				if config['batch_norm'] == True:
-					prev_layer = lasagne.layers.batch_norm(lasagne.layers.DenseLayer(prev_layer, num_units=layer['units'], W=lasagne.init.Normal(std=1E-3, mean=0.0), nonlinearity=lasagne.nonlinearities.rectify))
+					prev_layer = lasagne.layers.batch_norm(layer)
 				else:
-					prev_layer = lasagne.layers.DenseLayer(prev_layer, num_units=layer['units'], W=lasagne.init.Normal(std=5E-8, mean=0), nonlinearity=lasagne.nonlinearities.rectify)
+					prev_layer = layer
 
 		l_out = lasagne.layers.DenseLayer(prev_layer, 1, nonlinearity=lasagne.nonlinearities.linear)
 		self.network = l_out
@@ -57,16 +63,24 @@ class VoxNet:
 	def predict(self, data):
 		return self.predict_fun(data)
 
+	def reset(self):
+		self.train_loss = []
+		self.val_loss = []
+
 	def train(self, X_train, y_train, X_val, y_val, outfile=None, no_epochs=100, shuffle=True, log_nth=None):
 		for epoch in xrange(no_epochs):
 			start_time = time.time()
 
 			train_acc, train_err, train_batches = self._train(X_train, y_train, shuffle=shuffle, log_nth=log_nth)
+			self.train_loss.append(np.log(train_err))
+			self.train_acc.append(train_acc)
 			self._print_and_append("Epoch {} of {} took {:.3f}s".format(epoch + 1, no_epochs, time.time() - start_time), outfile)
 			self._print_and_append("  training loss:\t\t{:.6f}".format(train_err / train_batches), outfile)
 			self._print_and_append("  training accuracy:\t\t{:.6f}".format(train_acc / train_batches), outfile)
 
 			val_acc, val_err, val_batches = self._val(X_val, y_val, shuffle=shuffle)
+			self.val_loss.append(np.log(val_err))
+			self.val_acc.append(val_acc)
 			self._print_and_append("  validation loss:\t\t{:.6f}".format(val_err / val_batches), outfile)
 			self._print_and_append("  validation accuracy:\t\t{:.6f}".format(val_acc / val_batches), outfile, new_line=True)
 

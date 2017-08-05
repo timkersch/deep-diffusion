@@ -4,6 +4,7 @@ import theano.tensor as T
 import json
 import os
 import errno
+import matplotlib.pyplot as plt
 
 
 def train(model_id):
@@ -37,6 +38,24 @@ def train(model_id):
 
 	network.save(dir + 'model.npz')
 	outfile.close()
+
+	# Make some plots of loss and accuracy
+	plt.plot(network.train_loss)
+	plt.plot(network.val_loss)
+	plt.ylabel('Log-loss')
+	plt.xlabel('Epochs')
+	plt.legend(['Train', 'Val'], loc='upper right')
+	plt.savefig(dir + 'loss-plot')
+	plt.close()
+
+	plt.plot(network.train_acc)
+	plt.plot(network.val_acc)
+	plt.ylabel('R2-Score')
+	plt.xlabel('Epochs')
+	plt.legend(['Train', 'Val'], loc='upper right')
+	plt.savefig(dir + 'r2-plot')
+	plt.close()
+
 	return network
 
 

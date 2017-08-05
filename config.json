@@ -1,7 +1,7 @@
 {
   "no_dwis": 288,
   "batch_size": 128,
-  "no_epochs": 300,
+  "no_epochs": 200,
   "batch_norm": false,
   "hidden_layers": [
     {
