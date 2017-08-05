@@ -11,27 +11,33 @@ def train():
 	input_var = T.dmatrix('inputs')
 	target_var = T.dvector('targets')
 
-	train, validation, test = dataset.load_dataset(split_ratio=(0.5, 0.5))
-	model_id = '1'
-
 	with open('config.json') as data_file:
 		config = json.load(data_file)
 
-	# Create neural network model
-	network = VoxNet(input_var, target_var, config)
-	network.train(train[0], train[1][:, 0], validation[0], validation[1][:, 0], config['no_epochs'])
+	train, validation, test = dataset.load_dataset(config['no_dwis'], split_ratio=(0.5, 0.5))
 
+	model_id = '1'
 	if not os.path.exists('models/' + model_id):
 		try:
 			os.makedirs('models/' + model_id)
 		except OSError as exc:
 			if exc.errno != errno.EEXIST:
 				raise
+	dir = 'models/' + model_id + '/'
+
 	# Write the config file
-	with open('models/' + model_id + '/config.json', 'w') as outfile:
+	with open(dir + 'config.json', 'w') as outfile:
 		json.dump(config, outfile, sort_keys=True, indent=4)
 
-	network.save('models/' + model_id + '/model.npz')
+	# Open file for appending output
+	outfile = open(dir + 'out.txt', 'a')
+
+	# Create neural network model
+	network = VoxNet(input_var, target_var, config)
+	network.train(train[0], train[1][:, 0], validation[0], validation[1][:, 0], no_epochs=config['no_epochs'], outfile=outfile)
+
+	network.save(dir + 'model.npz')
+	outfile.close()
 	return network
 
 

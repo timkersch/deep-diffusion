@@ -12,17 +12,28 @@ class VoxNet:
 		self.config = config
 		self.batch_size = config['batch_size']
 
-		l_in = lasagne.layers.InputLayer(shape=(self.batch_size, 288), input_var=input_var)
-		l_norm = lasagne.layers.batch_norm(l_in)
-		l_hid1 = lasagne.layers.DenseLayer(l_norm, num_units=100, nonlinearity=lasagne.nonlinearities.rectify)
-		l_out = lasagne.layers.DenseLayer(l_hid1, 1, nonlinearity=lasagne.nonlinearities.linear)
+		l_in = lasagne.layers.InputLayer(shape=(self.batch_size, config['no_dwis']), input_var=input_var)
+
+		hidden_layers = config['hidden_layers']
+		prev_layer = l_in
+		for layer in hidden_layers:
+			if layer['type'] == 'dropout':
+				prev_layer = lasagne.layers.DropoutLayer(prev_layer, p=layer['p'])
+			elif layer['type'] == 'fc':
+				prev_layer = lasagne.layers.DenseLayer(prev_layer, num_units=layer['units'], nonlinearity=lasagne.nonlinearities.rectify)
+
+		l_out = lasagne.layers.DenseLayer(prev_layer, 1, nonlinearity=lasagne.nonlinearities.linear)
 		self.network = l_out
 
 		prediction = lasagne.layers.get_output(self.network)
 		loss = lasagne.objectives.squared_error(prediction, target_var)
 		loss = loss.mean()
 		params = lasagne.layers.get_all_params(self.network, trainable=True)
-		updates = lasagne.updates.adam(loss, params, config['optimizer']['learning_rate'], config['optimizer']['beta1'], config['optimizer']['beta2'], config['optimizer']['epsilon'])
+
+		if config['optimizer']['type'] == 'adam':
+			updates = lasagne.updates.adam(loss, params, config['optimizer']['learning_rate'], config['optimizer']['beta1'], config['optimizer']['beta2'], config['optimizer']['epsilon'])
+		elif config['optimizer']['type'] == 'momentum':
+			updates = lasagne.updates.momentum(loss, params, config['optimizer']['learning_rate'], config['optimizer']['momentum'])
 
 		test_prediction = lasagne.layers.get_output(self.network, deterministic=True)
 		test_loss = lasagne.objectives.squared_error(test_prediction, target_var)
@@ -43,19 +54,18 @@ class VoxNet:
 	def predict(self, data):
 		return self.predict_fun(data)
 
-	def train(self, X_train, y_train, X_val, y_val, no_epochs=100, shuffle=True, log_nth=None):
+	def train(self, X_train, y_train, X_val, y_val, outfile=None, no_epochs=100, shuffle=True, log_nth=None):
 		for epoch in xrange(no_epochs):
 			start_time = time.time()
 
 			train_acc, train_err, train_batches = self._train(X_train, y_train, shuffle=shuffle, log_nth=log_nth)
-			print("Epoch {} of {} took {:.3f}s".format(epoch + 1, no_epochs, time.time() - start_time))
-			print("  training loss:\t\t{:.6f}".format(train_err / train_batches))
-			print("  training accuracy:\t\t{:.6f}".format(train_acc / train_batches))
+			self._print_and_append("Epoch {} of {} took {:.3f}s".format(epoch + 1, no_epochs, time.time() - start_time), outfile)
+			self._print_and_append("  training loss:\t\t{:.6f}".format(train_err / train_batches), outfile)
+			self._print_and_append("  training accuracy:\t\t{:.6f}".format(train_acc / train_batches), outfile)
 
 			val_acc, val_err, val_batches = self._val(X_val, y_val, shuffle=shuffle)
-			print("  validation loss:\t\t{:.6f}".format(val_err / val_batches))
-			print("  validation accuracy:\t\t{:.6f}".format(val_acc / val_batches))
-			print("")
+			self._print_and_append("  validation loss:\t\t{:.6f}".format(val_err / val_batches), outfile)
+			self._print_and_append("  validation accuracy:\t\t{:.6f}".format(val_acc / val_batches), outfile, new_line=True)
 
 	def _train(self, X, y, shuffle=True, log_nth=None):
 		train_err = 0
@@ -85,8 +95,7 @@ class VoxNet:
 		return val_acc, val_err, batch_index
 
 	def _iterate_minibatches(self, X, y, shuffle=True):
-		print(X)
-		print(y)
+		assert self.batch_size <= X.shape[0]
 		assert len(X) == len(y)
 		if shuffle:
 			indices = np.arange(len(X))
@@ -105,3 +114,14 @@ class VoxNet:
 		with np.load(filename) as f:
 			param_values = [f['arr_%d' % i] for i in range(len(f.files))]
 			lasagne.layers.set_all_param_values(self.network, param_values)
+
+	def _print_and_append(self, string, outfile, new_line=False):
+		if outfile is not None:
+			outfile.write(string)
+			outfile.write('\n')
+			if new_line:
+				outfile.write('\n')
+
+		print(string)
+		if new_line:
+			print '\n'

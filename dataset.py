@@ -3,7 +3,7 @@ import os
 import utils
 
 
-def load_dataset(dir_path='./data/gen/', split_ratio=(0.7, 0.2, 0.1)):
+def load_dataset(dwis, dir_path='./data/gen/', split_ratio=(0.7, 0.2, 0.1)):
 	folders = [folder for folder in os.listdir(dir_path)]
 
 	X_list = []
@@ -13,7 +13,7 @@ def load_dataset(dir_path='./data/gen/', split_ratio=(0.7, 0.2, 0.1)):
 		X_path = dir_path + folder + str('/cylinders.bfloat')
 		t_path = dir_path + folder + str('/targets.txt')
 
-		X = utils.to_voxels(utils.read_float(X_path))
+		X = utils.to_voxels(utils.read_float(X_path), dwis)
 		t = np.loadtxt(t_path, dtype='>f4').reshape(-1, 2)
 
 		X_list.append(X)
