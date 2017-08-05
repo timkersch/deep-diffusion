@@ -8,7 +8,7 @@ import time
 np.random.seed(int(round(time.time())))
 
 
-def run(no_iter=10, no_voxels=1000, cylinder_rad_from=1E-8, cylinder_rad_to=1E-7, cylinder_sep_from=2.1E-6, cylinder_sep_to=2.1E-6):
+def run(no_iter=1, no_voxels=1, cylinder_rad_from=1E-8, cylinder_rad_to=1E-7, cylinder_sep_from=2.1E-6, cylinder_sep_to=2.1E-6):
 	print 'Begin data generation with ' + str(no_iter) + ' iterations and ' + str(no_voxels) + ' in every iteration'
 	for i in range(0, no_iter):
 		print('Begin iteration ' + str(i+1) + ' of ' + str(no_iter))
