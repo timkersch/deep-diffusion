@@ -12,6 +12,9 @@ class VoxNet:
 		self.config = config
 		self.batch_size = config['batch_size']
 
+		self.val_loss = []
+		self.train_loss = []
+
 		l_in = lasagne.layers.InputLayer(shape=(self.batch_size, config['no_dwis']), input_var=input_var)
 
 		hidden_layers = config['hidden_layers']
@@ -20,14 +23,18 @@ class VoxNet:
 			if layer['type'] == 'dropout':
 				prev_layer = lasagne.layers.DropoutLayer(prev_layer, p=layer['p'])
 			elif layer['type'] == 'fc':
-				prev_layer = lasagne.layers.DenseLayer(prev_layer, num_units=layer['units'], nonlinearity=lasagne.nonlinearities.rectify)
+				layer = lasagne.layers.DenseLayer(prev_layer, num_units=layer['units'], W=lasagne.init.Normal(std=1E-8, mean=0.0), nonlinearity=lasagne.nonlinearities.sigmoid)
+				if config['batch_norm'] == True:
+					prev_layer = lasagne.layers.batch_norm(layer)
+				else:
+					prev_layer = layer
 
 		l_out = lasagne.layers.DenseLayer(prev_layer, 1, nonlinearity=lasagne.nonlinearities.linear)
 		self.network = l_out
 
 		prediction = lasagne.layers.get_output(self.network)
-		loss = lasagne.objectives.squared_error(prediction, target_var)
-		loss = loss.mean()
+		loss = lasagne.objectives.squared_error(prediction, target_var).mean()
+
 		params = lasagne.layers.get_all_params(self.network, trainable=True)
 
 		if config['optimizer']['type'] == 'adam':
@@ -36,63 +43,58 @@ class VoxNet:
 			updates = lasagne.updates.momentum(loss, params, config['optimizer']['learning_rate'], config['optimizer']['momentum'])
 
 		test_prediction = lasagne.layers.get_output(self.network, deterministic=True)
-		test_loss = lasagne.objectives.squared_error(test_prediction, target_var)
-		test_loss = test_loss.mean()
+		test_loss = lasagne.objectives.squared_error(test_prediction, target_var).mean()
 
-		u_train = T.sum(T.pow(T.sub(target_var, prediction.reshape(target_var.shape)), 2))
-		u_test = T.sum(T.pow(T.sub(target_var, test_prediction.reshape(target_var.shape)), 2))
-		v = T.sum(T.pow(T.sub(target_var, T.mean(target_var, axis=0)), 2))
+		self.train_forward = theano.function([input_var, target_var], loss, updates=updates)
+		self.val_forward = theano.function([input_var, target_var], test_loss)
 
-		train_acc = 1 - (u_train/v)
-		test_acc = 1 - (u_test/v)
-
-		self.train_forward = theano.function([input_var, target_var], [loss, train_acc], updates=updates)
-		self.val_forward = theano.function([input_var, target_var], [test_loss, test_acc])
-
-		self.predict_fun = theano.function([input_var], [test_prediction])
+		self.predict_fun = theano.function([input_var], test_prediction)
 
 	def predict(self, data):
 		return self.predict_fun(data)
 
+	def reset(self):
+		self.train_loss = []
+		self.val_loss = []
+
 	def train(self, X_train, y_train, X_val, y_val, outfile=None, no_epochs=100, shuffle=True, log_nth=None):
+		self.outfile = outfile
 		for epoch in xrange(no_epochs):
-			start_time = time.time()
+			self._print_and_append("Epoch {} of {}".format(epoch + 1, no_epochs), outfile)
 
-			train_acc, train_err, train_batches = self._train(X_train, y_train, shuffle=shuffle, log_nth=log_nth)
-			self._print_and_append("Epoch {} of {} took {:.3f}s".format(epoch + 1, no_epochs, time.time() - start_time), outfile)
-			self._print_and_append("  training loss:\t\t{:.6f}".format(train_err / train_batches), outfile)
-			self._print_and_append("  training accuracy:\t\t{:.6f}".format(train_acc / train_batches), outfile)
+			train_loss, train_batches = self._train(X_train, y_train, shuffle=shuffle, log_nth=log_nth)
+			self.train_loss.append(train_loss)
+			self._print_and_append("  training loss:\t\t{:.6E}".format((train_loss / train_batches)), outfile)
 
-			val_acc, val_err, val_batches = self._val(X_val, y_val, shuffle=shuffle)
-			self._print_and_append("  validation loss:\t\t{:.6f}".format(val_err / val_batches), outfile)
-			self._print_and_append("  validation accuracy:\t\t{:.6f}".format(val_acc / val_batches), outfile, new_line=True)
+			val_loss, val_batches = self._val(X_val, y_val, shuffle=shuffle)
+			self.val_loss.append(val_loss)
+			self._print_and_append("  validation loss:\t\t{:.6E}".format((val_loss / val_batches)), outfile, new_line=True)
 
 	def _train(self, X, y, shuffle=True, log_nth=None):
-		train_err = 0
-		train_acc = 0
+		train_loss = 0
 		batch_index = 0
 		for batch in self._iterate_minibatches(X, y, shuffle=shuffle):
 			inputs, targets = batch
-			err, acc = self.train_forward(inputs, targets)
-			train_err += err
-			train_acc += acc
+			loss = self.train_forward(inputs, targets)
+			train_loss += loss
 			if log_nth is not None and batch_index % log_nth == 0:
 				print('Iteration {}'.format(batch_index + 1))
-				print("  training loss:\t\t{:.6f}".format(train_err / batch_index + 1))
+				print("  training loss:\t\t{:.20f}".format(train_loss / batch_index + 1))
 			batch_index += 1
-		return train_acc, train_err, batch_index
+
+		self._print_and_append("  example target:\t\t{:.6E}".format(float(targets[0])), self.outfile)
+		self._print_and_append("  example prediction:\t\t{:.6E}".format(float(self.predict(inputs)[0])), self.outfile)
+		return train_loss, batch_index
 
 	def _val(self, X, y, shuffle=True):
-		val_err = 0
-		val_acc = 0
+		val_loss = 0
 		batch_index = 0
 		for batch in self._iterate_minibatches(X, y, shuffle=shuffle):
 			inputs, targets = batch
-			err, acc = self.val_forward(inputs, targets)
-			val_err += err
-			val_acc += acc
+			loss = self.val_forward(inputs, targets)
+			val_loss += loss
 			batch_index += 1
-		return val_acc, val_err, batch_index
+		return val_loss, batch_index
 
 	def _iterate_minibatches(self, X, y, shuffle=True):
 		assert self.batch_size <= X.shape[0]

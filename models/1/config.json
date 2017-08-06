@@ -1,0 +1,34 @@
+{
+    "batch_size": 128, 
+    "hidden_layers": [
+        {
+            "type": "fc", 
+            "units": 150
+        }, 
+        {
+            "p": 0.1, 
+            "type": "dropout"
+        }, 
+        {
+            "type": "fc", 
+            "units": 150
+        }, 
+        {
+            "p": 0.1, 
+            "type": "dropout"
+        }, 
+        {
+            "type": "fc", 
+            "units": 150
+        }
+    ], 
+    "no_dwis": 288, 
+    "no_epochs": 100, 
+    "optimizer": {
+        "beta1": 0.9, 
+        "beta2": 0.999, 
+        "epsilon": 1e-08, 
+        "learning_rate": 0.001, 
+        "type": "adam"
+    }
+}

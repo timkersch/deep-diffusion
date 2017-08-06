@@ -1,0 +1,1200 @@
+Epoch 1 of 200
+  example target:		3.836136E-08
+  example prediction:		-2.331354E-02
+  training loss:		8.817357E-03
+  validation loss:		5.434638E-04
+
+Epoch 2 of 200
+  example target:		1.313134E-08
+  example prediction:		-6.511368E-03
+  training loss:		1.433213E-04
+  validation loss:		4.249417E-05
+
+Epoch 3 of 200
+  example target:		3.836136E-08
+  example prediction:		-4.075052E-04
+  training loss:		1.229469E-05
+  validation loss:		1.652123E-07
+
+Epoch 4 of 200
+  example target:		3.391064E-08
+  example prediction:		-1.276615E-05
+  training loss:		4.028096E-07
+  validation loss:		2.777510E-10
+
+Epoch 5 of 200
+  example target:		4.804864E-08
+  example prediction:		-1.707418E-05
+  training loss:		1.466348E-08
+  validation loss:		3.374392E-10
+
+Epoch 6 of 200
+  example target:		3.093880E-08
+  example prediction:		-1.300211E-05
+  training loss:		6.722852E-10
+  validation loss:		1.155636E-10
+
+Epoch 7 of 200
+  example target:		4.763964E-08
+  example prediction:		-6.681629E-07
+  training loss:		4.355959E-11
+  validation loss:		1.808920E-11
+
+Epoch 8 of 200
+  example target:		8.142554E-08
+  example prediction:		6.101173E-06
+  training loss:		1.296085E-11
+  validation loss:		1.269526E-11
+
+Epoch 9 of 200
+  example target:		3.650707E-08
+  example prediction:		-5.566603E-06
+  training loss:		1.217472E-11
+  validation loss:		1.254906E-11
+
+Epoch 10 of 200
+  example target:		3.093880E-08
+  example prediction:		-2.896180E-06
+  training loss:		1.214357E-11
+  validation loss:		1.266229E-11
+
+Epoch 11 of 200
+  example target:		3.650707E-08
+  example prediction:		-5.879868E-06
+  training loss:		1.214256E-11
+  validation loss:		1.266050E-11
+
+Epoch 12 of 200
+  example target:		2.364449E-08
+  example prediction:		-5.062689E-06
+  training loss:		1.214113E-11
+  validation loss:		1.261704E-11
+
+Epoch 13 of 200
+  example target:		3.928283E-08
+  example prediction:		-3.587639E-06
+  training loss:		1.213923E-11
+  validation loss:		1.246760E-11
+
+Epoch 14 of 200
+  example target:		2.364449E-08
+  example prediction:		-4.997934E-06
+  training loss:		1.214154E-11
+  validation loss:		1.248932E-11
+
+Epoch 15 of 200
+  example target:		3.093880E-08
+  example prediction:		-3.007786E-06
+  training loss:		1.214006E-11
+  validation loss:		1.260546E-11
+
+Epoch 16 of 200
+  example target:		2.880808E-08
+  example prediction:		2.019231E-06
+  training loss:		1.214004E-11
+  validation loss:		1.250050E-11
+
+Epoch 17 of 200
+  example target:		4.804864E-08
+  example prediction:		9.089327E-07
+  training loss:		1.214031E-11
+  validation loss:		1.233922E-11
+
+Epoch 18 of 200
+  example target:		2.589708E-08
+  example prediction:		-9.388981E-07
+  training loss:		1.213113E-11
+  validation loss:		1.250977E-11
+
+Epoch 19 of 200
+  example target:		2.642531E-08
+  example prediction:		-1.995475E-06
+  training loss:		1.212783E-11
+  validation loss:		1.256803E-11
+
+Epoch 20 of 200
+  example target:		2.364449E-08
+  example prediction:		-5.278207E-06
+  training loss:		1.215017E-11
+  validation loss:		1.251588E-11
+
+Epoch 21 of 200
+  example target:		2.813994E-08
+  example prediction:		-2.048007E-06
+  training loss:		1.211411E-11
+  validation loss:		1.245315E-11
+
+Epoch 22 of 200
+  example target:		3.836136E-08
+  example prediction:		-9.797323E-07
+  training loss:		1.210842E-11
+  validation loss:		1.251142E-11
+
+Epoch 23 of 200
+  example target:		3.023852E-08
+  example prediction:		-4.424022E-07
+  training loss:		1.211763E-11
+  validation loss:		1.250278E-11
+
+Epoch 24 of 200
+  example target:		3.836136E-08
+  example prediction:		-1.081562E-06
+  training loss:		1.209831E-11
+  validation loss:		1.256611E-11
+
+Epoch 25 of 200
+  example target:		3.650707E-08
+  example prediction:		-5.907962E-06
+  training loss:		1.213011E-11
+  validation loss:		1.248335E-11
+
+Epoch 26 of 200
+  example target:		3.093880E-08
+  example prediction:		-2.972752E-06
+  training loss:		1.209790E-11
+  validation loss:		1.246371E-11
+
+Epoch 27 of 200
+  example target:		3.928283E-08
+  example prediction:		-3.771928E-06
+  training loss:		1.211778E-11
+  validation loss:		1.256739E-11
+
+Epoch 28 of 200
+  example target:		1.313134E-08
+  example prediction:		4.549779E-06
+  training loss:		1.209702E-11
+  validation loss:		1.252162E-11
+
+Epoch 29 of 200
+  example target:		6.769228E-08
+  example prediction:		8.852986E-07
+  training loss:		1.209470E-11
+  validation loss:		1.235888E-11
+
+Epoch 30 of 200
+  example target:		2.589708E-08
+  example prediction:		-9.080550E-07
+  training loss:		1.211853E-11
+  validation loss:		1.246790E-11
+
+Epoch 31 of 200
+  example target:		3.650707E-08
+  example prediction:		-5.576115E-06
+  training loss:		1.211958E-11
+  validation loss:		1.249102E-11
+
+Epoch 32 of 200
+  example target:		2.813994E-08
+  example prediction:		-2.196813E-06
+  training loss:		1.208994E-11
+  validation loss:		1.246988E-11
+
+Epoch 33 of 200
+  example target:		4.763964E-08
+  example prediction:		1.560985E-06
+  training loss:		1.210437E-11
+  validation loss:		1.258025E-11
+
+Epoch 34 of 200
+  example target:		2.880808E-08
+  example prediction:		1.956882E-06
+  training loss:		1.208898E-11
+  validation loss:		1.253797E-11
+
+Epoch 35 of 200
+  example target:		2.813994E-08
+  example prediction:		-2.010050E-06
+  training loss:		1.208390E-11
+  validation loss:		1.254572E-11
+
+Epoch 36 of 200
+  example target:		3.023852E-08
+  example prediction:		-8.602305E-07
+  training loss:		1.207551E-11
+  validation loss:		1.252157E-11
+
+Epoch 37 of 200
+  example target:		2.364449E-08
+  example prediction:		-5.278394E-06
+  training loss:		1.207272E-11
+  validation loss:		1.254820E-11
+
+Epoch 38 of 200
+  example target:		4.763964E-08
+  example prediction:		1.649363E-06
+  training loss:		1.206275E-11
+  validation loss:		1.243669E-11
+
+Epoch 39 of 200
+  example target:		6.769228E-08
+  example prediction:		1.109590E-06
+  training loss:		1.209993E-11
+  validation loss:		1.232113E-11
+
+Epoch 40 of 200
+  example target:		2.813994E-08
+  example prediction:		-2.043347E-06
+  training loss:		1.207851E-11
+  validation loss:		1.241774E-11
+
+Epoch 41 of 200
+  example target:		3.023852E-08
+  example prediction:		-7.063230E-07
+  training loss:		1.205982E-11
+  validation loss:		1.247511E-11
+
+Epoch 42 of 200
+  example target:		2.642531E-08
+  example prediction:		-2.171216E-06
+  training loss:		1.205454E-11
+  validation loss:		1.242288E-11
+
+Epoch 43 of 200
+  example target:		2.364449E-08
+  example prediction:		-5.332027E-06
+  training loss:		1.204079E-11
+  validation loss:		1.255481E-11
+
+Epoch 44 of 200
+  example target:		5.715680E-08
+  example prediction:		2.081834E-06
+  training loss:		1.208513E-11
+  validation loss:		1.243787E-11
+
+Epoch 45 of 200
+  example target:		2.642531E-08
+  example prediction:		-2.181983E-06
+  training loss:		1.203563E-11
+  validation loss:		1.250668E-11
+
+Epoch 46 of 200
+  example target:		4.763964E-08
+  example prediction:		1.732650E-06
+  training loss:		1.203911E-11
+  validation loss:		1.249329E-11
+
+Epoch 47 of 200
+  example target:		7.538742E-08
+  example prediction:		7.333273E-06
+  training loss:		1.208477E-11
+  validation loss:		1.240465E-11
+
+Epoch 48 of 200
+  example target:		3.023852E-08
+  example prediction:		-5.105057E-07
+  training loss:		1.205515E-11
+  validation loss:		1.233172E-11
+
+Epoch 49 of 200
+  example target:		7.538742E-08
+  example prediction:		7.107327E-06
+  training loss:		1.203353E-11
+  validation loss:		1.236093E-11
+
+Epoch 50 of 200
+  example target:		2.880808E-08
+  example prediction:		2.182961E-06
+  training loss:		1.202296E-11
+  validation loss:		1.223108E-11
+
+Epoch 51 of 200
+  example target:		7.538742E-08
+  example prediction:		7.182951E-06
+  training loss:		1.203243E-11
+  validation loss:		1.247457E-11
+
+Epoch 52 of 200
+  example target:		2.589708E-08
+  example prediction:		-9.051099E-07
+  training loss:		1.200028E-11
+  validation loss:		1.236705E-11
+
+Epoch 53 of 200
+  example target:		6.769228E-08
+  example prediction:		9.716696E-07
+  training loss:		1.201428E-11
+  validation loss:		1.238904E-11
+
+Epoch 54 of 200
+  example target:		2.364449E-08
+  example prediction:		-5.368903E-06
+  training loss:		1.199683E-11
+  validation loss:		1.252798E-11
+
+Epoch 55 of 200
+  example target:		3.023852E-08
+  example prediction:		-4.599736E-07
+  training loss:		1.201776E-11
+  validation loss:		1.238684E-11
+
+Epoch 56 of 200
+  example target:		3.928283E-08
+  example prediction:		-3.881009E-06
+  training loss:		1.199809E-11
+  validation loss:		1.248522E-11
+
+Epoch 57 of 200
+  example target:		3.836136E-08
+  example prediction:		-1.226900E-06
+  training loss:		1.204098E-11
+  validation loss:		1.226209E-11
+
+Epoch 58 of 200
+  example target:		7.538742E-08
+  example prediction:		7.071265E-06
+  training loss:		1.200467E-11
+  validation loss:		1.234750E-11
+
+Epoch 59 of 200
+  example target:		3.093880E-08
+  example prediction:		-2.624861E-06
+  training loss:		1.201760E-11
+  validation loss:		1.232893E-11
+
+Epoch 60 of 200
+  example target:		3.023852E-08
+  example prediction:		-6.342748E-07
+  training loss:		1.205091E-11
+  validation loss:		1.242187E-11
+
+Epoch 61 of 200
+  example target:		5.715680E-08
+  example prediction:		2.084020E-06
+  training loss:		1.198255E-11
+  validation loss:		1.241289E-11
+
+Epoch 62 of 200
+  example target:		8.142554E-08
+  example prediction:		6.291586E-06
+  training loss:		1.200964E-11
+  validation loss:		1.235981E-11
+
+Epoch 63 of 200
+  example target:		5.715680E-08
+  example prediction:		1.728501E-06
+  training loss:		1.196580E-11
+  validation loss:		1.236476E-11
+
+Epoch 64 of 200
+  example target:		3.650707E-08
+  example prediction:		-5.706051E-06
+  training loss:		1.194184E-11
+  validation loss:		1.241085E-11
+
+Epoch 65 of 200
+  example target:		5.715680E-08
+  example prediction:		2.425275E-06
+  training loss:		1.198689E-11
+  validation loss:		1.270709E-11
+
+Epoch 66 of 200
+  example target:		4.763964E-08
+  example prediction:		1.641878E-06
+  training loss:		1.197084E-11
+  validation loss:		1.234744E-11
+
+Epoch 67 of 200
+  example target:		3.023852E-08
+  example prediction:		-3.767623E-07
+  training loss:		1.194681E-11
+  validation loss:		1.229384E-11
+
+Epoch 68 of 200
+  example target:		3.650707E-08
+  example prediction:		-5.679237E-06
+  training loss:		1.195644E-11
+  validation loss:		1.238068E-11
+
+Epoch 69 of 200
+  example target:		3.650707E-08
+  example prediction:		-5.713231E-06
+  training loss:		1.194775E-11
+  validation loss:		1.236999E-11
+
+Epoch 70 of 200
+  example target:		5.715680E-08
+  example prediction:		1.993391E-06
+  training loss:		1.192154E-11
+  validation loss:		1.230707E-11
+
+Epoch 71 of 200
+  example target:		1.313134E-08
+  example prediction:		4.333602E-06
+  training loss:		1.190635E-11
+  validation loss:		1.233183E-11
+
+Epoch 72 of 200
+  example target:		8.142554E-08
+  example prediction:		6.202315E-06
+  training loss:		1.188564E-11
+  validation loss:		1.240084E-11
+
+Epoch 73 of 200
+  example target:		3.650707E-08
+  example prediction:		-5.855811E-06
+  training loss:		1.193474E-11
+  validation loss:		1.232545E-11
+
+Epoch 74 of 200
+  example target:		3.650707E-08
+  example prediction:		-5.833130E-06
+  training loss:		1.195493E-11
+  validation loss:		1.236466E-11
+
+Epoch 75 of 200
+  example target:		2.589708E-08
+  example prediction:		-8.614933E-07
+  training loss:		1.187945E-11
+  validation loss:		1.221932E-11
+
+Epoch 76 of 200
+  example target:		2.813994E-08
+  example prediction:		-1.776329E-06
+  training loss:		1.186959E-11
+  validation loss:		1.219606E-11
+
+Epoch 77 of 200
+  example target:		1.313134E-08
+  example prediction:		4.170377E-06
+  training loss:		1.189247E-11
+  validation loss:		1.232503E-11
+
+Epoch 78 of 200
+  example target:		3.928283E-08
+  example prediction:		-3.629325E-06
+  training loss:		1.188069E-11
+  validation loss:		1.230562E-11
+
+Epoch 79 of 200
+  example target:		2.589708E-08
+  example prediction:		-3.751805E-07
+  training loss:		1.188614E-11
+  validation loss:		1.245041E-11
+
+Epoch 80 of 200
+  example target:		3.023852E-08
+  example prediction:		3.913508E-08
+  training loss:		1.200826E-11
+  validation loss:		1.252725E-11
+
+Epoch 81 of 200
+  example target:		3.836136E-08
+  example prediction:		-1.005882E-06
+  training loss:		1.197357E-11
+  validation loss:		1.213604E-11
+
+Epoch 82 of 200
+  example target:		2.589708E-08
+  example prediction:		-7.636146E-07
+  training loss:		1.188242E-11
+  validation loss:		1.213308E-11
+
+Epoch 83 of 200
+  example target:		2.589708E-08
+  example prediction:		-9.154326E-07
+  training loss:		1.183297E-11
+  validation loss:		1.210063E-11
+
+Epoch 84 of 200
+  example target:		2.813994E-08
+  example prediction:		-1.819915E-06
+  training loss:		1.190420E-11
+  validation loss:		1.234180E-11
+
+Epoch 85 of 200
+  example target:		3.650707E-08
+  example prediction:		-5.750620E-06
+  training loss:		1.182991E-11
+  validation loss:		1.226162E-11
+
+Epoch 86 of 200
+  example target:		3.836136E-08
+  example prediction:		-7.385899E-07
+  training loss:		1.180855E-11
+  validation loss:		1.233315E-11
+
+Epoch 87 of 200
+  example target:		6.714055E-08
+  example prediction:		1.991606E-07
+  training loss:		1.182680E-11
+  validation loss:		1.221837E-11
+
+Epoch 88 of 200
+  example target:		7.538742E-08
+  example prediction:		6.646386E-06
+  training loss:		1.181318E-11
+  validation loss:		1.237306E-11
+
+Epoch 89 of 200
+  example target:		3.023852E-08
+  example prediction:		-3.548837E-07
+  training loss:		1.184823E-11
+  validation loss:		1.226099E-11
+
+Epoch 90 of 200
+  example target:		3.391064E-08
+  example prediction:		2.874201E-06
+  training loss:		1.177419E-11
+  validation loss:		1.261711E-11
+
+Epoch 91 of 200
+  example target:		4.804864E-08
+  example prediction:		1.138377E-06
+  training loss:		1.187800E-11
+  validation loss:		1.226919E-11
+
+Epoch 92 of 200
+  example target:		7.538742E-08
+  example prediction:		6.671934E-06
+  training loss:		1.177623E-11
+  validation loss:		1.224201E-11
+
+Epoch 93 of 200
+  example target:		3.650707E-08
+  example prediction:		-5.822911E-06
+  training loss:		1.175936E-11
+  validation loss:		1.215975E-11
+
+Epoch 94 of 200
+  example target:		2.813994E-08
+  example prediction:		-1.913710E-06
+  training loss:		1.177956E-11
+  validation loss:		1.200836E-11
+
+Epoch 95 of 200
+  example target:		2.880808E-08
+  example prediction:		1.985986E-06
+  training loss:		1.175317E-11
+  validation loss:		1.206462E-11
+
+Epoch 96 of 200
+  example target:		2.589708E-08
+  example prediction:		-1.300169E-06
+  training loss:		1.175473E-11
+  validation loss:		1.234615E-11
+
+Epoch 97 of 200
+  example target:		3.836136E-08
+  example prediction:		-9.558810E-07
+  training loss:		1.172059E-11
+  validation loss:		1.219194E-11
+
+Epoch 98 of 200
+  example target:		5.715680E-08
+  example prediction:		2.064807E-06
+  training loss:		1.171239E-11
+  validation loss:		1.205233E-11
+
+Epoch 99 of 200
+  example target:		1.313134E-08
+  example prediction:		4.512794E-06
+  training loss:		1.170053E-11
+  validation loss:		1.216794E-11
+
+Epoch 100 of 200
+  example target:		3.836136E-08
+  example prediction:		-4.278405E-07
+  training loss:		1.170996E-11
+  validation loss:		1.230917E-11
+
+Epoch 101 of 200
+  example target:		8.142554E-08
+  example prediction:		6.519988E-06
+  training loss:		1.170955E-11
+  validation loss:		1.219984E-11
+
+Epoch 102 of 200
+  example target:		5.715680E-08
+  example prediction:		1.934109E-06
+  training loss:		1.170017E-11
+  validation loss:		1.192767E-11
+
+Epoch 103 of 200
+  example target:		3.391064E-08
+  example prediction:		3.638152E-06
+  training loss:		1.167210E-11
+  validation loss:		1.191730E-11
+
+Epoch 104 of 200
+  example target:		4.763964E-08
+  example prediction:		1.321439E-06
+  training loss:		1.170334E-11
+  validation loss:		1.203449E-11
+
+Epoch 105 of 200
+  example target:		3.023852E-08
+  example prediction:		-5.445927E-07
+  training loss:		1.162498E-11
+  validation loss:		1.203700E-11
+
+Epoch 106 of 200
+  example target:		7.538742E-08
+  example prediction:		7.454497E-06
+  training loss:		1.164340E-11
+  validation loss:		1.218419E-11
+
+Epoch 107 of 200
+  example target:		3.928283E-08
+  example prediction:		-3.677540E-06
+  training loss:		1.166785E-11
+  validation loss:		1.205084E-11
+
+Epoch 108 of 200
+  example target:		1.313134E-08
+  example prediction:		3.492782E-06
+  training loss:		1.177881E-11
+  validation loss:		1.279932E-11
+
+Epoch 109 of 200
+  example target:		6.769228E-08
+  example prediction:		8.168688E-07
+  training loss:		1.171339E-11
+  validation loss:		1.187901E-11
+
+Epoch 110 of 200
+  example target:		3.650707E-08
+  example prediction:		-5.723463E-06
+  training loss:		1.169776E-11
+  validation loss:		1.187970E-11
+
+Epoch 111 of 200
+  example target:		3.650707E-08
+  example prediction:		-5.793257E-06
+  training loss:		1.159149E-11
+  validation loss:		1.205184E-11
+
+Epoch 112 of 200
+  example target:		2.589708E-08
+  example prediction:		-1.031197E-06
+  training loss:		1.158099E-11
+  validation loss:		1.177073E-11
+
+Epoch 113 of 200
+  example target:		6.769228E-08
+  example prediction:		1.216054E-06
+  training loss:		1.157888E-11
+  validation loss:		1.190888E-11
+
+Epoch 114 of 200
+  example target:		1.313134E-08
+  example prediction:		4.642468E-06
+  training loss:		1.153743E-11
+  validation loss:		1.176937E-11
+
+Epoch 115 of 200
+  example target:		1.216623E-08
+  example prediction:		-3.771303E-06
+  training loss:		1.175787E-11
+  validation loss:		1.201792E-11
+
+Epoch 116 of 200
+  example target:		7.538742E-08
+  example prediction:		6.993182E-06
+  training loss:		1.155350E-11
+  validation loss:		1.188327E-11
+
+Epoch 117 of 200
+  example target:		1.216623E-08
+  example prediction:		-4.165979E-06
+  training loss:		1.154557E-11
+  validation loss:		1.188812E-11
+
+Epoch 118 of 200
+  example target:		3.093880E-08
+  example prediction:		-3.150412E-06
+  training loss:		1.157984E-11
+  validation loss:		1.188832E-11
+
+Epoch 119 of 200
+  example target:		5.715680E-08
+  example prediction:		2.181616E-06
+  training loss:		1.152632E-11
+  validation loss:		1.191197E-11
+
+Epoch 120 of 200
+  example target:		6.714055E-08
+  example prediction:		8.580672E-07
+  training loss:		1.146789E-11
+  validation loss:		1.178191E-11
+
+Epoch 121 of 200
+  example target:		2.589708E-08
+  example prediction:		-1.166191E-06
+  training loss:		1.145132E-11
+  validation loss:		1.180994E-11
+
+Epoch 122 of 200
+  example target:		3.650707E-08
+  example prediction:		-5.036557E-06
+  training loss:		1.157065E-11
+  validation loss:		1.203161E-11
+
+Epoch 123 of 200
+  example target:		1.216623E-08
+  example prediction:		-4.130061E-06
+  training loss:		1.154814E-11
+  validation loss:		1.183593E-11
+
+Epoch 124 of 200
+  example target:		7.538742E-08
+  example prediction:		6.429268E-06
+  training loss:		1.144052E-11
+  validation loss:		1.203536E-11
+
+Epoch 125 of 200
+  example target:		8.142554E-08
+  example prediction:		6.676881E-06
+  training loss:		1.155101E-11
+  validation loss:		1.198492E-11
+
+Epoch 126 of 200
+  example target:		2.589708E-08
+  example prediction:		-9.357926E-07
+  training loss:		1.141919E-11
+  validation loss:		1.171487E-11
+
+Epoch 127 of 200
+  example target:		7.538742E-08
+  example prediction:		6.675758E-06
+  training loss:		1.153481E-11
+  validation loss:		1.185534E-11
+
+Epoch 128 of 200
+  example target:		2.364449E-08
+  example prediction:		-4.894358E-06
+  training loss:		1.144010E-11
+  validation loss:		1.161000E-11
+
+Epoch 129 of 200
+  example target:		2.880808E-08
+  example prediction:		2.218692E-06
+  training loss:		1.137271E-11
+  validation loss:		1.181717E-11
+
+Epoch 130 of 200
+  example target:		2.813994E-08
+  example prediction:		-2.300089E-06
+  training loss:		1.137896E-11
+  validation loss:		1.197402E-11
+
+Epoch 131 of 200
+  example target:		8.142554E-08
+  example prediction:		5.692907E-06
+  training loss:		1.148342E-11
+  validation loss:		1.180397E-11
+
+Epoch 132 of 200
+  example target:		6.769228E-08
+  example prediction:		6.072680E-07
+  training loss:		1.144196E-11
+  validation loss:		1.177099E-11
+
+Epoch 133 of 200
+  example target:		1.216623E-08
+  example prediction:		-4.185567E-06
+  training loss:		1.128822E-11
+  validation loss:		1.155304E-11
+
+Epoch 134 of 200
+  example target:		6.714055E-08
+  example prediction:		-7.635809E-08
+  training loss:		1.128004E-11
+  validation loss:		1.194034E-11
+
+Epoch 135 of 200
+  example target:		3.650707E-08
+  example prediction:		-5.380251E-06
+  training loss:		1.128782E-11
+  validation loss:		1.151910E-11
+
+Epoch 136 of 200
+  example target:		3.391064E-08
+  example prediction:		3.656082E-06
+  training loss:		1.139683E-11
+  validation loss:		1.158818E-11
+
+Epoch 137 of 200
+  example target:		6.714055E-08
+  example prediction:		6.528330E-07
+  training loss:		1.134758E-11
+  validation loss:		1.156901E-11
+
+Epoch 138 of 200
+  example target:		1.313134E-08
+  example prediction:		4.534694E-06
+  training loss:		1.124835E-11
+  validation loss:		1.163135E-11
+
+Epoch 139 of 200
+  example target:		3.023852E-08
+  example prediction:		-7.300005E-07
+  training loss:		1.122101E-11
+  validation loss:		1.156234E-11
+
+Epoch 140 of 200
+  example target:		8.142554E-08
+  example prediction:		6.977226E-06
+  training loss:		1.133145E-11
+  validation loss:		1.209214E-11
+
+Epoch 141 of 200
+  example target:		3.650707E-08
+  example prediction:		-5.750635E-06
+  training loss:		1.130726E-11
+  validation loss:		1.158631E-11
+
+Epoch 142 of 200
+  example target:		3.650707E-08
+  example prediction:		-5.102737E-06
+  training loss:		1.129077E-11
+  validation loss:		1.154148E-11
+
+Epoch 143 of 200
+  example target:		3.093880E-08
+  example prediction:		-2.539618E-06
+  training loss:		1.114348E-11
+  validation loss:		1.143467E-11
+
+Epoch 144 of 200
+  example target:		7.538742E-08
+  example prediction:		6.910485E-06
+  training loss:		1.117277E-11
+  validation loss:		1.137507E-11
+
+Epoch 145 of 200
+  example target:		1.216623E-08
+  example prediction:		-3.672065E-06
+  training loss:		1.121724E-11
+  validation loss:		1.166856E-11
+
+Epoch 146 of 200
+  example target:		6.714055E-08
+  example prediction:		2.425709E-07
+  training loss:		1.108120E-11
+  validation loss:		1.149488E-11
+
+Epoch 147 of 200
+  example target:		6.714055E-08
+  example prediction:		1.196383E-06
+  training loss:		1.116022E-11
+  validation loss:		1.198092E-11
+
+Epoch 148 of 200
+  example target:		4.763964E-08
+  example prediction:		1.008135E-06
+  training loss:		1.111052E-11
+  validation loss:		1.170849E-11
+
+Epoch 149 of 200
+  example target:		3.928283E-08
+  example prediction:		-3.203151E-06
+  training loss:		1.129904E-11
+  validation loss:		1.132904E-11
+
+Epoch 150 of 200
+  example target:		1.216623E-08
+  example prediction:		-4.309642E-06
+  training loss:		1.115363E-11
+  validation loss:		1.141534E-11
+
+Epoch 151 of 200
+  example target:		1.313134E-08
+  example prediction:		3.984334E-06
+  training loss:		1.098665E-11
+  validation loss:		1.146453E-11
+
+Epoch 152 of 200
+  example target:		3.836136E-08
+  example prediction:		-9.117163E-07
+  training loss:		1.093734E-11
+  validation loss:		1.118338E-11
+
+Epoch 153 of 200
+  example target:		7.538742E-08
+  example prediction:		6.449155E-06
+  training loss:		1.098083E-11
+  validation loss:		1.126373E-11
+
+Epoch 154 of 200
+  example target:		8.142554E-08
+  example prediction:		5.426651E-06
+  training loss:		1.090613E-11
+  validation loss:		1.156601E-11
+
+Epoch 155 of 200
+  example target:		5.715680E-08
+  example prediction:		1.507732E-06
+  training loss:		1.102749E-11
+  validation loss:		1.132450E-11
+
+Epoch 156 of 200
+  example target:		1.313134E-08
+  example prediction:		3.894630E-06
+  training loss:		1.096243E-11
+  validation loss:		1.132319E-11
+
+Epoch 157 of 200
+  example target:		4.804864E-08
+  example prediction:		1.168124E-06
+  training loss:		1.102588E-11
+  validation loss:		1.119698E-11
+
+Epoch 158 of 200
+  example target:		2.813994E-08
+  example prediction:		-1.155948E-06
+  training loss:		1.093155E-11
+  validation loss:		1.166713E-11
+
+Epoch 159 of 200
+  example target:		3.023852E-08
+  example prediction:		-5.635079E-07
+  training loss:		1.086451E-11
+  validation loss:		1.115683E-11
+
+Epoch 160 of 200
+  example target:		1.313134E-08
+  example prediction:		4.309963E-06
+  training loss:		1.082152E-11
+  validation loss:		1.092101E-11
+
+Epoch 161 of 200
+  example target:		2.364449E-08
+  example prediction:		-4.151294E-06
+  training loss:		1.081566E-11
+  validation loss:		1.135930E-11
+
+Epoch 162 of 200
+  example target:		2.813994E-08
+  example prediction:		-2.134889E-06
+  training loss:		1.081681E-11
+  validation loss:		1.102505E-11
+
+Epoch 163 of 200
+  example target:		3.928283E-08
+  example prediction:		-3.283642E-06
+  training loss:		1.095670E-11
+  validation loss:		1.107688E-11
+
+Epoch 164 of 200
+  example target:		2.589708E-08
+  example prediction:		-7.316101E-07
+  training loss:		1.077404E-11
+  validation loss:		1.083674E-11
+
+Epoch 165 of 200
+  example target:		6.769228E-08
+  example prediction:		4.327760E-07
+  training loss:		1.070361E-11
+  validation loss:		1.129730E-11
+
+Epoch 166 of 200
+  example target:		6.714055E-08
+  example prediction:		1.064136E-06
+  training loss:		1.078015E-11
+  validation loss:		1.122639E-11
+
+Epoch 167 of 200
+  example target:		6.714055E-08
+  example prediction:		8.655252E-07
+  training loss:		1.071369E-11
+  validation loss:		1.105821E-11
+
+Epoch 168 of 200
+  example target:		3.928283E-08
+  example prediction:		-2.977359E-06
+  training loss:		1.072644E-11
+  validation loss:		1.100532E-11
+
+Epoch 169 of 200
+  example target:		1.313134E-08
+  example prediction:		4.329222E-06
+  training loss:		1.070927E-11
+  validation loss:		1.087387E-11
+
+Epoch 170 of 200
+  example target:		3.023852E-08
+  example prediction:		-4.211121E-07
+  training loss:		1.064683E-11
+  validation loss:		1.081151E-11
+
+Epoch 171 of 200
+  example target:		1.216623E-08
+  example prediction:		-3.738192E-06
+  training loss:		1.058936E-11
+  validation loss:		1.097801E-11
+
+Epoch 172 of 200
+  example target:		4.804864E-08
+  example prediction:		9.790237E-07
+  training loss:		1.059492E-11
+  validation loss:		1.088005E-11
+
+Epoch 173 of 200
+  example target:		6.714055E-08
+  example prediction:		1.323042E-07
+  training loss:		1.055280E-11
+  validation loss:		1.092042E-11
+
+Epoch 174 of 200
+  example target:		1.216623E-08
+  example prediction:		-3.654700E-06
+  training loss:		1.054650E-11
+  validation loss:		1.083369E-11
+
+Epoch 175 of 200
+  example target:		2.642531E-08
+  example prediction:		-2.243395E-06
+  training loss:		1.053090E-11
+  validation loss:		1.065697E-11
+
+Epoch 176 of 200
+  example target:		3.650707E-08
+  example prediction:		-4.496283E-06
+  training loss:		1.056622E-11
+  validation loss:		1.121892E-11
+
+Epoch 177 of 200
+  example target:		5.715680E-08
+  example prediction:		9.954411E-07
+  training loss:		1.072863E-11
+  validation loss:		1.132068E-11
+
+Epoch 178 of 200
+  example target:		6.769228E-08
+  example prediction:		9.925447E-07
+  training loss:		1.059552E-11
+  validation loss:		1.069411E-11
+
+Epoch 179 of 200
+  example target:		2.364449E-08
+  example prediction:		-4.992026E-06
+  training loss:		1.078514E-11
+  validation loss:		1.063975E-11
+
+Epoch 180 of 200
+  example target:		4.804864E-08
+  example prediction:		-5.683965E-08
+  training loss:		1.082048E-11
+  validation loss:		1.126333E-11
+
+Epoch 181 of 200
+  example target:		5.715680E-08
+  example prediction:		2.026911E-06
+  training loss:		1.065117E-11
+  validation loss:		1.052090E-11
+
+Epoch 182 of 200
+  example target:		2.589708E-08
+  example prediction:		1.156792E-07
+  training loss:		1.041348E-11
+  validation loss:		1.130826E-11
+
+Epoch 183 of 200
+  example target:		1.216623E-08
+  example prediction:		-4.326921E-06
+  training loss:		1.044424E-11
+  validation loss:		1.050882E-11
+
+Epoch 184 of 200
+  example target:		5.715680E-08
+  example prediction:		1.317514E-06
+  training loss:		1.057201E-11
+  validation loss:		1.070426E-11
+
+Epoch 185 of 200
+  example target:		3.836136E-08
+  example prediction:		-1.770951E-06
+  training loss:		1.049516E-11
+  validation loss:		1.128336E-11
+
+Epoch 186 of 200
+  example target:		6.769228E-08
+  example prediction:		5.332630E-07
+  training loss:		1.052120E-11
+  validation loss:		1.049191E-11
+
+Epoch 187 of 200
+  example target:		3.023852E-08
+  example prediction:		-7.533642E-08
+  training loss:		1.032448E-11
+  validation loss:		1.055468E-11
+
+Epoch 188 of 200
+  example target:		2.880808E-08
+  example prediction:		2.605072E-06
+  training loss:		1.057385E-11
+  validation loss:		1.084052E-11
+
+Epoch 189 of 200
+  example target:		2.642531E-08
+  example prediction:		-2.614096E-06
+  training loss:		1.035198E-11
+  validation loss:		1.068199E-11
+
+Epoch 190 of 200
+  example target:		3.093880E-08
+  example prediction:		-1.230750E-06
+  training loss:		1.102628E-11
+  validation loss:		1.203882E-11
+
+Epoch 191 of 200
+  example target:		3.650707E-08
+  example prediction:		-3.898139E-06
+  training loss:		1.037307E-11
+  validation loss:		1.166376E-11
+
+Epoch 192 of 200
+  example target:		3.650707E-08
+  example prediction:		-4.339640E-06
+  training loss:		1.054744E-11
+  validation loss:		1.056346E-11
+
+Epoch 193 of 200
+  example target:		2.642531E-08
+  example prediction:		-2.322577E-06
+  training loss:		1.030206E-11
+  validation loss:		1.040442E-11
+
+Epoch 194 of 200
+  example target:		3.836136E-08
+  example prediction:		-2.950803E-07
+  training loss:		1.013254E-11
+  validation loss:		1.066325E-11
+
+Epoch 195 of 200
+  example target:		4.763964E-08
+  example prediction:		2.012981E-06
+  training loss:		1.015052E-11
+  validation loss:		1.032740E-11
+
+Epoch 196 of 200
+  example target:		2.589708E-08
+  example prediction:		-8.802499E-07
+  training loss:		1.010110E-11
+  validation loss:		1.011208E-11
+
+Epoch 197 of 200
+  example target:		3.836136E-08
+  example prediction:		-2.761085E-06
+  training loss:		1.035958E-11
+  validation loss:		1.367984E-11
+
+Epoch 198 of 200
+  example target:		2.813994E-08
+  example prediction:		-2.418361E-06
+  training loss:		1.156481E-11
+  validation loss:		1.041310E-11
+
+Epoch 199 of 200
+  example target:		1.216623E-08
+  example prediction:		-4.048461E-06
+  training loss:		1.110094E-11
+  validation loss:		1.014534E-11
+
+Epoch 200 of 200
+  example target:		2.642531E-08
+  example prediction:		-9.490378E-07
+  training loss:		1.055527E-11
+  validation loss:		1.093865E-11
+

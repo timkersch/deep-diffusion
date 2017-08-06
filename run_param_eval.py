@@ -29,7 +29,6 @@ if __name__ == '__main__':
 	# Load the dataset
 	X_train, y_train, X_val, y_val = utils.get_data(split_ratio=0.7)
 	# Load HPC data
-	X_hpc = utils.get_pred_data(10000)
 
 	print('Cylinder radius:')
 	knn(X_train, y_train, X_val, y_val, X_hpc, 0)
