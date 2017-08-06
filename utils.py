@@ -91,3 +91,19 @@ def to_voxels(arr, channels=288, skip_ones=True):
 	if skip_ones:
 		return np.reshape(arr, (no_samples, channels))
 	return np.reshape(arr, (no_samples, 1, 1, 1, channels))
+
+
+def rmsd(t, y):
+	return np.sqrt(((y - t)*(y - t)).sum() / t.shape[0])
+
+
+def print_and_append(string, outfile, new_line=False):
+	if outfile is not None:
+		outfile.write(string)
+		outfile.write('\n')
+		if new_line:
+			outfile.write('\n')
+
+	print(string)
+	if new_line:
+		print '\n'

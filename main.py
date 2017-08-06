@@ -5,11 +5,11 @@ import json
 import os
 import errno
 import matplotlib.pyplot as plt
-from sklearn.gaussian_process import GaussianProcessRegressor
 from sklearn.preprocessing import MinMaxScaler
+from utils import rmsd, print_and_append
 
 
-def train(model_id, scale=True):
+def train(model_id):
 	# Prepare Theano variables for inputs and targets
 	input_var = T.dmatrix('inputs')
 	target_var = T.dmatrix('targets')
@@ -17,19 +17,21 @@ def train(model_id, scale=True):
 	with open('config.json') as data_file:
 		config = json.load(data_file)
 
-	train, validation, test = dataset.load_dataset(config['no_dwis'], split_ratio=(0.8, 0.2, 0))
+	train, validation, test = dataset.load_dataset(config['no_dwis'], split_ratio=(0.7, 0.2, 0.1))
 
-	if scale:
+	if config['scale_inputs']:
 		in_scaler = MinMaxScaler()
 		in_scaler.fit(train[0])
+		train = in_scaler.transform(train[0]), train[1]
+		validation = in_scaler.transform(validation[0]), validation[1]
+		test = in_scaler.transform(test[0]), test[1]
 
-		#out_scaler = MinMaxScaler()
-		#out_scaler.fit(train[1])
-
-		train = in_scaler.transform(train[0]), train[1] #out_scaler.transform(train[1])
-		validation = in_scaler.transform(validation[0]), validation[1] #out_scaler.transform(validation[1])
-		if (test[0].shape[0] > 0):
-			test = in_scaler.transform(test[0]), test[1] #out_scaler.transform(test[1])
+	if config['scale_outputs']:
+		out_scaler = MinMaxScaler()
+		out_scaler.fit(train[1])
+		train = train[0], out_scaler.transform(train[1])
+		validation = validation[0], out_scaler.transform(validation[1])
+		test = test[0], out_scaler.transform(test[1])
 
 	if not os.path.exists('models/' + model_id):
 		try:
@@ -48,7 +50,25 @@ def train(model_id, scale=True):
 
 	# Create neural network model
 	network = VoxNet(input_var, target_var, config)
-	network.train(train[0], train[1][:, 0].reshape(-1, 1), validation[0], validation[1][:, 0].reshape(-1, 1), no_epochs=config['no_epochs'], outfile=outfile)
+	network.train(train[0], train[1], validation[0], validation[1], no_epochs=config['no_epochs'], outfile=outfile)
+
+	train_pred = network.predict(train[0])
+	validation_pred = network.predict(validation[0])
+	test_pred = network.predict(test[0])
+
+	print_and_append('Training-set, Scaled RMSE: ' + str(rmsd(train_pred, train[1])), outfile)
+	print_and_append('Training-set, Original RMSE: ' + str(rmsd(out_scaler.inverse_transform(train_pred), out_scaler.inverse_transform(train[1]))), outfile)
+
+	print_and_append('Validation-set, Scaled RMSE: ' + str(rmsd(validation_pred, validation[1])), outfile)
+	print_and_append('Validation-set, Original RMSE: ' + str(rmsd(out_scaler.inverse_transform(validation_pred), out_scaler.inverse_transform(validation[1]))), outfile)
+
+	print_and_append('Test-set, Scaled RMSE: ' + str(rmsd(test_pred, test[1])), outfile)
+	print_and_append('Test-set, Original RMSE: ' + str(rmsd(out_scaler.inverse_transform(test_pred), out_scaler.inverse_transform(test[1]))), outfile)
+
+	print "True:"
+	print(out_scaler.inverse_transform(test[1][0:5]))
+	print "Pred:"
+	print(out_scaler.inverse_transform(test_pred[0:5]))
 
 	network.save(dir + 'model.npz')
 	outfile.close()
@@ -80,19 +100,7 @@ def load(model_id):
 	network.load(path + 'model.npz')
 	return network
 
-
-def gp():
-	gp = GaussianProcessRegressor(alpha=1e-10, optimizer='fmin_l_bfgs_b', n_restarts_optimizer=0, normalize_y=False, copy_X_train=True, random_state=None)
-	train, validation, test = dataset.load_dataset(288, split_ratio=(0.8, 0.199, 0.001))
-	gp = gp.fit(train[0], train[1])
-	print gp.score(train[0], train[1])
-	print gp.score(validation[0], validation[1])
-	print gp.predict(test[0])
-	print ""
-	print test[1]
-	return gp
-
 if __name__ == '__main__':
-	train(model_id='14')
+	train(model_id='21')
 
 

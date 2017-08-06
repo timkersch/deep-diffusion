@@ -3,7 +3,7 @@ import os
 import utils
 
 
-def load_dataset(dwis, dir_path='./data/gen/', split_ratio=(0.7, 0.2, 0.1)):
+def load_dataset(dwis, dir_path='./data/gen/', split_ratio=(0.7, 0.2, 0.1), class_index=0):
 	folders = [folder for folder in os.listdir(dir_path)]
 
 	X_list = []
@@ -21,7 +21,7 @@ def load_dataset(dwis, dir_path='./data/gen/', split_ratio=(0.7, 0.2, 0.1)):
 
 	X = np.concatenate(X_list)
 	t = np.concatenate(t_list)
-	return _split(X, t, split_ratio)
+	return _split(X, t[:, class_index].reshape(-1, 1), split_ratio)
 
 
 def _split(X, t, ratio=(0.7, 0.2, 0.1)):

@@ -1,9 +1,8 @@
 from __future__ import division
 import theano
-import theano.tensor as T
 import lasagne
-import time
 import numpy as np
+from utils import print_and_append
 
 
 class VoxNet:
@@ -60,15 +59,15 @@ class VoxNet:
 	def train(self, X_train, y_train, X_val, y_val, outfile=None, no_epochs=100, shuffle=True, log_nth=None):
 		self.outfile = outfile
 		for epoch in xrange(no_epochs):
-			self._print_and_append("Epoch {} of {}".format(epoch + 1, no_epochs), outfile)
+			print_and_append("Epoch {} of {}".format(epoch + 1, no_epochs), outfile)
 
 			train_loss, train_batches = self._train(X_train, y_train, shuffle=shuffle, log_nth=log_nth)
 			self.train_loss.append(train_loss)
-			self._print_and_append("  training loss:\t\t{:.6E}".format((train_loss / train_batches)), outfile)
+			print_and_append("  training loss:\t\t{:.6E}".format((train_loss / train_batches)), outfile)
 
 			val_loss, val_batches = self._val(X_val, y_val, shuffle=shuffle)
 			self.val_loss.append(val_loss)
-			self._print_and_append("  validation loss:\t\t{:.6E}".format((val_loss / val_batches)), outfile, new_line=True)
+			print_and_append("  validation loss:\t\t{:.6E}".format((val_loss / val_batches)), outfile, new_line=True)
 
 	def _train(self, X, y, shuffle=True, log_nth=None):
 		train_loss = 0
@@ -82,8 +81,8 @@ class VoxNet:
 				print("  training loss:\t\t{:.20f}".format(train_loss / batch_index + 1))
 			batch_index += 1
 
-		self._print_and_append("  example target:\t\t{:.6E}".format(float(targets[0])), self.outfile)
-		self._print_and_append("  example prediction:\t\t{:.6E}".format(float(self.predict(inputs)[0])), self.outfile)
+		#print_and_append("  example target:\t\t{:.6E}".format(float(targets[0])), self.outfile)
+		#print_and_append("  example prediction:\t\t{:.6E}".format(float(self.predict(inputs)[0])), self.outfile)
 		return train_loss, batch_index
 
 	def _val(self, X, y, shuffle=True):
@@ -116,14 +115,3 @@ class VoxNet:
 		with np.load(filename) as f:
 			param_values = [f['arr_%d' % i] for i in range(len(f.files))]
 			lasagne.layers.set_all_param_values(self.network, param_values)
-
-	def _print_and_append(self, string, outfile, new_line=False):
-		if outfile is not None:
-			outfile.write(string)
-			outfile.write('\n')
-			if new_line:
-				outfile.write('\n')
-
-		print(string)
-		if new_line:
-			print '\n'
