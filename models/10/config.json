@@ -1,6 +1,6 @@
 {
     "batch_norm": false, 
-    "batch_size": 64, 
+    "batch_size": 512, 
     "hidden_layers": [
         {
             "type": "fc", 
@@ -16,12 +16,12 @@
         }
     ], 
     "no_dwis": 288, 
-    "no_epochs": 100, 
+    "no_epochs": 150, 
     "optimizer": {
         "beta1": 0.9, 
         "beta2": 0.999, 
         "epsilon": 1e-08, 
-        "learning_rate": 0.0001, 
+        "learning_rate": 5e-05, 
         "type": "adam"
     }
 }

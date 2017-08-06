@@ -1,20 +1,27 @@
 {
-  "no_dwis": 288,
-  "batch_size": 128,
-  "no_epochs": 200,
   "batch_norm": false,
+  "batch_size": 512,
   "hidden_layers": [
     {
       "type": "fc",
-      "units": 300
+      "units": 150
+    },
+    {
+      "type": "fc",
+      "units": 150
+    },
+    {
+      "type": "fc",
+      "units": 150
     }
   ],
-
+  "no_dwis": 288,
+  "no_epochs": 200,
   "optimizer": {
-    "type": "adam",
-    "learning_rate": 0.001,
     "beta1": 0.9,
     "beta2": 0.999,
-    "epsilon": 1e-8
+    "epsilon": 1e-08,
+    "learning_rate": 5e-05,
+    "type": "adam"
   }
 }
