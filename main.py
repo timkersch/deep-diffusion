@@ -72,6 +72,7 @@ def parameter_search(dir='models/search/'):
 	best_index = -1
 
 	index = 1
+	print "Beginning grid search with {} configurations".format(len(learning_rates)*len(batch_sizes)*len(batch_norms)*len(scale_outputs)*len(early_stoppings))
 	for batch_norm in batch_norms:
 		for scale_output in scale_outputs:
 			for early_stopping in early_stoppings:
