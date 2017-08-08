@@ -72,11 +72,11 @@ def parameter_search(dir='models/search/'):
 	best_index = -1
 
 	index = 1
-	for learning_rate in learning_rates:
-		for batch_size in batch_sizes:
+	for batch_norm in batch_norms:
+		for scale_output in scale_outputs:
 			for early_stopping in early_stoppings:
-				for scale_output in scale_outputs:
-					for batch_norm in batch_norms:
+				for batch_size in batch_sizes:
+					for learning_rate in learning_rates:
 						print "Fitting model with l-rate: {} batch-size: {} e-stopping: {} scale-out: {} batch-norm: {}".format(learning_rate, batch_size, early_stopping, scale_output, batch_norm)
 						config['optimizer']['learning_rate'] = learning_rate
 						config['batch_size'] = batch_size
@@ -88,15 +88,17 @@ def parameter_search(dir='models/search/'):
 
 						test_pred = model.predict(test_set[0])
 						rms_distance = rmsd(test_pred, test_set[1])
-						print 'Test-set, RMSE: ' + str(rms_distance) + '\n'
+						print 'Test RMSE: {} \n'.format(rms_distance)
 
 						if rms_distance < lowest_rmsd:
 							lowest_rmsd = rms_distance
 							best_index = index
 
+						print 'Current best model is: {} with test RMSE: {} \n'.format(best_index, lowest_rmsd)
+
 						index += 1
 
-	print "Done... Best was model with index {} and test-score {}".format(best_index, lowest_rmsd)
+	print "Done... Best was model with index {} and test RMSE {}".format(best_index, lowest_rmsd)
 
 
 def load(model_id):

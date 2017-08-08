@@ -5,3 +5,4 @@ Theano
 Lasagne
 nibabel
 dipy
+scikit-learn
