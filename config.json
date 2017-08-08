@@ -18,7 +18,8 @@
     }
   ],
   "no_dwis": 288,
-  "no_epochs": 200,
+  "no_epochs": 500,
+  "early_stopping": 5,
   "optimizer": {
     "beta1": 0.9,
     "beta2": 0.999,

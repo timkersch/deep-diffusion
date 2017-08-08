@@ -4,7 +4,7 @@ import utils
 
 
 def load_dataset(dwis, dir_path='./data/gen/', split_ratio=(0.7, 0.2, 0.1), class_index=0):
-	folders = [folder for folder in os.listdir(dir_path)]
+	folders = [folder for folder in os.listdir(dir_path) if folder != '.DS_Store']
 
 	X_list = []
 	t_list = []
@@ -25,9 +25,9 @@ def load_dataset(dwis, dir_path='./data/gen/', split_ratio=(0.7, 0.2, 0.1), clas
 
 
 def _split(X, t, ratio=(0.7, 0.2, 0.1)):
-	no_samples = X.shape[0]
-	split = int(no_samples * ratio[0])
-	split2 = split + int(no_samples * ratio[1])
-	indices = np.random.permutation(no_samples)
-	training_idx, valid_idx, test_idx = indices[0:split], indices[split:split2], indices[split2:]
-	return (X[training_idx, :], t[training_idx, :]), (X[valid_idx, :], t[valid_idx, :]),  (X[test_idx, :], t[test_idx, :])
+		no_samples = X.shape[0]
+		split = int(no_samples * ratio[0])
+		split2 = split + int(no_samples * ratio[1])
+		indices = np.random.permutation(no_samples)
+		training_idx, valid_idx, test_idx = indices[0:split], indices[split:split2], indices[split2:]
+		return (X[training_idx, :], t[training_idx, :]), (X[valid_idx, :], t[valid_idx, :]),  (X[test_idx, :], t[test_idx, :])

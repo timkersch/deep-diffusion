@@ -3,6 +3,7 @@ import theano
 import lasagne
 import numpy as np
 from utils import print_and_append
+from sklearn.preprocessing import MinMaxScaler
 
 
 class VoxNet:
@@ -10,6 +11,9 @@ class VoxNet:
 	def __init__(self, input_var, target_var, config):
 		self.config = config
 		self.batch_size = config['batch_size']
+
+		self.in_scaler = None
+		self.out_scaler = None
 
 		self.val_loss = []
 		self.train_loss = []
@@ -50,7 +54,12 @@ class VoxNet:
 		self.predict_fun = theano.function([input_var], test_prediction)
 
 	def predict(self, data):
-		return self.predict_fun(data)
+		if self.in_scaler is not None:
+			data = self.in_scaler.transform(data)
+		pred = self.predict_fun(data)
+		if self.out_scaler is not None:
+			pred = self.out_scaler.inverse_transform(pred)
+		return pred
 
 	def reset(self):
 		self.train_loss = []
@@ -58,6 +67,21 @@ class VoxNet:
 
 	def train(self, X_train, y_train, X_val, y_val, outfile=None, no_epochs=100, shuffle=True, log_nth=None):
 		self.outfile = outfile
+		early_stopping = self.config['early_stopping']
+		prev_net = lasagne.layers.get_all_param_values(self.network)
+
+		if self.config['scale_inputs']:
+			self.in_scaler = MinMaxScaler()
+			self.in_scaler.fit(X_train)
+			X_train = self.in_scaler.transform(X_train)
+			X_val = self.in_scaler.transform(X_val)
+
+		if self.config['scale_outputs']:
+			self.out_scaler = MinMaxScaler()
+			self.out_scaler.fit(y_train)
+			y_train = self.out_scaler.transform(y_train)
+			y_val = self.out_scaler.transform(y_val)
+
 		for epoch in xrange(no_epochs):
 			print_and_append("Epoch {} of {}".format(epoch + 1, no_epochs), outfile)
 
@@ -68,6 +92,16 @@ class VoxNet:
 			val_loss, val_batches = self._val(X_val, y_val, shuffle=shuffle)
 			self.val_loss.append(val_loss)
 			print_and_append("  validation loss:\t\t{:.6E}".format((val_loss / val_batches)), outfile, new_line=True)
+
+			if early_stopping >= 1 and (epoch+1) % early_stopping == 0 and len(self.val_loss) >= early_stopping * 2:
+				prev_val_loss = np.mean(self.val_loss[-early_stopping*2:-early_stopping])
+				current_val_loss = np.mean(self.val_loss[-early_stopping:])
+				if current_val_loss > prev_val_loss:
+					lasagne.layers.set_all_param_values(self.network, prev_net)
+					print_and_append("Early stopping, val-loss increased over the last {} epochs from {} to {}".format(early_stopping, prev_val_loss, current_val_loss))
+					return
+
+			prev_net = lasagne.layers.get_all_param_values(self.network)
 
 	def _train(self, X, y, shuffle=True, log_nth=None):
 		train_loss = 0
@@ -81,8 +115,6 @@ class VoxNet:
 				print("  training loss:\t\t{:.20f}".format(train_loss / batch_index + 1))
 			batch_index += 1
 
-		#print_and_append("  example target:\t\t{:.6E}".format(float(targets[0])), self.outfile)
-		#print_and_append("  example prediction:\t\t{:.6E}".format(float(self.predict(inputs)[0])), self.outfile)
 		return train_loss, batch_index
 
 	def _val(self, X, y, shuffle=True):

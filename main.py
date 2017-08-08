@@ -1,45 +1,27 @@
 import dataset
-from classifiers.voxel_network import VoxNet
+from networks.voxel_network import VoxNet
 import theano.tensor as T
 import json
 import os
 import errno
 import matplotlib.pyplot as plt
-from sklearn.preprocessing import MinMaxScaler
 from utils import rmsd, print_and_append
 
 
-def train(model_id):
+def train(model_id, train_set, validation_set, config, super_dir='models/', show_plot=False):
 	# Prepare Theano variables for inputs and targets
 	input_var = T.dmatrix('inputs')
 	target_var = T.dmatrix('targets')
 
-	with open('config.json') as data_file:
-		config = json.load(data_file)
+	model_id = str(model_id)
 
-	train, validation, test = dataset.load_dataset(config['no_dwis'], split_ratio=(0.7, 0.2, 0.1))
-
-	if config['scale_inputs']:
-		in_scaler = MinMaxScaler()
-		in_scaler.fit(train[0])
-		train = in_scaler.transform(train[0]), train[1]
-		validation = in_scaler.transform(validation[0]), validation[1]
-		test = in_scaler.transform(test[0]), test[1]
-
-	if config['scale_outputs']:
-		out_scaler = MinMaxScaler()
-		out_scaler.fit(train[1])
-		train = train[0], out_scaler.transform(train[1])
-		validation = validation[0], out_scaler.transform(validation[1])
-		test = test[0], out_scaler.transform(test[1])
-
-	if not os.path.exists('models/' + model_id):
+	if not os.path.exists(super_dir + model_id):
 		try:
-			os.makedirs('models/' + model_id)
+			os.makedirs(super_dir + model_id)
 		except OSError as exc:
 			if exc.errno != errno.EEXIST:
 				raise
-	dir = 'models/' + model_id + '/'
+	dir = super_dir + model_id + '/'
 
 	# Write the config file
 	with open(dir + 'config.json', 'w') as outfile:
@@ -50,25 +32,13 @@ def train(model_id):
 
 	# Create neural network model
 	network = VoxNet(input_var, target_var, config)
-	network.train(train[0], train[1], validation[0], validation[1], no_epochs=config['no_epochs'], outfile=outfile)
+	network.train(train_set[0], train_set[1], validation_set[0], validation_set[1], no_epochs=config['no_epochs'], outfile=outfile)
 
-	train_pred = network.predict(train[0])
-	validation_pred = network.predict(validation[0])
-	test_pred = network.predict(test[0])
+	train_pred = network.predict(train_set[0])
+	validation_pred = network.predict(validation_set[0])
 
-	print_and_append('Training-set, Scaled RMSE: ' + str(rmsd(train_pred, train[1])), outfile)
-	print_and_append('Training-set, Original RMSE: ' + str(rmsd(out_scaler.inverse_transform(train_pred), out_scaler.inverse_transform(train[1]))), outfile)
-
-	print_and_append('Validation-set, Scaled RMSE: ' + str(rmsd(validation_pred, validation[1])), outfile)
-	print_and_append('Validation-set, Original RMSE: ' + str(rmsd(out_scaler.inverse_transform(validation_pred), out_scaler.inverse_transform(validation[1]))), outfile)
-
-	print_and_append('Test-set, Scaled RMSE: ' + str(rmsd(test_pred, test[1])), outfile)
-	print_and_append('Test-set, Original RMSE: ' + str(rmsd(out_scaler.inverse_transform(test_pred), out_scaler.inverse_transform(test[1]))), outfile)
-
-	print "True:"
-	print(out_scaler.inverse_transform(test[1][0:5]))
-	print "Pred:"
-	print(out_scaler.inverse_transform(test_pred[0:5]))
+	print_and_append('Training-set, RMSE: ' + str(rmsd(train_pred, train_set[1])), outfile)
+	print_and_append('Validation-set, RMSE: ' + str(rmsd(validation_pred, validation_set[1])), outfile)
 
 	network.save(dir + 'model.npz')
 	outfile.close()
@@ -79,11 +49,54 @@ def train(model_id):
 	plt.ylabel('Loss')
 	plt.xlabel('Epochs')
 	plt.legend(['Train', 'Val'], loc='upper right')
-	plt.show()
+	if show_plot:
+		plt.show()
 	plt.savefig(dir + 'loss-plot')
 	plt.close()
 
 	return network
+
+
+def parameter_search(dir='models/search/'):
+	with open('config.json') as data_file:
+		config = json.load(data_file)
+	train_set, validation_set, test_set = dataset.load_dataset(config['no_dwis'], split_ratio=(0.7, 0.2, 0.1))
+
+	learning_rates = [1e-6, 5e-6, 1e-5, 5e-5, 1e-4, 5e-4, 1e-3]
+	batch_sizes = [32, 54, 128, 256]
+	batch_norms = [False, True]
+	scale_outputs = [True, False]
+	early_stoppings = [5, 10]
+
+	lowest_rmsd = 1000
+	best_index = -1
+
+	index = 1
+	for learning_rate in learning_rates:
+		for batch_size in batch_sizes:
+			for early_stopping in early_stoppings:
+				for scale_output in scale_outputs:
+					for batch_norm in batch_norms:
+						print "Fitting model with l-rate: {} batch-size: {} e-stopping: {} scale-out: {} batch-norm: {}".format(learning_rate, batch_size, early_stopping, scale_output, batch_norm)
+						config['optimizer']['learning_rate'] = learning_rate
+						config['batch_size'] = batch_size
+						config['early_stopping'] = early_stopping
+						config['scale_outputs'] = scale_output
+						config['batch_norm'] = batch_norm
+
+						model = train(super_dir=dir, train_set=train_set, validation_set=validation_set, model_id=index, config=config, show_plot=False)
+
+						test_pred = model.predict(test_set[0])
+						rms_distance = rmsd(test_pred, test_set[1])
+						print 'Test-set, RMSE: ' + str(rms_distance) + '\n'
+
+						if rms_distance < lowest_rmsd:
+							lowest_rmsd = rms_distance
+							best_index = index
+
+						index += 1
+
+	print "Done... Best was model with index {} and test-score {}".format(best_index, lowest_rmsd)
 
 
 def load(model_id):
@@ -100,7 +113,12 @@ def load(model_id):
 	network.load(path + 'model.npz')
 	return network
 
+
+def run_train():
+	with open('config.json') as data_file:
+		config = json.load(data_file)
+	train_set, validation_set, test_set = dataset.load_dataset(config['no_dwis'], split_ratio=(0.7, 0.2, 0.1))
+	train(model_id='21', train_set=train_set, validation_set=validation_set, config=config)
+
 if __name__ == '__main__':
-	train(model_id='21')
-
-
+	parameter_search('models/search/')
