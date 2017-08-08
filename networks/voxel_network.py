@@ -98,7 +98,7 @@ class VoxNet:
 				current_val_loss = np.mean(self.val_loss[-early_stopping:])
 				if current_val_loss > prev_val_loss:
 					lasagne.layers.set_all_param_values(self.network, prev_net)
-					print_and_append("Early stopping, val-loss increased over the last {} epochs from {} to {}".format(early_stopping, prev_val_loss, current_val_loss))
+					print_and_append("Early stopping, val-loss increased over the last {} epochs from {} to {}".format(early_stopping, prev_val_loss, current_val_loss), outfile)
 					return
 
 			prev_net = lasagne.layers.get_all_param_values(self.network)
