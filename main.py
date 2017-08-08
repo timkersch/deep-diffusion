@@ -72,13 +72,14 @@ def parameter_search(dir='models/search/'):
 	best_index = -1
 
 	index = 1
-	print "Beginning grid search with {} configurations".format(len(learning_rates)*len(batch_sizes)*len(batch_norms)*len(scale_outputs)*len(early_stoppings))
+	no_configs = len(learning_rates)*len(batch_sizes)*len(batch_norms)*len(scale_outputs)*len(early_stoppings)
+	print "Beginning grid search with {} configurations".format(no_configs)
 	for batch_norm in batch_norms:
 		for scale_output in scale_outputs:
 			for early_stopping in early_stoppings:
 				for batch_size in batch_sizes:
 					for learning_rate in learning_rates:
-						print "Fitting model with l-rate: {} batch-size: {} e-stopping: {} scale-out: {} batch-norm: {}".format(learning_rate, batch_size, early_stopping, scale_output, batch_norm)
+						print "Fitting model {} of {} with l-rate: {} batch-size: {} e-stopping: {} scale-out: {} batch-norm: {}".format(index, no_configs, learning_rate, batch_size, early_stopping, scale_output, batch_norm)
 						config['optimizer']['learning_rate'] = learning_rate
 						config['batch_size'] = batch_size
 						config['early_stopping'] = early_stopping
