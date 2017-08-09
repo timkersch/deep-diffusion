@@ -66,7 +66,6 @@ class VoxNet:
 		self.val_loss = []
 
 	def train(self, X_train, y_train, X_val, y_val, outfile=None, no_epochs=100, shuffle=True, log_nth=None):
-		self.outfile = outfile
 		early_stopping = self.config['early_stopping']
 		prev_net = lasagne.layers.get_all_param_values(self.network)
 

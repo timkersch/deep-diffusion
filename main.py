@@ -8,6 +8,7 @@ import json
 import os
 import errno
 from utils import rmsd, print_and_append
+import cPickle as pickle
 
 
 def train(model_id, train_set, validation_set, config, super_dir='models/', show_plot=False):
@@ -38,10 +39,10 @@ def train(model_id, train_set, validation_set, config, super_dir='models/', show
 	train_pred = network.predict(train_set[0])
 	validation_pred = network.predict(validation_set[0])
 
-	print_and_append('Training-set, RMSE: ' + str(rmsd(train_pred, train_set[1])), outfile)
-	print_and_append('Validation-set, RMSE: ' + str(rmsd(validation_pred, validation_set[1])), outfile)
+	print_and_append('Training RMSE: ' + str(rmsd(train_pred, train_set[1])), outfile)
+	print_and_append('Validation RMSE: ' + str(rmsd(validation_pred, validation_set[1])), outfile)
 
-	network.save(dir + 'model.npz')
+	save(dir + 'model.p', network)
 	outfile.close()
 
 	# Make some plots of loss and accuracy
@@ -63,10 +64,10 @@ def parameter_search(dir='models/search/'):
 		config = json.load(data_file)
 	train_set, validation_set, test_set = dataset.load_dataset(config['no_dwis'], split_ratio=(0.7, 0.2, 0.1))
 
-	learning_rates = [1e-5, 5e-5, 1e-4, 5e-4, 1e-3]
+	learning_rates = [5e-6, 1e-5, 5e-5, 1e-4, 5e-4]
+	scale_outputs = [True]
 	batch_sizes = [32, 64, 128, 256]
-	scale_outputs = [True, False]
-	early_stoppings = [5, 10]
+	early_stoppings = [10, 15, 20]
 
 	lowest_rmsd = 1000
 	best_index = -1
@@ -101,26 +102,20 @@ def parameter_search(dir='models/search/'):
 	print "Done... Best was model with index {} and test RMSE {}".format(best_index, lowest_rmsd)
 
 
-def load(model_id):
-	# Prepare Theano variables for inputs and targets
-	input_var = T.dmatrix('inputs')
-	target_var = T.dvector('targets')
-
-	path = 'models/' + str(model_id) + '/'
-	with open(path + 'config.json') as data_file:
-		config = json.load(data_file)
-
-	# Create neural network model
-	network = VoxNet(input_var, target_var, config)
-	network.load(path + 'model.npz')
+def load(path):
+	network = pickle.load(open(path, "rb" ))
 	return network
+
+
+def save(path, network):
+	pickle.dump(network, open(path, 'wb'))
 
 
 def run_train():
 	with open('config.json') as data_file:
 		config = json.load(data_file)
 	train_set, validation_set, test_set = dataset.load_dataset(config['no_dwis'], split_ratio=(0.7, 0.2, 0.1))
-	train(model_id='21', train_set=train_set, validation_set=validation_set, config=config)
+	train(model_id='22', train_set=train_set, validation_set=validation_set, config=config)
 
 if __name__ == '__main__':
-	parameter_search('models/search/')
+	parameter_search('models/search2/')
