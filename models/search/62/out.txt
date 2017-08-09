@@ -1,0 +1,123 @@
+Epoch 1 of 500
+  training loss:		1.899713E-02
+  validation loss:		3.323358E-07
+
+Epoch 2 of 500
+  training loss:		2.614079E-07
+  validation loss:		2.019348E-07
+
+Epoch 3 of 500
+  training loss:		1.317848E-07
+  validation loss:		7.756496E-08
+
+Epoch 4 of 500
+  training loss:		3.814631E-08
+  validation loss:		1.362537E-08
+
+Epoch 5 of 500
+  training loss:		5.701677E-09
+  validation loss:		2.844940E-09
+
+Epoch 6 of 500
+  training loss:		1.044410E-09
+  validation loss:		6.895256E-10
+
+Epoch 7 of 500
+  training loss:		3.541414E-10
+  validation loss:		1.741294E-10
+
+Epoch 8 of 500
+  training loss:		1.793728E-10
+  validation loss:		8.053909E-11
+
+Epoch 9 of 500
+  training loss:		7.993327E-08
+  validation loss:		4.172205E-08
+
+Epoch 10 of 500
+  training loss:		3.538248E-07
+  validation loss:		6.185142E-07
+
+Epoch 11 of 500
+  training loss:		3.650535E-07
+  validation loss:		8.207023E-09
+
+Epoch 12 of 500
+  training loss:		3.687312E-07
+  validation loss:		3.044692E-07
+
+Epoch 13 of 500
+  training loss:		3.309847E-07
+  validation loss:		2.519460E-10
+
+Epoch 14 of 500
+  training loss:		3.516055E-07
+  validation loss:		1.680514E-08
+
+Epoch 15 of 500
+  training loss:		3.439358E-07
+  validation loss:		5.904835E-08
+
+Epoch 16 of 500
+  training loss:		3.657656E-07
+  validation loss:		7.358630E-07
+
+Epoch 17 of 500
+  training loss:		3.656159E-07
+  validation loss:		1.672951E-08
+
+Epoch 18 of 500
+  training loss:		3.336676E-07
+  validation loss:		4.991048E-09
+
+Epoch 19 of 500
+  training loss:		3.656228E-07
+  validation loss:		1.325278E-09
+
+Epoch 20 of 500
+  training loss:		3.596016E-07
+  validation loss:		1.444172E-08
+
+Epoch 21 of 500
+  training loss:		3.403563E-07
+  validation loss:		5.178663E-11
+
+Epoch 22 of 500
+  training loss:		4.083003E-07
+  validation loss:		2.135671E-08
+
+Epoch 23 of 500
+  training loss:		3.537553E-07
+  validation loss:		1.697159E-07
+
+Epoch 24 of 500
+  training loss:		3.008989E-07
+  validation loss:		6.337045E-10
+
+Epoch 25 of 500
+  training loss:		3.466262E-07
+  validation loss:		1.104138E-06
+
+Epoch 26 of 500
+  training loss:		3.749939E-07
+  validation loss:		6.550205E-10
+
+Epoch 27 of 500
+  training loss:		3.219866E-07
+  validation loss:		1.190003E-08
+
+Epoch 28 of 500
+  training loss:		3.614815E-07
+  validation loss:		8.243036E-09
+
+Epoch 29 of 500
+  training loss:		3.316394E-07
+  validation loss:		4.483566E-11
+
+Epoch 30 of 500
+  training loss:		3.502453E-07
+  validation loss:		6.534963E-10
+
+Early stopping, val-loss increased over the last 10 epochs from 4.10232659088e-05 to 4.65039657465e-05
+Training-set, RMSE: 6.66000519782e-06
+Validation-set, RMSE: 6.69663562365e-06
