@@ -1,7 +1,7 @@
 {
     "batch_norm": false, 
     "batch_size": 256, 
-    "early_stopping": 20, 
+    "early_stopping": 10,
     "hidden_layers": [
         {
             "type": "fc", 

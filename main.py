@@ -2,7 +2,7 @@ import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import dataset
-from networks.voxel_network import VoxNet
+from networks.fc_network import FCNet
 import theano.tensor as T
 import json
 import os
@@ -16,7 +16,6 @@ def train(model_id, train_set, validation_set, config, super_dir='models/', show
 	target_var = T.dmatrix('targets')
 
 	model_id = str(model_id)
-
 	if not os.path.exists(super_dir + model_id):
 		try:
 			os.makedirs(super_dir + model_id)
@@ -31,9 +30,10 @@ def train(model_id, train_set, validation_set, config, super_dir='models/', show
 
 	# Open file for appending output
 	outfile = open(dir + 'out.txt', 'a')
+	print_and_append('Training network with {} training samples and {} validation samples'.format(train_set[0].shape[0], validation_set[0].shape[0]), outfile)
 
 	# Create neural network model
-	network = VoxNet(input_var, target_var, config)
+	network = FCNet(input_var, target_var, config)
 	network.train(train_set[0], train_set[1], validation_set[0], validation_set[1], no_epochs=config['no_epochs'], outfile=outfile)
 
 	train_pred = network.predict(train_set[0])
@@ -62,15 +62,17 @@ def train(model_id, train_set, validation_set, config, super_dir='models/', show
 def parameter_search(dir='models/search/'):
 	with open('config.json') as data_file:
 		config = json.load(data_file)
-	train_set, validation_set, test_set = dataset.load_dataset(config['no_dwis'], split_ratio=(0.7, 0.2, 0.1))
+	train_set, validation_set, test_set = dataset.load_dataset(config['no_dwis'], split_ratio=(0.8, 0.15, 0.05))
 
 	learning_rates = [5e-6, 1e-5, 5e-5, 1e-4, 5e-4]
-	scale_outputs = [True]
 	batch_sizes = [32, 64, 128, 256]
 	early_stoppings = [10, 15, 20]
+	scale_outputs = [True]
 
 	lowest_rmsd = 1000
 	best_index = -1
+
+	id_model_list = []
 
 	index = 1
 	no_configs = len(learning_rates)*len(batch_sizes)*len(scale_outputs)*len(early_stoppings)
@@ -91,6 +93,8 @@ def parameter_search(dir='models/search/'):
 					rms_distance = rmsd(test_pred, test_set[1])
 					print 'Test RMSE: {} \n'.format(rms_distance)
 
+					id_model_list.append({'id': index, 'rmse': rms_distance})
+
 					if rms_distance < lowest_rmsd:
 						lowest_rmsd = rms_distance
 						best_index = index
@@ -99,6 +103,9 @@ def parameter_search(dir='models/search/'):
 
 					index += 1
 
+	id_model_list = sorted(id_model_list, key=lambda obj: obj['rmse'])
+	with open(dir + 'res.json', 'w') as outfile:
+		json.dump(id_model_list, outfile, indent=4)
 	print "Done... Best was model with index {} and test RMSE {}".format(best_index, lowest_rmsd)
 
 
@@ -114,8 +121,8 @@ def save(path, network):
 def run_train():
 	with open('config.json') as data_file:
 		config = json.load(data_file)
-	train_set, validation_set, test_set = dataset.load_dataset(config['no_dwis'], split_ratio=(0.7, 0.2, 0.1))
+	train_set, validation_set, test_set = dataset.load_dataset(config['no_dwis'], split_ratio=(0.8, 0.15, 0.05))
 	train(model_id='22', train_set=train_set, validation_set=validation_set, config=config)
 
 if __name__ == '__main__':
-	parameter_search('models/search2/')
+	parameter_search('models/search3/')

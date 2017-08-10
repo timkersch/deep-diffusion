@@ -6,7 +6,7 @@ from utils import print_and_append
 from sklearn.preprocessing import MinMaxScaler
 
 
-class VoxNet:
+class FCNet:
 
 	def __init__(self, input_var, target_var, config):
 		self.config = config
