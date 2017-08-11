@@ -1,7 +1,7 @@
 {
     "batch_norm": false, 
     "batch_size": 128, 
-    "early_stopping": 10, 
+    "early_stopping": 15, 
     "hidden_layers": [
         {
             "type": "fc", 
@@ -22,7 +22,7 @@
         "beta1": 0.9, 
         "beta2": 0.999, 
         "epsilon": 1e-08, 
-        "learning_rate": 0.0005, 
+        "learning_rate": 0.0001, 
         "type": "adam"
     }, 
     "scale_inputs": true, 
