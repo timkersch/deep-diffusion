@@ -1,0 +1,604 @@
+Training network with 45280 training samples and 8490 validation samples
+Epoch 1 of 500
+  training loss:		7.906898E-02
+  validation loss:		5.380917E-02
+
+Epoch 2 of 500
+  training loss:		3.247644E-02
+  validation loss:		1.578221E-02
+
+Epoch 3 of 500
+  training loss:		1.105940E-02
+  validation loss:		9.119735E-03
+
+Epoch 4 of 500
+  training loss:		8.415335E-03
+  validation loss:		7.806285E-03
+
+Epoch 5 of 500
+  training loss:		7.332013E-03
+  validation loss:		6.961417E-03
+
+Epoch 6 of 500
+  training loss:		6.355309E-03
+  validation loss:		5.808936E-03
+
+Epoch 7 of 500
+  training loss:		5.355787E-03
+  validation loss:		4.806963E-03
+
+Epoch 8 of 500
+  training loss:		4.396041E-03
+  validation loss:		4.229106E-03
+
+Epoch 9 of 500
+  training loss:		3.598351E-03
+  validation loss:		3.543023E-03
+
+Epoch 10 of 500
+  training loss:		2.950282E-03
+  validation loss:		2.631677E-03
+
+Epoch 11 of 500
+  training loss:		2.258938E-03
+  validation loss:		1.820891E-03
+
+Epoch 12 of 500
+  training loss:		1.575078E-03
+  validation loss:		1.356990E-03
+
+Epoch 13 of 500
+  training loss:		1.161531E-03
+  validation loss:		1.051436E-03
+
+Epoch 14 of 500
+  training loss:		8.962560E-04
+  validation loss:		7.584953E-04
+
+Epoch 15 of 500
+  training loss:		7.038485E-04
+  validation loss:		5.999953E-04
+
+Epoch 16 of 500
+  training loss:		5.653756E-04
+  validation loss:		4.926898E-04
+
+Epoch 17 of 500
+  training loss:		4.634570E-04
+  validation loss:		4.012412E-04
+
+Epoch 18 of 500
+  training loss:		3.816312E-04
+  validation loss:		3.642231E-04
+
+Epoch 19 of 500
+  training loss:		3.192447E-04
+  validation loss:		3.066684E-04
+
+Epoch 20 of 500
+  training loss:		2.761633E-04
+  validation loss:		2.418578E-04
+
+Epoch 21 of 500
+  training loss:		2.331062E-04
+  validation loss:		2.082350E-04
+
+Epoch 22 of 500
+  training loss:		2.063607E-04
+  validation loss:		1.989073E-04
+
+Epoch 23 of 500
+  training loss:		1.824961E-04
+  validation loss:		1.671032E-04
+
+Epoch 24 of 500
+  training loss:		1.641185E-04
+  validation loss:		1.613634E-04
+
+Epoch 25 of 500
+  training loss:		1.410939E-04
+  validation loss:		1.525186E-04
+
+Epoch 26 of 500
+  training loss:		1.319126E-04
+  validation loss:		1.152362E-04
+
+Epoch 27 of 500
+  training loss:		1.209414E-04
+  validation loss:		1.038297E-04
+
+Epoch 28 of 500
+  training loss:		1.081306E-04
+  validation loss:		9.514155E-05
+
+Epoch 29 of 500
+  training loss:		9.799758E-05
+  validation loss:		9.088114E-05
+
+Epoch 30 of 500
+  training loss:		9.021306E-05
+  validation loss:		8.505436E-05
+
+Epoch 31 of 500
+  training loss:		8.737429E-05
+  validation loss:		7.347308E-05
+
+Epoch 32 of 500
+  training loss:		7.899620E-05
+  validation loss:		6.897261E-05
+
+Epoch 33 of 500
+  training loss:		7.273370E-05
+  validation loss:		6.485778E-05
+
+Epoch 34 of 500
+  training loss:		6.761608E-05
+  validation loss:		6.000516E-05
+
+Epoch 35 of 500
+  training loss:		6.971306E-05
+  validation loss:		5.675543E-05
+
+Epoch 36 of 500
+  training loss:		6.507446E-05
+  validation loss:		8.026999E-05
+
+Epoch 37 of 500
+  training loss:		5.917512E-05
+  validation loss:		5.625126E-05
+
+Epoch 38 of 500
+  training loss:		5.443216E-05
+  validation loss:		5.289451E-05
+
+Epoch 39 of 500
+  training loss:		5.436617E-05
+  validation loss:		5.199285E-05
+
+Epoch 40 of 500
+  training loss:		5.182645E-05
+  validation loss:		4.414050E-05
+
+Epoch 41 of 500
+  training loss:		4.854111E-05
+  validation loss:		5.846270E-05
+
+Epoch 42 of 500
+  training loss:		4.774914E-05
+  validation loss:		4.324050E-05
+
+Epoch 43 of 500
+  training loss:		4.401512E-05
+  validation loss:		3.794244E-05
+
+Epoch 44 of 500
+  training loss:		4.161455E-05
+  validation loss:		3.590134E-05
+
+Epoch 45 of 500
+  training loss:		4.255187E-05
+  validation loss:		3.463406E-05
+
+Epoch 46 of 500
+  training loss:		3.818759E-05
+  validation loss:		3.420209E-05
+
+Epoch 47 of 500
+  training loss:		3.766479E-05
+  validation loss:		3.126877E-05
+
+Epoch 48 of 500
+  training loss:		3.860000E-05
+  validation loss:		3.630698E-05
+
+Epoch 49 of 500
+  training loss:		3.566666E-05
+  validation loss:		3.006765E-05
+
+Epoch 50 of 500
+  training loss:		3.212304E-05
+  validation loss:		2.978136E-05
+
+Epoch 51 of 500
+  training loss:		3.138109E-05
+  validation loss:		7.409563E-05
+
+Epoch 52 of 500
+  training loss:		3.177458E-05
+  validation loss:		3.074202E-05
+
+Epoch 53 of 500
+  training loss:		3.106514E-05
+  validation loss:		2.598879E-05
+
+Epoch 54 of 500
+  training loss:		2.961524E-05
+  validation loss:		2.535390E-05
+
+Epoch 55 of 500
+  training loss:		2.928721E-05
+  validation loss:		2.649797E-05
+
+Epoch 56 of 500
+  training loss:		2.701294E-05
+  validation loss:		2.860510E-05
+
+Epoch 57 of 500
+  training loss:		2.672156E-05
+  validation loss:		3.154659E-05
+
+Epoch 58 of 500
+  training loss:		2.618553E-05
+  validation loss:		2.474532E-05
+
+Epoch 59 of 500
+  training loss:		2.582741E-05
+  validation loss:		3.734272E-05
+
+Epoch 60 of 500
+  training loss:		2.479808E-05
+  validation loss:		2.342408E-05
+
+Epoch 61 of 500
+  training loss:		2.390430E-05
+  validation loss:		3.486440E-05
+
+Epoch 62 of 500
+  training loss:		2.570452E-05
+  validation loss:		2.285608E-05
+
+Epoch 63 of 500
+  training loss:		2.185783E-05
+  validation loss:		1.770400E-05
+
+Epoch 64 of 500
+  training loss:		2.213238E-05
+  validation loss:		2.051759E-05
+
+Epoch 65 of 500
+  training loss:		1.980226E-05
+  validation loss:		1.749566E-05
+
+Epoch 66 of 500
+  training loss:		2.142473E-05
+  validation loss:		1.660944E-05
+
+Epoch 67 of 500
+  training loss:		2.037619E-05
+  validation loss:		1.746324E-05
+
+Epoch 68 of 500
+  training loss:		1.867817E-05
+  validation loss:		1.558916E-05
+
+Epoch 69 of 500
+  training loss:		1.924930E-05
+  validation loss:		1.501440E-05
+
+Epoch 70 of 500
+  training loss:		1.943609E-05
+  validation loss:		2.558335E-05
+
+Epoch 71 of 500
+  training loss:		1.925681E-05
+  validation loss:		1.420243E-05
+
+Epoch 72 of 500
+  training loss:		1.912854E-05
+  validation loss:		1.482881E-05
+
+Epoch 73 of 500
+  training loss:		1.717142E-05
+  validation loss:		1.397496E-05
+
+Epoch 74 of 500
+  training loss:		1.745897E-05
+  validation loss:		2.063409E-05
+
+Epoch 75 of 500
+  training loss:		1.665050E-05
+  validation loss:		1.380412E-05
+
+Epoch 76 of 500
+  training loss:		1.666618E-05
+  validation loss:		2.122372E-05
+
+Epoch 77 of 500
+  training loss:		1.660609E-05
+  validation loss:		2.305503E-05
+
+Epoch 78 of 500
+  training loss:		1.578714E-05
+  validation loss:		1.836159E-05
+
+Epoch 79 of 500
+  training loss:		1.604988E-05
+  validation loss:		1.486460E-05
+
+Epoch 80 of 500
+  training loss:		1.426855E-05
+  validation loss:		1.422797E-05
+
+Epoch 81 of 500
+  training loss:		1.534555E-05
+  validation loss:		1.152383E-05
+
+Epoch 82 of 500
+  training loss:		1.486171E-05
+  validation loss:		1.095245E-05
+
+Epoch 83 of 500
+  training loss:		1.400384E-05
+  validation loss:		1.047526E-05
+
+Epoch 84 of 500
+  training loss:		1.402103E-05
+  validation loss:		1.057984E-05
+
+Epoch 85 of 500
+  training loss:		1.283770E-05
+  validation loss:		1.188511E-05
+
+Epoch 86 of 500
+  training loss:		1.389859E-05
+  validation loss:		1.229321E-05
+
+Epoch 87 of 500
+  training loss:		1.243767E-05
+  validation loss:		1.319674E-05
+
+Epoch 88 of 500
+  training loss:		1.275264E-05
+  validation loss:		9.980464E-06
+
+Epoch 89 of 500
+  training loss:		1.289668E-05
+  validation loss:		1.021641E-05
+
+Epoch 90 of 500
+  training loss:		1.212226E-05
+  validation loss:		1.003149E-05
+
+Epoch 91 of 500
+  training loss:		1.170239E-05
+  validation loss:		8.780843E-06
+
+Epoch 92 of 500
+  training loss:		1.222516E-05
+  validation loss:		8.909371E-06
+
+Epoch 93 of 500
+  training loss:		1.088630E-05
+  validation loss:		1.187134E-05
+
+Epoch 94 of 500
+  training loss:		1.107504E-05
+  validation loss:		9.033926E-06
+
+Epoch 95 of 500
+  training loss:		1.162353E-05
+  validation loss:		2.030627E-05
+
+Epoch 96 of 500
+  training loss:		1.186753E-05
+  validation loss:		8.110737E-06
+
+Epoch 97 of 500
+  training loss:		1.134738E-05
+  validation loss:		7.778275E-06
+
+Epoch 98 of 500
+  training loss:		1.099476E-05
+  validation loss:		1.863823E-05
+
+Epoch 99 of 500
+  training loss:		1.089011E-05
+  validation loss:		2.688250E-05
+
+Epoch 100 of 500
+  training loss:		9.983872E-06
+  validation loss:		1.836930E-05
+
+Epoch 101 of 500
+  training loss:		1.004492E-05
+  validation loss:		8.741975E-06
+
+Epoch 102 of 500
+  training loss:		1.059130E-05
+  validation loss:		8.789012E-06
+
+Epoch 103 of 500
+  training loss:		9.353289E-06
+  validation loss:		7.446942E-06
+
+Epoch 104 of 500
+  training loss:		9.141592E-06
+  validation loss:		6.531823E-06
+
+Epoch 105 of 500
+  training loss:		9.513871E-06
+  validation loss:		7.320939E-06
+
+Epoch 106 of 500
+  training loss:		9.970877E-06
+  validation loss:		7.066900E-06
+
+Epoch 107 of 500
+  training loss:		8.802800E-06
+  validation loss:		6.175241E-06
+
+Epoch 108 of 500
+  training loss:		8.791764E-06
+  validation loss:		6.690611E-06
+
+Epoch 109 of 500
+  training loss:		9.029603E-06
+  validation loss:		6.119226E-06
+
+Epoch 110 of 500
+  training loss:		8.284308E-06
+  validation loss:		7.427093E-06
+
+Epoch 111 of 500
+  training loss:		9.361515E-06
+  validation loss:		5.697189E-06
+
+Epoch 112 of 500
+  training loss:		7.920785E-06
+  validation loss:		6.927824E-06
+
+Epoch 113 of 500
+  training loss:		8.090914E-06
+  validation loss:		8.862822E-06
+
+Epoch 114 of 500
+  training loss:		8.451905E-06
+  validation loss:		2.304788E-05
+
+Epoch 115 of 500
+  training loss:		8.394303E-06
+  validation loss:		5.317426E-06
+
+Epoch 116 of 500
+  training loss:		7.566268E-06
+  validation loss:		5.692870E-06
+
+Epoch 117 of 500
+  training loss:		7.478705E-06
+  validation loss:		9.352610E-06
+
+Epoch 118 of 500
+  training loss:		8.420517E-06
+  validation loss:		8.276299E-06
+
+Epoch 119 of 500
+  training loss:		8.568846E-06
+  validation loss:		7.733308E-06
+
+Epoch 120 of 500
+  training loss:		7.361794E-06
+  validation loss:		7.870719E-06
+
+Epoch 121 of 500
+  training loss:		8.264495E-06
+  validation loss:		5.424196E-06
+
+Epoch 122 of 500
+  training loss:		6.597334E-06
+  validation loss:		4.491964E-06
+
+Epoch 123 of 500
+  training loss:		6.740666E-06
+  validation loss:		4.762303E-06
+
+Epoch 124 of 500
+  training loss:		7.477653E-06
+  validation loss:		5.325201E-06
+
+Epoch 125 of 500
+  training loss:		6.891453E-06
+  validation loss:		4.687259E-06
+
+Epoch 126 of 500
+  training loss:		8.143238E-06
+  validation loss:		4.262940E-06
+
+Epoch 127 of 500
+  training loss:		6.562851E-06
+  validation loss:		4.137851E-06
+
+Epoch 128 of 500
+  training loss:		7.172319E-06
+  validation loss:		4.402663E-06
+
+Epoch 129 of 500
+  training loss:		5.954319E-06
+  validation loss:		8.275924E-06
+
+Epoch 130 of 500
+  training loss:		7.087035E-06
+  validation loss:		3.931274E-06
+
+Epoch 131 of 500
+  training loss:		6.612695E-06
+  validation loss:		3.832713E-06
+
+Epoch 132 of 500
+  training loss:		5.940233E-06
+  validation loss:		5.520529E-06
+
+Epoch 133 of 500
+  training loss:		6.640366E-06
+  validation loss:		3.695204E-06
+
+Epoch 134 of 500
+  training loss:		5.877815E-06
+  validation loss:		4.192326E-06
+
+Epoch 135 of 500
+  training loss:		6.179229E-06
+  validation loss:		3.577522E-06
+
+Epoch 136 of 500
+  training loss:		6.412941E-06
+  validation loss:		4.419848E-06
+
+Epoch 137 of 500
+  training loss:		5.254419E-06
+  validation loss:		4.021111E-06
+
+Epoch 138 of 500
+  training loss:		6.328167E-06
+  validation loss:		5.081175E-06
+
+Epoch 139 of 500
+  training loss:		6.237156E-06
+  validation loss:		2.438874E-05
+
+Epoch 140 of 500
+  training loss:		5.862413E-06
+  validation loss:		3.252057E-06
+
+Epoch 141 of 500
+  training loss:		6.052171E-06
+  validation loss:		3.612692E-06
+
+Epoch 142 of 500
+  training loss:		5.378560E-06
+  validation loss:		3.161687E-06
+
+Epoch 143 of 500
+  training loss:		5.485278E-06
+  validation loss:		5.933811E-06
+
+Epoch 144 of 500
+  training loss:		5.958320E-06
+  validation loss:		5.522869E-06
+
+Epoch 145 of 500
+  training loss:		4.598250E-06
+  validation loss:		2.975252E-06
+
+Epoch 146 of 500
+  training loss:		5.185492E-06
+  validation loss:		8.020454E-06
+
+Epoch 147 of 500
+  training loss:		5.425090E-06
+  validation loss:		2.960083E-06
+
+Epoch 148 of 500
+  training loss:		5.786815E-06
+  validation loss:		3.273295E-06
+
+Epoch 149 of 500
+  training loss:		4.611028E-06
+  validation loss:		3.714455E-06
+
+Epoch 150 of 500
+  training loss:		5.033098E-06
+  validation loss:		6.784362E-06
+
+Early stopping, val-loss increased over the last 15 epochs from 0.0003102874338 to 0.000383336333455
+Training RMSE: 1.88455660027e-09
+Validation RMSE: 1.88739402173e-09

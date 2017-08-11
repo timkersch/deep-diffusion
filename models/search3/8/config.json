@@ -1,0 +1,30 @@
+{
+    "batch_norm": false, 
+    "batch_size": 64, 
+    "early_stopping": 10, 
+    "hidden_layers": [
+        {
+            "type": "fc", 
+            "units": 150
+        }, 
+        {
+            "type": "fc", 
+            "units": 150
+        }, 
+        {
+            "type": "fc", 
+            "units": 150
+        }
+    ], 
+    "no_dwis": 288, 
+    "no_epochs": 500, 
+    "optimizer": {
+        "beta1": 0.9, 
+        "beta2": 0.999, 
+        "epsilon": 1e-08, 
+        "learning_rate": 5e-05, 
+        "type": "adam"
+    }, 
+    "scale_inputs": true, 
+    "scale_outputs": true
+}
