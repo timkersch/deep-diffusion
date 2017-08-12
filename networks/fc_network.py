@@ -26,11 +26,11 @@ class FCNet:
 			if layer['type'] == 'dropout':
 				prev_layer = lasagne.layers.DropoutLayer(prev_layer, p=layer['p'])
 			elif layer['type'] == 'fc':
-				if config['activation_function' == 'relu']:
+				if config['activation_function'] == 'relu':
 					layer = lasagne.layers.DenseLayer(prev_layer, num_units=layer['units'], W=lasagne.init.HeNormal('relu'), nonlinearity=lasagne.nonlinearities.rectify)
-				elif config['activation_function' == 'sigmoid']:
+				elif config['activation_function'] == 'sigmoid':
 					layer = lasagne.layers.DenseLayer(prev_layer, num_units=layer['units'], W=lasagne.init.GlorotNormal(1.0), nonlinearity=lasagne.nonlinearities.sigmoid)
-				elif config ['activation_function' == 'tanh']:
+				elif config ['activation_function'] == 'tanh':
 					layer = lasagne.layers.DenseLayer(prev_layer, num_units=layer['units'], W=lasagne.init.GlorotNormal(1.0), nonlinearity=lasagne.nonlinearities.tanh)
 
 				if config['batch_norm'] == True:
