@@ -3,7 +3,7 @@ import theano
 import lasagne
 import numpy as np
 from utils import print_and_append
-from sklearn.preprocessing import MinMaxScaler
+from sklearn.preprocessing import MinMaxScaler, StandardScaler
 
 
 class FCNet:
@@ -14,6 +14,8 @@ class FCNet:
 
 		self.in_scaler = None
 		self.out_scaler = None
+
+		self.normalizer = None
 
 		self.val_loss = []
 		self.train_loss = []
@@ -60,6 +62,8 @@ class FCNet:
 		self.predict_fun = theano.function([input_var], test_prediction)
 
 	def predict(self, data):
+		if self.normalizer is not None:
+			data = self.normalizer.transform(data)
 		if self.in_scaler is not None:
 			data = self.in_scaler.transform(data)
 		pred = self.predict_fun(data)
@@ -74,6 +78,12 @@ class FCNet:
 	def train(self, X_train, y_train, X_val, y_val, outfile=None, no_epochs=100, shuffle=True, log_nth=None):
 		early_stopping = self.config['early_stopping']
 		prev_net = lasagne.layers.get_all_param_values(self.network)
+
+		if self.config['normalize']:
+			self.normalizer = StandardScaler()
+			self.normalizer.fit(X_train)
+			X_train = self.normalizer.transform(X_train)
+			X_val = self.normalizer.transform(X_val)
 
 		if self.config['scale_inputs']:
 			self.in_scaler = MinMaxScaler()

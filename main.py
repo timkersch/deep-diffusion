@@ -65,9 +65,9 @@ def parameter_search(dir='models/search/'):
 	train_set, validation_set, test_set = dataset.load_dataset(config['no_dwis'], split_ratio=(0.8, 0.15, 0.05))
 
 	learning_rates = [1e-6, 5e-6, 1e-5, 5e-5, 1e-4]
-	batch_sizes = [64, 128, 256]
-	early_stoppings = [0, 10]
-	scale_outputs = [True]
+	batch_sizes = [128]
+	early_stoppings = [0, 5, 10]
+	scale_outputs = [False]
 
 	lowest_rmsd = 1000
 	best_index = -1
@@ -125,4 +125,4 @@ def run_train():
 	train(model_id='22', train_set=train_set, validation_set=validation_set, config=config)
 
 if __name__ == '__main__':
-	parameter_search('models/search-relu/')
+	parameter_search('models/search-relu2/')
