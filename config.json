@@ -6,15 +6,23 @@
   "hidden_layers": [
     {
       "type": "fc",
-      "units": 150
+      "units": 128
     },
     {
       "type": "fc",
-      "units": 150
+      "units": 256
     },
     {
       "type": "fc",
-      "units": 150
+      "units": 512
+    },
+    {
+      "type": "fc",
+      "units": 256
+    },
+    {
+      "type": "fc",
+      "units": 128
     }
   ],
   "no_dwis": 288,

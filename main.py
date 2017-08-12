@@ -66,7 +66,7 @@ def parameter_search(dir='models/search/'):
 
 	learning_rates = [5e-6, 1e-5, 5e-5, 1e-4, 5e-4]
 	batch_sizes = [32, 64, 128, 256]
-	early_stoppings = [10, 15, 20]
+	early_stoppings = [0]
 	scale_outputs = [True]
 
 	lowest_rmsd = 1000
