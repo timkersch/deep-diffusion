@@ -3,6 +3,7 @@
   "batch_size": 128,
   "scale_inputs": true,
   "scale_outputs": true,
+  "activation_function": "relu",
   "hidden_layers": [
     {
       "type": "fc",
