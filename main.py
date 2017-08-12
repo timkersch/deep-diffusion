@@ -64,7 +64,7 @@ def parameter_search(dir='models/search/'):
 		config = json.load(data_file)
 	train_set, validation_set, test_set = dataset.load_dataset(config['no_dwis'], split_ratio=(0.8, 0.15, 0.05))
 
-	learning_rates = [1e-6, 5e-6, 1e-5, 5e-5, 1e-4]
+	learning_rates = [5e-6, 1e-5, 5e-5, 1e-4]
 	batch_sizes = [128]
 	early_stoppings = [0, 5, 10]
 	scale_outputs = [False]

@@ -3,7 +3,7 @@
   "batch_size": 128,
   "scale_inputs": false,
   "scale_outputs": false,
-  "normalize_inputs": false,
+  "normalize": false,
   "activation_function": "relu",
   "hidden_layers": [
     {
