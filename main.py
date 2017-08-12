@@ -34,7 +34,7 @@ def train(model_id, train_set, validation_set, config, super_dir='models/', show
 
 	# Create neural network model
 	network = FCNet(input_var, target_var, config)
-	network.train(train_set[0], train_set[1], validation_set[0], validation_set[1], no_epochs=config['no_epochs'], outfile=outfile)
+	network.train(train_set[0], train_set[1], validation_set[0], validation_set[1], outfile=outfile)
 
 	train_pred = network.predict(train_set[0])
 	validation_pred = network.predict(validation_set[0])

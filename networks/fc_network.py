@@ -14,7 +14,6 @@ class FCNet:
 
 		self.in_scaler = None
 		self.out_scaler = None
-
 		self.normalizer = None
 
 		self.val_loss = []
@@ -46,15 +45,14 @@ class FCNet:
 		prediction = lasagne.layers.get_output(self.network)
 		loss = lasagne.objectives.squared_error(prediction, target_var).mean()
 
-		params = lasagne.layers.get_all_params(self.network, trainable=True)
+		test_prediction = lasagne.layers.get_output(self.network, deterministic=True)
+		test_loss = lasagne.objectives.squared_error(test_prediction, target_var).mean()
 
+		params = lasagne.layers.get_all_params(self.network, trainable=True)
 		if config['optimizer']['type'] == 'adam':
 			updates = lasagne.updates.adam(loss, params, config['optimizer']['learning_rate'], config['optimizer']['beta1'], config['optimizer']['beta2'], config['optimizer']['epsilon'])
 		elif config['optimizer']['type'] == 'momentum':
 			updates = lasagne.updates.momentum(loss, params, config['optimizer']['learning_rate'], config['optimizer']['momentum'])
-
-		test_prediction = lasagne.layers.get_output(self.network, deterministic=True)
-		test_loss = lasagne.objectives.squared_error(test_prediction, target_var).mean()
 
 		self.train_forward = theano.function([input_var, target_var], loss, updates=updates)
 		self.val_forward = theano.function([input_var, target_var], test_loss)
@@ -75,10 +73,11 @@ class FCNet:
 		self.train_loss = []
 		self.val_loss = []
 
-	def train(self, X_train, y_train, X_val, y_val, outfile=None, no_epochs=100, shuffle=True, log_nth=None):
+	def train(self, X_train, y_train, X_val, y_val, outfile=None, shuffle=True, log_nth=None):
 		early_stopping = self.config['early_stopping']
-		prev_net = lasagne.layers.get_all_param_values(self.network)
+		no_epochs = self.config['no_epochs']
 
+		# Preprocessing steps
 		if self.config['normalize']:
 			self.normalizer = StandardScaler()
 			self.normalizer.fit(X_train)
@@ -97,17 +96,20 @@ class FCNet:
 			y_train = self.out_scaler.transform(y_train)
 			y_val = self.out_scaler.transform(y_val)
 
+		# Begin training
+		prev_net = lasagne.layers.get_all_param_values(self.network)
 		for epoch in xrange(no_epochs):
 			print_and_append("Epoch {} of {}".format(epoch + 1, no_epochs), outfile)
 
-			train_loss, train_batches = self._train(X_train, y_train, shuffle=shuffle, log_nth=log_nth)
+			train_loss = self._train(X_train, y_train, shuffle=shuffle, log_nth=log_nth)
 			self.train_loss.append(train_loss)
-			print_and_append("  training loss:\t\t{:.6E}".format((train_loss / train_batches)), outfile)
+			print_and_append("  training loss:\t\t{:.6E}".format(train_loss), outfile)
 
-			val_loss, val_batches = self._val(X_val, y_val, shuffle=shuffle)
+			val_loss = self._val(X_val, y_val, shuffle=shuffle)
 			self.val_loss.append(val_loss)
-			print_and_append("  validation loss:\t\t{:.6E}".format((val_loss / val_batches)), outfile, new_line=True)
+			print_and_append("  validation loss:\t\t{:.6E}".format(val_loss), outfile, new_line=True)
 
+			# Check early stopping
 			if early_stopping >= 1 and (epoch+1) % early_stopping == 0 and len(self.val_loss) >= early_stopping * 2:
 				prev_val_loss = np.mean(self.val_loss[-early_stopping*2:-early_stopping])
 				current_val_loss = np.mean(self.val_loss[-early_stopping:])
@@ -129,18 +131,16 @@ class FCNet:
 				print('Iteration {}'.format(batch_index + 1))
 				print("  training loss:\t\t{:.20f}".format(train_loss / batch_index + 1))
 			batch_index += 1
-
-		return train_loss, batch_index
+		return train_loss / batch_index
 
 	def _val(self, X, y, shuffle=True):
 		val_loss = 0
 		batch_index = 0
 		for batch in self._iterate_minibatches(X, y, shuffle=shuffle):
 			inputs, targets = batch
-			loss = self.val_forward(inputs, targets)
-			val_loss += loss
+			val_loss += self.val_forward(inputs, targets)
 			batch_index += 1
-		return val_loss, batch_index
+		return val_loss / batch_index
 
 	def _iterate_minibatches(self, X, y, shuffle=True):
 		assert self.batch_size <= X.shape[0]
