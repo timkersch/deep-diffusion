@@ -9,6 +9,9 @@ import os
 import errno
 from utils import rmsd, print_and_append
 import cPickle as pickle
+import sys
+
+sys.setrecursionlimit(50000)
 
 
 def train(model_id, train_set, validation_set, config, super_dir='models/', show_plot=False):
