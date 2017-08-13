@@ -49,6 +49,8 @@ def train(model_id, train_set, validation_set, config, super_dir='models/', show
 	outfile.close()
 
 	# Make some plots of loss and accuracy
+	axes = plt.gca()
+	axes.set_ylim([-1e-6, 5e-3])
 	plt.plot(network.train_loss)
 	plt.plot(network.val_loss)
 	plt.ylabel('Loss')
@@ -94,7 +96,10 @@ def parameter_search(dir='models/search/'):
 
 					test_pred = model.predict(test_set[0])
 					rms_distance = rmse(test_set[1], test_pred)
-					print 'Test RMSE: {} \n'.format(rms_distance)
+					print 'Test RMSE: {}'.format(rms_distance)
+					print 'Test MSE: {}'.format(mse(test_set[1], test_pred))
+					print 'Test MAE: {}'.format(mae(test_set[1], test_pred))
+					print 'Test R2: {} \n'.format(r2(test_set[1], test_pred))
 
 					id_model_list.append({'id': index, 'rmse': rms_distance})
 
@@ -125,7 +130,8 @@ def run_train():
 	with open('config.json') as data_file:
 		config = json.load(data_file)
 	train_set, validation_set, test_set = dataset.load_dataset(config['no_dwis'], split_ratio=(0.8, 0.15, 0.05))
-	train(model_id='22', train_set=train_set, validation_set=validation_set, config=config)
+	train(model_id='test', train_set=train_set, validation_set=validation_set, config=config)
 
 if __name__ == '__main__':
-	parameter_search('models/search-relu2/')
+	#run_train()
+	parameter_search('models/search2/')

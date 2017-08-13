@@ -1,9 +1,9 @@
 {
-  "batch_norm": true,
+  "batch_norm": false,
   "batch_size": 128,
   "scale_inputs": false,
   "scale_outputs": false,
-  "normalize": false,
+  "normalize": true,
   "activation_function": "relu",
   "hidden_layers": [
     {
