@@ -4,6 +4,7 @@ import lasagne
 import numpy as np
 from utils import print_and_append
 from sklearn.preprocessing import MinMaxScaler, StandardScaler
+import time
 
 
 class FCNet:
@@ -99,6 +100,8 @@ class FCNet:
 		# Begin training
 		prev_net = lasagne.layers.get_all_param_values(self.network)
 		for epoch in xrange(no_epochs):
+			start_time = time.time()
+
 			print_and_append("Epoch {} of {}".format(epoch + 1, no_epochs), outfile)
 
 			train_loss = self._train(X_train, y_train, shuffle=shuffle, log_nth=log_nth)
@@ -107,7 +110,9 @@ class FCNet:
 
 			val_loss = self._val(X_val, y_val, shuffle=shuffle)
 			self.val_loss.append(val_loss)
-			print_and_append("  validation loss:\t\t{:.6E}".format(val_loss), outfile, new_line=True)
+			print_and_append("  validation loss:\t\t{:.6E}".format(val_loss), outfile)
+
+			print_and_append("Epoch took {:.3f}s".format(time.time() - start_time), outfile, new_line=True)
 
 			# Check early stopping
 			if early_stopping >= 1 and (epoch+1) % early_stopping == 0 and len(self.val_loss) >= early_stopping * 2:

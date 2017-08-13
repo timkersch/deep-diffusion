@@ -3,6 +3,7 @@ import numpy as np
 import nibabel as nib
 from matplotlib.pyplot import hist
 import matplotlib.pyplot as plt
+from sklearn.metrics import r2_score, mean_squared_error, mean_absolute_error
 
 hpc = './data/hpc_scanned_voxels.Bfloat'
 
@@ -93,8 +94,20 @@ def to_voxels(arr, channels=288, skip_ones=True):
 	return np.reshape(arr, (no_samples, 1, 1, 1, channels))
 
 
-def rmsd(t, y):
-	return np.sqrt(((y - t)*(y - t)).sum() / t.shape[0])
+def rmse(t, y):
+	return np.sqrt(mse(t, y))
+
+
+def mse(t, y):
+	return mean_squared_error(t, y)
+
+
+def r2(t, y):
+	return r2_score(t, y)
+
+
+def mae(t, y):
+	return mean_absolute_error(t, y)
 
 
 def print_and_append(string, outfile, new_line=False):
