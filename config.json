@@ -12,19 +12,19 @@
     },
     {
       "type": "fc",
+      "units": 128
+    },
+    {
+      "type": "fc",
+      "units": 256
+    },
+    {
+      "type": "fc",
       "units": 256
     },
     {
       "type": "fc",
       "units": 512
-    },
-    {
-      "type": "fc",
-      "units": 256
-    },
-    {
-      "type": "fc",
-      "units": 128
     }
   ],
   "no_dwis": 288,
