@@ -1,0 +1,11 @@
+{
+    "cylinder_rad": 1.7738986193833778e-07, 
+    "cylinder_sep": 2.1e-06, 
+    "dir_name": "./data/gen/220/", 
+    "out_name": "./data/gen/220/cylinders.bfloat", 
+    "p": 0.0, 
+    "scheme_path": "hpc.scheme", 
+    "tmax": 1000, 
+    "voxels": 100, 
+    "walkers": 100000
+}
