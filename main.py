@@ -133,5 +133,4 @@ def run_train():
 	train(model_id='test', train_set=train_set, validation_set=validation_set, config=config)
 
 if __name__ == '__main__':
-	#run_train()
-	parameter_search('models/search2/')
+	parameter_search('models/search4/')

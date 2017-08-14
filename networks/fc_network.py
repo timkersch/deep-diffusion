@@ -122,8 +122,7 @@ class FCNet:
 					lasagne.layers.set_all_param_values(self.network, prev_net)
 					print_and_append("Early stopping, val-loss increased over the last {} epochs from {} to {}".format(early_stopping, prev_val_loss, current_val_loss), outfile)
 					return
-
-			prev_net = lasagne.layers.get_all_param_values(self.network)
+				prev_net = lasagne.layers.get_all_param_values(self.network)
 
 	def _train(self, X, y, shuffle=True, log_nth=None):
 		train_loss = 0
