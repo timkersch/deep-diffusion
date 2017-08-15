@@ -20,6 +20,14 @@
     {
       "type": "fc",
       "units": 512
+    },
+    {
+      "type": "fc",
+      "units": 512
+    },
+    {
+      "type": "fc",
+      "units": 512
     }
   ],
   "no_dwis": 288,

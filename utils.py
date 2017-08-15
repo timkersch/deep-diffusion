@@ -56,6 +56,11 @@ def plot_features():
 		plt.show()
 
 
+def plot_targets(targets):
+	n, bins, patches = hist(targets, bins='auto', range=None, normed=False, weights=None, cumulative=False, bottom=None)
+	plt.show()
+
+
 def _load_data(file_list, target_list):
 	X = np.empty((len(file_list) * 1000, 288))
 	y = np.empty((len(file_list) * 1000, 2))

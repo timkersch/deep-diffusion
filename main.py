@@ -48,8 +48,6 @@ def train(model_id, train_set, validation_set, config, super_dir='models/', show
 	save(dir + 'model.p', network)
 
 	# Make some plots of loss and accuracy
-	#axes = plt.gca()
-	#axes.set_ylim([-1e-6, 5e-3])
 	plt.plot(network.train_loss)
 	plt.plot(network.val_loss)
 	plt.ylabel('Loss')
@@ -69,8 +67,8 @@ def parameter_search(dir='models/search/'):
 	train_set, validation_set, test_set = dataset.load_dataset(config['no_dwis'], split_ratio=(0.6, 0.2, 0.2))
 
 	learning_rates = [1e-6, 5e-6, 1e-5, 5e-5, 1e-4, 5e-4, 1e-3]
-	batch_sizes = [64, 256, 512]
-	early_stoppings = [0, 10]
+	batch_sizes = [64, 256, 512, 1024]
+	early_stoppings = [0]
 
 	id_model_list = []
 	lowest_rmse = 1000
@@ -107,6 +105,12 @@ def parameter_search(dir='models/search/'):
 
 				index += 1
 
+	plt.plot([k['id'] for i, k in enumerate(id_model_list)], [k['rmse'] for i, k in enumerate(id_model_list)], 'bo')
+	plt.ylabel('Test RMSE')
+	plt.xlabel('Model ID')
+	plt.savefig(dir + 'model-rmse-plot')
+	plt.close()
+
 	id_model_list = sorted(id_model_list, key=lambda obj: obj['rmse'])
 	with open(dir + 'res.json', 'w') as outfile:
 		json.dump(id_model_list, outfile, indent=4)
@@ -114,7 +118,7 @@ def parameter_search(dir='models/search/'):
 
 
 def load(path):
-	network = pickle.load(open(path, "rb" ))
+	network = pickle.load(open(path, "rb"))
 	return network
 
 
@@ -130,5 +134,5 @@ def run_train():
 	outfile.close()
 
 if __name__ == '__main__':
-	parameter_search('models/search8/')
+	parameter_search('models/search9/')
 	#run_train()
