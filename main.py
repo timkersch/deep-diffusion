@@ -46,11 +46,10 @@ def train(model_id, train_set, validation_set, config, super_dir='models/', show
 	print_and_append('Validation RMSE: ' + str(rmse(validation_set[1], validation_pred)), outfile)
 
 	save(dir + 'model.p', network)
-	outfile.close()
 
 	# Make some plots of loss and accuracy
-	axes = plt.gca()
-	axes.set_ylim([-1e-6, 5e-3])
+	#axes = plt.gca()
+	#axes.set_ylim([-1e-6, 5e-3])
 	plt.plot(network.train_loss)
 	plt.plot(network.val_loss)
 	plt.ylabel('Loss')
@@ -61,7 +60,7 @@ def train(model_id, train_set, validation_set, config, super_dir='models/', show
 	plt.savefig(dir + 'loss-plot')
 	plt.close()
 
-	return network
+	return network, outfile
 
 
 def parameter_search(dir='models/search/'):
@@ -69,10 +68,10 @@ def parameter_search(dir='models/search/'):
 		config = json.load(data_file)
 	train_set, validation_set, test_set = dataset.load_dataset(config['no_dwis'], split_ratio=(0.8, 0.15, 0.05))
 
-	learning_rates = [5e-6, 1e-5, 5e-5, 1e-4]
-	batch_sizes = [128, 256, 512]
-	early_stoppings = [0, 5, 10]
-	scale_outputs = [False, True]
+	learning_rates = [1e-5, 5e-5, 1e-4, 5e-4, 1e-3]
+	batch_sizes = [256, 512]
+	early_stoppings = [0, 10]
+	scale_outputs = [True]
 
 	lowest_rmse = 1000
 	best_index = -1
@@ -92,14 +91,15 @@ def parameter_search(dir='models/search/'):
 					config['early_stopping'] = early_stopping
 					config['scale_outputs'] = scale_output
 
-					model = train(super_dir=dir, train_set=train_set, validation_set=validation_set, model_id=index, config=config, show_plot=False)
+					model, outfile = train(super_dir=dir, train_set=train_set, validation_set=validation_set, model_id=index, config=config, show_plot=False)
 
 					test_pred = model.predict(test_set[0])
 					rms_distance = rmse(test_set[1], test_pred)
-					print 'Test RMSE: {}'.format(rms_distance)
-					print 'Test MSE: {}'.format(mse(test_set[1], test_pred))
-					print 'Test MAE: {}'.format(mae(test_set[1], test_pred))
-					print 'Test R2: {} \n'.format(r2(test_set[1], test_pred))
+					print_and_append('Test RMSE: {}'.format(rms_distance), outfile)
+					print_and_append('Test MSE: {}'.format(mse(test_set[1], test_pred)), outfile)
+					print_and_append('Test MAE: {}'.format(mae(test_set[1], test_pred)), outfile)
+					print_and_append('Test R2: {} \n'.format(r2(test_set[1], test_pred)), outfile)
+					outfile.close()
 
 					id_model_list.append({'id': index, 'rmse': rms_distance})
 
@@ -130,7 +130,8 @@ def run_train():
 	with open('config.json') as data_file:
 		config = json.load(data_file)
 	train_set, validation_set, test_set = dataset.load_dataset(config['no_dwis'], split_ratio=(0.8, 0.15, 0.05))
-	train(model_id='test', train_set=train_set, validation_set=validation_set, config=config)
+	model, outfile = train(model_id='test', train_set=train_set, validation_set=validation_set, config=config)
+	outfile.close()
 
 if __name__ == '__main__':
-	parameter_search('models/search5/')
+	parameter_search('models/search6/')

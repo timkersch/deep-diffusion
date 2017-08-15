@@ -2,7 +2,7 @@
   "batch_norm": false,
   "batch_size": 128,
   "scale_inputs": false,
-  "scale_outputs": false,
+  "scale_outputs": true,
   "normalize": true,
   "activation_function": "relu",
   "hidden_layers": [
@@ -28,7 +28,7 @@
     }
   ],
   "no_dwis": 288,
-  "no_epochs": 100,
+  "no_epochs": 200,
   "early_stopping": 5,
   "optimizer": {
     "beta1": 0.9,
