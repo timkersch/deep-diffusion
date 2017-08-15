@@ -8,28 +8,28 @@ from sklearn.metrics import r2_score, mean_squared_error, mean_absolute_error
 hpc = './data/hpc_scanned_voxels.Bfloat'
 
 files = ['./data/old/1000voxels_uniform_p=0_rad=0.1E-6_sep=1.1E-6_HPC-scheme.bfloat',
-            './data/old/1000voxels_uniform_p=0_rad=0.1E-6_sep=2.1E-6_HPC-scheme.bfloat',
-            './data/old/1000voxels_uniform_p=0_rad=0.5E-6_sep=1.1E-6_HPC-scheme.bfloat',
-            './data/old/1000voxels_uniform_p=0_rad=1.5E-6_sep=3.1E-6_HPC-scheme.bfloat',
-            './data/old/1000voxels_uniform_p=0_rad=1E-6_sep=3.1E-6_HPC-scheme.bfloat',
-            './data/old/1000voxels_uniform_p=0_rad=2E-6_sep=4.1E-6_HPC-scheme.bfloat',
+			'./data/old/1000voxels_uniform_p=0_rad=0.1E-6_sep=2.1E-6_HPC-scheme.bfloat',
+			'./data/old/1000voxels_uniform_p=0_rad=0.5E-6_sep=1.1E-6_HPC-scheme.bfloat',
+			'./data/old/1000voxels_uniform_p=0_rad=1.5E-6_sep=3.1E-6_HPC-scheme.bfloat',
+			'./data/old/1000voxels_uniform_p=0_rad=1E-6_sep=3.1E-6_HPC-scheme.bfloat',
+			'./data/old/1000voxels_uniform_p=0_rad=2E-6_sep=4.1E-6_HPC-scheme.bfloat',
 			'./data/old/1000voxels_uniform_p=0_rad=1.5E-7_sep=1.1E-6_HPC-scheme.bfloat',
-             './data/old/1000voxels_uniform_p=0_rad=1E-7_sep=1.1E-6_HPC-scheme.bfloat',
-             './data/old/1000voxels_uniform_p=0_rad=1E-8_sep=1.1E-6_HPC-scheme.bfloat',
-             './data/old/1000voxels_uniform_p=0_rad=2E-7_sep=1.1E-6_HPC-scheme.bfloat',
-             './data/old/1000voxels_uniform_p=0_rad=5E-8_sep=1.1E-6_HPC-scheme.bfloat']
+			 './data/old/1000voxels_uniform_p=0_rad=1E-7_sep=1.1E-6_HPC-scheme.bfloat',
+			 './data/old/1000voxels_uniform_p=0_rad=1E-8_sep=1.1E-6_HPC-scheme.bfloat',
+			 './data/old/1000voxels_uniform_p=0_rad=2E-7_sep=1.1E-6_HPC-scheme.bfloat',
+			 './data/old/1000voxels_uniform_p=0_rad=5E-8_sep=1.1E-6_HPC-scheme.bfloat']
 
 targets = [(0.1E-6, 1.1E-6),
-               (0.1E-6, 2.1E-6),
-               (0.5E-6, 1.1E-6),
-               (1.5E-6, 3.1E-6),
-               (1E-6, 3.1E-6),
-               (2E-6, 4.1E-6),
-               (1.5E-7, 1.1E-6),
-               (1E-7, 1.1E-6),
-               (1E-8, 1.1E-6),
-               (2E-7, 1.1E-6),
-               (5E-8, 1.1E-6)]
+			   (0.1E-6, 2.1E-6),
+			   (0.5E-6, 1.1E-6),
+			   (1.5E-6, 3.1E-6),
+			   (1E-6, 3.1E-6),
+			   (2E-6, 4.1E-6),
+			   (1.5E-7, 1.1E-6),
+			   (1E-7, 1.1E-6),
+			   (1E-8, 1.1E-6),
+			   (2E-7, 1.1E-6),
+			   (5E-8, 1.1E-6)]
 
 
 def get_data(split_ratio=0.7):

@@ -10,6 +10,7 @@ import errno
 from utils import rmse, mse, mae, r2, print_and_append
 import cPickle as pickle
 import sys
+import numpy as np
 
 sys.setrecursionlimit(50000)
 
@@ -95,7 +96,7 @@ def parameter_search(dir='models/search/'):
 				print_and_append('Test R2: {} \n'.format(r2(test_set[1], test_pred)), outfile)
 				outfile.close()
 
-				id_model_list.append({'id': index, 'rmse': rms_distance})
+				id_model_list.append({'id': index, 'rmse': np.asscalar(rms_distance)})
 
 				if rms_distance < lowest_rmse:
 					lowest_rmse = rms_distance
@@ -134,5 +135,5 @@ def run_train():
 	outfile.close()
 
 if __name__ == '__main__':
-	parameter_search('models/search9/')
+	parameter_search('models/search7/')
 	#run_train()

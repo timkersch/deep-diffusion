@@ -12,7 +12,6 @@ class FCNet:
 
 	def __init__(self, input_var, target_var, config):
 		self.config = config
-		self.batch_size = config['batch_size']
 
 		self.in_scaler = None
 		self.out_scaler = None
@@ -21,7 +20,7 @@ class FCNet:
 		self.val_loss = []
 		self.train_loss = []
 
-		l_in = lasagne.layers.InputLayer(shape=(self.batch_size, config['no_dwis']), input_var=input_var)
+		l_in = lasagne.layers.InputLayer(shape=(config['batch_size'], config['no_dwis']), input_var=input_var)
 
 		hidden_layers = config['hidden_layers']
 		prev_layer = l_in
@@ -75,13 +74,12 @@ class FCNet:
 		# Scale output back
 		if self.out_scaler is not None:
 			pred = self.out_scaler.inverse_transform(pred)
+
 		return pred
 
-	def reset(self):
-		self.train_loss = []
-		self.val_loss = []
-
 	def train(self, X_train, y_train, X_val, y_val, outfile=None, shuffle=True, log_nth=None):
+		self.reset()
+
 		early_stopping = self.config['early_stopping']
 		no_epochs = self.config['no_epochs']
 
@@ -127,6 +125,7 @@ class FCNet:
 				if current_val_loss > prev_val_loss:
 					lasagne.layers.set_all_param_values(self.network, prev_net)
 					print_and_append("Early stopping, val-loss increased over the last {} epochs from {} to {}".format(early_stopping, prev_val_loss, current_val_loss), outfile)
+					print_and_append("Saving model from epoch {}".format(epoch + 1 - early_stopping), outfile)
 					return
 				prev_net = lasagne.layers.get_all_param_values(self.network)
 
@@ -153,17 +152,22 @@ class FCNet:
 		return val_loss / batch_index
 
 	def _iterate_minibatches(self, X, y, shuffle=True):
-		assert self.batch_size <= X.shape[0]
+		batch_size = self.config['batch_size']
+		assert batch_size <= X.shape[0]
 		assert len(X) == len(y)
 		if shuffle:
 			indices = np.arange(len(X))
 			np.random.shuffle(indices)
-		for start_idx in range(0, len(X) - self.batch_size + 1, self.batch_size):
+		for start_idx in range(0, len(X) - batch_size + 1, batch_size):
 			if shuffle:
-				excerpt = indices[start_idx:start_idx + self.batch_size]
+				excerpt = indices[start_idx:start_idx + batch_size]
 			else:
-				excerpt = slice(start_idx, start_idx + self.batch_size)
+				excerpt = slice(start_idx, start_idx + batch_size)
 			yield X[excerpt], y[excerpt]
+
+	def reset(self):
+		self.train_loss = []
+		self.val_loss = []
 
 	def save(self, filename):
 		np.savez(filename, *lasagne.layers.get_all_param_values(self.network))
