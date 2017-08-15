@@ -82,7 +82,7 @@ def parameter_search(dir='models/search/'):
 	for early_stopping in early_stoppings:
 		for batch_size in batch_sizes:
 			for learning_rate in learning_rates:
-				print "Fitting model {} of {} with l-rate: {} batch-size: {} e-stopping: {} scale-out: {}".format(index, no_configs, learning_rate, batch_size, early_stopping)
+				print "Fitting model {} of {} with l-rate: {} batch-size: {} e-stopping: {}".format(index, no_configs, learning_rate, batch_size, early_stopping)
 				config['optimizer']['learning_rate'] = learning_rate
 				config['batch_size'] = batch_size
 				config['early_stopping'] = early_stopping
