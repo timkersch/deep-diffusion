@@ -70,9 +70,9 @@ def parameter_search(dir='models/search/'):
 	train_set, validation_set, test_set = dataset.load_dataset(config['no_dwis'], split_ratio=(0.8, 0.15, 0.05))
 
 	learning_rates = [5e-6, 1e-5, 5e-5, 1e-4]
-	batch_sizes = [128]
+	batch_sizes = [128, 256, 512]
 	early_stoppings = [0, 5, 10]
-	scale_outputs = [False]
+	scale_outputs = [False, True]
 
 	lowest_rmse = 1000
 	best_index = -1
@@ -133,4 +133,4 @@ def run_train():
 	train(model_id='test', train_set=train_set, validation_set=validation_set, config=config)
 
 if __name__ == '__main__':
-	parameter_search('models/search4/')
+	parameter_search('models/search5/')
