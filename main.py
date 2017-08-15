@@ -15,8 +15,8 @@ sys.setrecursionlimit(50000)
 
 
 def train(model_id, train_set, validation_set, config, super_dir='models/', show_plot=False):
-	input_var = T.dmatrix('inputs')
-	target_var = T.dmatrix('targets')
+	input_var = T.fmatrix('inputs')
+	target_var = T.fmatrix('targets')
 
 	model_id = str(model_id)
 	if not os.path.exists(super_dir + model_id):
