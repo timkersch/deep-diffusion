@@ -5,6 +5,7 @@ import numpy as np
 from utils import print_and_append
 from sklearn.preprocessing import MinMaxScaler, StandardScaler
 import time
+import theano.tensor as T
 
 
 class FCNet:
@@ -35,7 +36,7 @@ class FCNet:
 				elif config ['activation_function'] == 'tanh':
 					layer = lasagne.layers.DenseLayer(prev_layer, num_units=layer['units'], W=lasagne.init.GlorotNormal(1.0), nonlinearity=lasagne.nonlinearities.tanh)
 
-				if config['batch_norm'] == True:
+				if config['batch_norm']:
 					prev_layer = lasagne.layers.batch_norm(layer)
 				else:
 					prev_layer = layer
@@ -44,10 +45,10 @@ class FCNet:
 		self.network = l_out
 
 		prediction = lasagne.layers.get_output(self.network)
-		loss = lasagne.objectives.squared_error(prediction, target_var).mean()
+		loss = T.sqrt(lasagne.objectives.squared_error(prediction, target_var).mean())
 
 		test_prediction = lasagne.layers.get_output(self.network, deterministic=True)
-		test_loss = lasagne.objectives.squared_error(test_prediction, target_var).mean()
+		test_loss = T.sqrt(lasagne.objectives.squared_error(test_prediction, target_var).mean())
 
 		params = lasagne.layers.get_all_params(self.network, trainable=True)
 		if config['optimizer']['type'] == 'adam':
@@ -61,11 +62,17 @@ class FCNet:
 		self.predict_fun = theano.function([input_var], test_prediction)
 
 	def predict(self, data):
-		if self.normalizer is not None:
-			data = self.normalizer.transform(data)
+		# Normalize input
+		data = self.normalizer.transform(data)
+
+		# Scale input
 		if self.in_scaler is not None:
 			data = self.in_scaler.transform(data)
+
+		# Make prediction
 		pred = self.predict_fun(data)
+
+		# Scale output back
 		if self.out_scaler is not None:
 			pred = self.out_scaler.inverse_transform(pred)
 		return pred
@@ -79,20 +86,19 @@ class FCNet:
 		no_epochs = self.config['no_epochs']
 
 		# Preprocessing steps
-		if self.config['normalize']:
-			self.normalizer = StandardScaler()
-			self.normalizer.fit(X_train)
-			X_train = self.normalizer.transform(X_train)
-			X_val = self.normalizer.transform(X_val)
+		self.normalizer = StandardScaler(with_mean=self.config['normalize']['with_mean'], with_std=self.config['normalize']['with_std'])
+		self.normalizer.fit(X_train)
+		X_train = self.normalizer.transform(X_train)
+		X_val = self.normalizer.transform(X_val)
 
 		if self.config['scale_inputs']:
-			self.in_scaler = MinMaxScaler()
+			self.in_scaler = MinMaxScaler(-1, 1)
 			self.in_scaler.fit(X_train)
 			X_train = self.in_scaler.transform(X_train)
 			X_val = self.in_scaler.transform(X_val)
 
 		if self.config['scale_outputs']:
-			self.out_scaler = MinMaxScaler()
+			self.out_scaler = MinMaxScaler(-1, 1)
 			self.out_scaler.fit(y_train)
 			y_train = self.out_scaler.transform(y_train)
 			y_val = self.out_scaler.transform(y_val)

@@ -1,26 +1,21 @@
 {
-  "batch_norm": false,
-  "batch_size": 128,
+  "batch_norm": true,
+  "batch_size": 256,
   "scale_inputs": false,
-  "scale_outputs": true,
-  "normalize": true,
+  "scale_outputs": false,
+  "normalize": {
+    "with_mean": true,
+    "with_std": false
+  },
   "activation_function": "relu",
   "hidden_layers": [
     {
       "type": "fc",
-      "units": 128
+      "units": 512
     },
     {
       "type": "fc",
-      "units": 128
-    },
-    {
-      "type": "fc",
-      "units": 256
-    },
-    {
-      "type": "fc",
-      "units": 256
+      "units": 512
     },
     {
       "type": "fc",
@@ -28,8 +23,8 @@
     }
   ],
   "no_dwis": 288,
-  "no_epochs": 200,
-  "early_stopping": 5,
+  "no_epochs": 250,
+  "early_stopping": 10,
   "optimizer": {
     "beta1": 0.9,
     "beta2": 0.999,

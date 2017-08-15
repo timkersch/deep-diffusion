@@ -66,50 +66,46 @@ def train(model_id, train_set, validation_set, config, super_dir='models/', show
 def parameter_search(dir='models/search/'):
 	with open('config.json') as data_file:
 		config = json.load(data_file)
-	train_set, validation_set, test_set = dataset.load_dataset(config['no_dwis'], split_ratio=(0.8, 0.15, 0.05))
+	train_set, validation_set, test_set = dataset.load_dataset(config['no_dwis'], split_ratio=(0.6, 0.2, 0.2))
 
-	learning_rates = [1e-5, 5e-5, 1e-4, 5e-4, 1e-3]
-	batch_sizes = [256, 512]
+	learning_rates = [1e-6, 5e-6, 1e-5, 5e-5, 1e-4, 5e-4, 1e-3]
+	batch_sizes = [64, 256, 512]
 	early_stoppings = [0, 10]
-	scale_outputs = [True]
-
-	lowest_rmse = 1000
-	best_index = -1
 
 	id_model_list = []
-
+	lowest_rmse = 1000
+	best_index = -1
 	index = 1
-	no_configs = len(learning_rates)*len(batch_sizes)*len(scale_outputs)*len(early_stoppings)
+
+	no_configs = len(learning_rates)*len(batch_sizes)*len(early_stoppings)
 	print "Beginning grid search with {} configurations".format(no_configs)
-	for scale_output in scale_outputs:
-		for early_stopping in early_stoppings:
-			for batch_size in batch_sizes:
-				for learning_rate in learning_rates:
-					print "Fitting model {} of {} with l-rate: {} batch-size: {} e-stopping: {} scale-out: {}".format(index, no_configs, learning_rate, batch_size, early_stopping, scale_output)
-					config['optimizer']['learning_rate'] = learning_rate
-					config['batch_size'] = batch_size
-					config['early_stopping'] = early_stopping
-					config['scale_outputs'] = scale_output
+	for early_stopping in early_stoppings:
+		for batch_size in batch_sizes:
+			for learning_rate in learning_rates:
+				print "Fitting model {} of {} with l-rate: {} batch-size: {} e-stopping: {} scale-out: {}".format(index, no_configs, learning_rate, batch_size, early_stopping)
+				config['optimizer']['learning_rate'] = learning_rate
+				config['batch_size'] = batch_size
+				config['early_stopping'] = early_stopping
 
-					model, outfile = train(super_dir=dir, train_set=train_set, validation_set=validation_set, model_id=index, config=config, show_plot=False)
+				model, outfile = train(super_dir=dir, train_set=train_set, validation_set=validation_set, model_id=index, config=config, show_plot=False)
 
-					test_pred = model.predict(test_set[0])
-					rms_distance = rmse(test_set[1], test_pred)
-					print_and_append('Test RMSE: {}'.format(rms_distance), outfile)
-					print_and_append('Test MSE: {}'.format(mse(test_set[1], test_pred)), outfile)
-					print_and_append('Test MAE: {}'.format(mae(test_set[1], test_pred)), outfile)
-					print_and_append('Test R2: {} \n'.format(r2(test_set[1], test_pred)), outfile)
-					outfile.close()
+				test_pred = model.predict(test_set[0])
+				rms_distance = rmse(test_set[1], test_pred)
+				print_and_append('Test RMSE: {}'.format(rms_distance), outfile)
+				print_and_append('Test MSE: {}'.format(mse(test_set[1], test_pred)), outfile)
+				print_and_append('Test MAE: {}'.format(mae(test_set[1], test_pred)), outfile)
+				print_and_append('Test R2: {} \n'.format(r2(test_set[1], test_pred)), outfile)
+				outfile.close()
 
-					id_model_list.append({'id': index, 'rmse': rms_distance})
+				id_model_list.append({'id': index, 'rmse': rms_distance})
 
-					if rms_distance < lowest_rmse:
-						lowest_rmse = rms_distance
-						best_index = index
+				if rms_distance < lowest_rmse:
+					lowest_rmse = rms_distance
+					best_index = index
 
-					print 'Current best model is: {} with test RMSE: {} \n'.format(best_index, lowest_rmse)
+				print 'Current best model is: {} with test RMSE: {} \n'.format(best_index, lowest_rmse)
 
-					index += 1
+				index += 1
 
 	id_model_list = sorted(id_model_list, key=lambda obj: obj['rmse'])
 	with open(dir + 'res.json', 'w') as outfile:
@@ -129,9 +125,10 @@ def save(path, network):
 def run_train():
 	with open('config.json') as data_file:
 		config = json.load(data_file)
-	train_set, validation_set, test_set = dataset.load_dataset(config['no_dwis'], split_ratio=(0.8, 0.15, 0.05))
+	train_set, validation_set, test_set = dataset.load_dataset(config['no_dwis'], split_ratio=(0.6, 0.2, 0.2))
 	model, outfile = train(model_id='test', train_set=train_set, validation_set=validation_set, config=config)
 	outfile.close()
 
 if __name__ == '__main__':
-	parameter_search('models/search6/')
+	parameter_search('models/search8/')
+	#run_train()
