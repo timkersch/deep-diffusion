@@ -7,7 +7,7 @@ import theano.tensor as T
 import json
 import os
 import errno
-from utils import rmse, mse, mae, r2, print_and_append
+from utils import rmse, mae, r2, print_and_append
 import cPickle as pickle
 import sys
 import numpy as np
@@ -67,44 +67,133 @@ def parameter_search(dir='models/search/'):
 		config = json.load(data_file)
 	train_set, validation_set, test_set = dataset.load_dataset(config['no_dwis'], split_ratio=(0.6, 0.2, 0.2))
 
-	learning_rates = [1e-6, 5e-6, 1e-5, 5e-5, 1e-4, 5e-4, 1e-3]
-	batch_sizes = [64, 256, 512, 1024]
-	early_stoppings = [0]
+	learning_rates = 10 ** np.random.uniform(-6, -3, 20)
+	batch_norms = [False, True]
+	with_stds = [False, True]
+	layers = [
+		[
+			{
+				"type": "fc",
+				"units": 512
+			},
+			{
+				"type": "fc",
+				"units": 512
+			},
+			{
+				"type": "fc",
+				"units": 512
+			},
+			{
+				"type": "fc",
+				"units": 512
+			},
+			{
+				"type": "fc",
+				"units": 512
+			}
+		],
+
+		[
+			{
+				"type": "fc",
+				"units": 150
+			},
+			{
+				"type": "fc",
+				"units": 150
+			},
+			{
+				"type": "fc",
+				"units": 150
+			}
+		],
+
+		[
+			{
+				"type": "fc",
+				"units": 512
+			},
+			{
+				"type": "fc",
+				"units": 256
+			},
+			{
+				"type": "fc",
+				"units": 128
+			},
+			{
+				"type": "fc",
+				"units": 256
+			},
+			{
+				"type": "fc",
+				"units": 512
+			}
+		],
+
+		[
+			{
+				"type": "fc",
+				"units": 128
+			},
+			{
+				"type": "fc",
+				"units": 256
+			},
+			{
+				"type": "fc",
+				"units": 512
+			},
+			{
+				"type": "fc",
+				"units": 256
+			},
+			{
+				"type": "fc",
+				"units": 128
+			}
+		],
+	]
 
 	id_model_list = []
 	lowest_rmse = 1000
 	best_index = -1
 	index = 1
 
-	no_configs = len(learning_rates)*len(batch_sizes)*len(early_stoppings)
+	no_configs = len(learning_rates)*len(batch_norms)*len(with_stds)*len(layers)
 	print "Beginning grid search with {} configurations".format(no_configs)
-	for early_stopping in early_stoppings:
-		for batch_size in batch_sizes:
-			for learning_rate in learning_rates:
-				print "Fitting model {} of {} with l-rate: {} batch-size: {} e-stopping: {}".format(index, no_configs, learning_rate, batch_size, early_stopping)
-				config['optimizer']['learning_rate'] = learning_rate
-				config['batch_size'] = batch_size
-				config['early_stopping'] = early_stopping
+	for batch_norm in batch_norms:
+		for with_std in with_stds:
+			for layer in layers:
+				for learning_rate in learning_rates:
+					print "Fitting model {} of {} with l-rate: {}".format(index, no_configs, learning_rate)
+					config['optimizer']['learning_rate'] = learning_rate
+					config['normalize']['with_std'] = with_std
+					config['batch_norm'] = batch_norm
+					config['hidden_layers'] = layer
 
-				model, outfile = train(super_dir=dir, train_set=train_set, validation_set=validation_set, model_id=index, config=config, show_plot=False)
+					model, outfile = train(super_dir=dir, train_set=train_set, validation_set=validation_set, model_id=index, config=config, show_plot=False)
 
-				test_pred = model.predict(test_set[0])
-				rms_distance = rmse(test_set[1], test_pred)
-				print_and_append('Test RMSE: {}'.format(rms_distance), outfile)
-				print_and_append('Test MSE: {}'.format(mse(test_set[1], test_pred)), outfile)
-				print_and_append('Test MAE: {}'.format(mae(test_set[1], test_pred)), outfile)
-				print_and_append('Test R2: {} \n'.format(r2(test_set[1], test_pred)), outfile)
-				outfile.close()
+					test_pred = model.predict(test_set[0])
+					rms_error = rmse(test_set[1], test_pred)
+					ma_error = mae(test_set[1], test_pred)
+					r2_score = r2(test_set[1], test_pred)
 
-				id_model_list.append({'id': index, 'rmse': np.asscalar(rms_distance)})
+					id_model_list.append({'id': index, 'rmse': np.asscalar(rms_error), 'mae': np.asscalar(ma_error), 'r2': np.asscalar(r2_score)})
 
-				if rms_distance < lowest_rmse:
-					lowest_rmse = rms_distance
-					best_index = index
+					print_and_append('Test RMSE: {}'.format(rms_error), outfile)
+					print_and_append('Test MAE: {}'.format(ma_error), outfile)
+					print_and_append('Test R2: {} \n'.format(r2_score), outfile)
+					outfile.close()
 
-				print 'Current best model is: {} with test RMSE: {} \n'.format(best_index, lowest_rmse)
+					if rms_error < lowest_rmse:
+						lowest_rmse = rms_error
+						best_index = index
 
-				index += 1
+					print 'Current best model is: {} with test RMSE: {} \n'.format(best_index, lowest_rmse)
+
+					index += 1
 
 	plt.plot([k['id'] for i, k in enumerate(id_model_list)], [k['rmse'] for i, k in enumerate(id_model_list)], 'bo')
 	plt.ylabel('Test RMSE')
@@ -135,5 +224,5 @@ def run_train():
 	outfile.close()
 
 if __name__ == '__main__':
-	parameter_search('models/search7/')
+	parameter_search('models/big-search/')
 	#run_train()
