@@ -44,10 +44,10 @@ class FCNet:
 		self.network = l_out
 
 		prediction = lasagne.layers.get_output(self.network)
-		loss = T.sqrt(lasagne.objectives.squared_error(prediction, target_var).mean())
+		loss = lasagne.objectives.squared_error(prediction, target_var).mean()
 
 		test_prediction = lasagne.layers.get_output(self.network, deterministic=True)
-		test_loss = T.sqrt(lasagne.objectives.squared_error(test_prediction, target_var).mean())
+		test_loss = lasagne.objectives.squared_error(test_prediction, target_var).mean()
 
 		params = lasagne.layers.get_all_params(self.network, trainable=True)
 		if config['optimizer']['type'] == 'adam':

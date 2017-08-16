@@ -99,12 +99,11 @@ def to_voxels(arr, channels=288, skip_ones=True):
 	return np.reshape(arr, (no_samples, 1, 1, 1, channels))
 
 
-def rmse(t, y):
-	return np.sqrt(mse(t, y))
-
-
-def mse(t, y):
-	return mean_squared_error(t, y)
+def mse(t, y, rmse=False):
+	mse = mean_squared_error(t, y)
+	if rmse:
+		mse = mse ** 0.5
+	return mse
 
 
 def r2(t, y):

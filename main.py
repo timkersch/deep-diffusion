@@ -7,7 +7,7 @@ import theano.tensor as T
 import json
 import os
 import errno
-from utils import rmse, mae, r2, print_and_append
+from utils import mse, r2, print_and_append
 import cPickle as pickle
 import sys
 import numpy as np
@@ -43,9 +43,15 @@ def train(model_id, train_set, validation_set, config, super_dir='models/', show
 	train_pred = network.predict(train_set[0])
 	validation_pred = network.predict(validation_set[0])
 
-	print_and_append('Training RMSE: ' + str(rmse(train_set[1], train_pred)), outfile)
-	print_and_append('Validation RMSE: ' + str(rmse(validation_set[1], validation_pred)), outfile)
+	val_mse = mse(validation_set[1], validation_pred)
+	val_r2 = r2(validation_set[1], validation_pred)
 
+	print_and_append('Training MSE: ' + str(mse(train_set[1], train_pred)), outfile)
+	print_and_append('Validation MSE: ' + str(val_mse), outfile)
+	print_and_append('Training R2: ' + str(r2(train_set[1], train_pred)), outfile)
+	print_and_append('Validation R2: ' + str(val_r2), outfile)
+
+	outfile.close()
 	save(dir + 'model.p', network)
 
 	# Make some plots of loss and accuracy
@@ -59,7 +65,7 @@ def train(model_id, train_set, validation_set, config, super_dir='models/', show
 	plt.savefig(dir + 'loss-plot')
 	plt.close()
 
-	return network, outfile
+	return network, val_mse, val_r2
 
 
 def parameter_search(dir='models/search/'):
@@ -157,7 +163,7 @@ def parameter_search(dir='models/search/'):
 	]
 
 	id_model_list = []
-	lowest_rmse = 1000
+	lowest_mse = 1000
 	best_index = -1
 	index = 1
 
@@ -173,38 +179,28 @@ def parameter_search(dir='models/search/'):
 					config['batch_norm'] = batch_norm
 					config['hidden_layers'] = layer
 
-					model, outfile = train(super_dir=dir, train_set=train_set, validation_set=validation_set, model_id=index, config=config, show_plot=False)
+					model, val_mse, val_r2 = train(super_dir=dir, train_set=train_set, validation_set=validation_set, model_id=index, config=config, show_plot=False)
 
-					test_pred = model.predict(test_set[0])
-					rms_error = rmse(test_set[1], test_pred)
-					ma_error = mae(test_set[1], test_pred)
-					r2_score = r2(test_set[1], test_pred)
+					id_model_list.append({'id': index, 'mse': np.asscalar(val_mse), 'r2': np.asscalar(val_r2)})
 
-					id_model_list.append({'id': index, 'rmse': np.asscalar(rms_error), 'mae': np.asscalar(ma_error), 'r2': np.asscalar(r2_score)})
-
-					print_and_append('Test RMSE: {}'.format(rms_error), outfile)
-					print_and_append('Test MAE: {}'.format(ma_error), outfile)
-					print_and_append('Test R2: {} \n'.format(r2_score), outfile)
-					outfile.close()
-
-					if rms_error < lowest_rmse:
-						lowest_rmse = rms_error
+					if val_mse < lowest_mse:
+						lowest_mse = val_mse
 						best_index = index
 
-					print 'Current best model is: {} with test RMSE: {} \n'.format(best_index, lowest_rmse)
+					print 'Current best model is: {} with validation MSE: {} \n'.format(best_index, lowest_mse)
 
 					index += 1
 
-	plt.plot([k['id'] for i, k in enumerate(id_model_list)], [k['rmse'] for i, k in enumerate(id_model_list)], 'bo')
-	plt.ylabel('Test RMSE')
+	plt.plot([k['id'] for i, k in enumerate(id_model_list)], [k['mse'] for i, k in enumerate(id_model_list)], 'bo')
+	plt.ylabel('Validation MSE')
 	plt.xlabel('Model ID')
-	plt.savefig(dir + 'model-rmse-plot')
+	plt.savefig(dir + 'model-mse-plot')
 	plt.close()
 
-	id_model_list = sorted(id_model_list, key=lambda obj: obj['rmse'])
+	id_model_list = sorted(id_model_list, key=lambda obj: obj['mse'])
 	with open(dir + 'res.json', 'w') as outfile:
 		json.dump(id_model_list, outfile, indent=4)
-	print "Done... Best was model with index {} and test RMSE {}".format(best_index, lowest_rmse)
+	print "Done... Best was model with index {} and validation MSE {}".format(best_index, lowest_mse)
 
 
 def load(path):
@@ -220,9 +216,9 @@ def run_train():
 	with open('config.json') as data_file:
 		config = json.load(data_file)
 	train_set, validation_set, test_set = dataset.load_dataset(config['no_dwis'], split_ratio=(0.6, 0.2, 0.2))
-	model, outfile = train(model_id='test', train_set=train_set, validation_set=validation_set, config=config)
-	outfile.close()
+	model, _, _ = train(model_id='test', train_set=train_set, validation_set=validation_set, config=config)
+
 
 if __name__ == '__main__':
-	parameter_search('models/big-search/')
+	parameter_search('models/big-search-2-mse/')
 	#run_train()
