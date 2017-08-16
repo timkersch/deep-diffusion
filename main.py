@@ -67,7 +67,7 @@ def parameter_search(dir='models/search/'):
 		config = json.load(data_file)
 	train_set, validation_set, test_set = dataset.load_dataset(config['no_dwis'], split_ratio=(0.6, 0.2, 0.2))
 
-	learning_rates = 10 ** np.random.uniform(-6, -3, 20).astype(dtype=np.float32)
+	learning_rates = 10 ** np.random.uniform(-6, -3, 20)
 	batch_norms = [False, True]
 	with_stds = [False, True]
 	layers = [
@@ -168,7 +168,7 @@ def parameter_search(dir='models/search/'):
 			for layer in layers:
 				for learning_rate in learning_rates:
 					print "Fitting model {} of {} with l-rate: {}".format(index, no_configs, learning_rate)
-					config['optimizer']['learning_rate'] = learning_rate
+					config['optimizer']['learning_rate'] = np.asscalar(learning_rate)
 					config['normalize']['with_std'] = with_std
 					config['batch_norm'] = batch_norm
 					config['hidden_layers'] = layer
