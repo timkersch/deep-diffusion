@@ -7,7 +7,7 @@ import theano.tensor as T
 import json
 import os
 import errno
-from utils import mse, r2, print_and_append
+from utils import mse, mae, print_and_append
 import cPickle as pickle
 import sys
 import numpy as np
@@ -44,17 +44,19 @@ def train(model_id, train_set, validation_set, config, super_dir='models/', show
 	validation_pred = network.predict(validation_set[0])
 
 	val_mse = mse(validation_set[1], validation_pred)
-	val_r2 = r2(validation_set[1], validation_pred)
+	val_mae = mae(validation_set[1], validation_pred)
 
 	print_and_append('Training MSE: ' + str(mse(train_set[1], train_pred)), outfile)
 	print_and_append('Validation MSE: ' + str(val_mse), outfile)
-	print_and_append('Training R2: ' + str(r2(train_set[1], train_pred)), outfile)
-	print_and_append('Validation R2: ' + str(val_r2), outfile)
+	print_and_append('Training MAE: ' + str(mae(train_set[1], train_pred)), outfile)
+	print_and_append('Validation MAE: ' + str(val_mae), outfile)
 
 	outfile.close()
 	save(dir + 'model.p', network)
 
 	# Make some plots of loss and accuracy
+	axes = plt.gca()
+	axes.set_ylim(0, 10 * np.median(network.train_loss))
 	plt.plot(network.train_loss)
 	plt.plot(network.val_loss)
 	plt.ylabel('Loss')
@@ -65,7 +67,7 @@ def train(model_id, train_set, validation_set, config, super_dir='models/', show
 	plt.savefig(dir + 'loss-plot')
 	plt.close()
 
-	return network, val_mse, val_r2
+	return network, val_mse, val_mae
 
 
 def parameter_search(dir='models/search/'):
@@ -75,43 +77,33 @@ def parameter_search(dir='models/search/'):
 
 	learning_rates = 10 ** np.random.uniform(-6, -3, 20)
 	batch_norms = [False, True]
+	loss = ['l1', 'l2']
 	with_stds = [False, True]
 	layers = [
 		[
 			{
 				"type": "fc",
-				"units": 512
+				"units": 256
 			},
 			{
 				"type": "fc",
-				"units": 512
+				"units": 256
 			},
 			{
 				"type": "fc",
-				"units": 512
+				"units": 256
 			},
 			{
 				"type": "fc",
-				"units": 512
+				"units": 256
 			},
 			{
 				"type": "fc",
-				"units": 512
-			}
-		],
-
-		[
-			{
-				"type": "fc",
-				"units": 150
+				"units": 256
 			},
 			{
 				"type": "fc",
-				"units": 150
-			},
-			{
-				"type": "fc",
-				"units": 150
+				"units": 256
 			}
 		],
 
@@ -167,30 +159,34 @@ def parameter_search(dir='models/search/'):
 	best_index = -1
 	index = 1
 
-	no_configs = len(learning_rates)*len(batch_norms)*len(with_stds)*len(layers)
+	no_configs = len(learning_rates)*len(batch_norms)*len(with_stds)*len(layers)*len(loss)
 	print "Beginning grid search with {} configurations".format(no_configs)
 	for batch_norm in batch_norms:
 		for with_std in with_stds:
 			for layer in layers:
 				for learning_rate in learning_rates:
-					print "Fitting model {} of {} with l-rate: {}".format(index, no_configs, learning_rate)
-					config['optimizer']['learning_rate'] = np.asscalar(learning_rate)
-					config['normalize']['with_std'] = with_std
-					config['batch_norm'] = batch_norm
-					config['hidden_layers'] = layer
+					for l in loss:
+						print "Fitting model {} of {} with l-rate: {}".format(index, no_configs, learning_rate)
+						config['optimizer']['learning_rate'] = np.asscalar(learning_rate)
+						config['normalize']['with_std'] = with_std
+						config['batch_norm'] = batch_norm
+						config['hidden_layers'] = layer
+						config['loss'] = l
 
-					model, val_mse, val_r2 = train(super_dir=dir, train_set=train_set, validation_set=validation_set, model_id=index, config=config, show_plot=False)
+						model, val_mse, val_mae = train(super_dir=dir, train_set=train_set, validation_set=validation_set, model_id=index, config=config, show_plot=False)
 
-					id_model_list.append({'id': index, 'mse': np.asscalar(val_mse), 'r2': np.asscalar(val_r2)})
+						id_model_list.append({'id': index, 'mse': np.asscalar(val_mse), 'mae': np.asscalar(val_mae)})
 
-					if val_mse < lowest_mse:
-						lowest_mse = val_mse
-						best_index = index
+						if val_mse < lowest_mse:
+							lowest_mse = val_mse
+							best_index = index
 
-					print 'Current best model is: {} with validation MSE: {} \n'.format(best_index, lowest_mse)
+						print 'Current best model is: {} with validation MSE: {} \n'.format(best_index, lowest_mse)
 
-					index += 1
+						index += 1
 
+	axes = plt.gca()
+	axes.set_ylim(0, 10 * np.median([k['mse'] for i, k in enumerate(id_model_list)]))
 	plt.plot([k['id'] for i, k in enumerate(id_model_list)], [k['mse'] for i, k in enumerate(id_model_list)], 'bo')
 	plt.ylabel('Validation MSE')
 	plt.xlabel('Model ID')
@@ -220,5 +216,5 @@ def run_train():
 
 
 if __name__ == '__main__':
-	parameter_search('models/big-search-2-mse/')
+	parameter_search('models/loss-search/')
 	#run_train()

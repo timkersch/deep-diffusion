@@ -7,6 +7,7 @@
     "with_mean": true,
     "with_std": false
   },
+  "loss": "l2",
   "activation_function": "relu",
   "hidden_layers": [
     {
@@ -31,7 +32,7 @@
     }
   ],
   "no_dwis": 288,
-  "no_epochs": 500,
+  "no_epochs": 250,
   "early_stopping": 0,
   "optimizer": {
     "beta1": 0.9,

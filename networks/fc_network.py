@@ -44,10 +44,14 @@ class FCNet:
 		self.network = l_out
 
 		prediction = lasagne.layers.get_output(self.network)
-		loss = lasagne.objectives.squared_error(prediction, target_var).mean()
-
 		test_prediction = lasagne.layers.get_output(self.network, deterministic=True)
-		test_loss = lasagne.objectives.squared_error(test_prediction, target_var).mean()
+
+		if config['loss'] == 'l2':
+			loss = lasagne.objectives.squared_error(prediction, target_var).mean()
+			test_loss = lasagne.objectives.squared_error(test_prediction, target_var).mean()
+		elif config['loss'] == 'l1':
+			loss = FCNet._absolute_error(prediction, target_var).mean()
+			test_loss = FCNet._absolute_error(test_prediction, target_var).mean()
 
 		params = lasagne.layers.get_all_params(self.network, trainable=True)
 		if config['optimizer']['type'] == 'adam':
@@ -176,3 +180,9 @@ class FCNet:
 		with np.load(filename) as f:
 			param_values = [f['arr_%d' % i] for i in range(len(f.files))]
 			lasagne.layers.set_all_param_values(self.network, param_values)
+
+	@staticmethod
+	def _absolute_error(a, b):
+		a, b = lasagne.objectives.align_targets(a, b)
+		return T.abs_(a - b)
+
