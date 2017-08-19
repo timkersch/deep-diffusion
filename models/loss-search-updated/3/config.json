@@ -40,7 +40,7 @@
         "beta1": 0.9, 
         "beta2": 0.999, 
         "epsilon": 1e-08, 
-        "learning_rate": 8.784057047497718e-05, 
+        "learning_rate": 1.5915231350705552e-06, 
         "type": "adam"
     }, 
     "scale_inputs": false, 
