@@ -107,27 +107,23 @@ def mse(t, y, rmse=False):
 
 
 def diff_plot(targets, predictions, filename):
-	predabs = np.abs(predictions)
-	targabs = np.abs(targets)
-	indices = np.where(np.logical_not(np.logical_or(predabs * 10 > targets, predabs * 10 < targabs)))
+	indices = np.where(np.logical_not(np.logical_or(np.abs(predictions) > 10 * np.abs(targets), np.abs(predictions) < np.abs(targets) / 10.0)))
 
 	targets = targets[indices]
 	predictions = predictions[indices]
 
-	if targets.shape == 0:
-		return
-
-	fig, ax = plt.subplots()
-	fig.suptitle(str(targets.shape[0]) + ' samples, R2: ' + str(r2(targets, predictions)), fontsize=12)
-	axes = plt.gca()
-	axes.set_ylim(np.min(predictions), np.max(predictions))
-	axes.set_xlim(np.min(targets), np.max(targets))
-	ax.scatter(targets, predictions, edgecolors=(0, 0, 0))
-	ax.set_xlabel('Targets')
-	ax.set_ylabel('Predictions')
-	ax.plot([targets.min(), targets.max()], [targets.min(), targets.max()], 'k--', lw=4)
-	plt.savefig(filename)
-	plt.close()
+	if targets.shape[0] != 0:
+		fig, ax = plt.subplots()
+		fig.suptitle(str(targets.shape[0]) + ' samples, R2: ' + str(r2(targets, predictions)), fontsize=12)
+		axes = plt.gca()
+		axes.set_ylim(np.min(predictions), np.max(predictions))
+		axes.set_xlim(np.min(targets), np.max(targets))
+		ax.scatter(targets, predictions, edgecolors=(0, 0, 0))
+		ax.set_xlabel('Targets')
+		ax.set_ylabel('Predictions')
+		ax.plot([targets.min(), targets.max()], [targets.min(), targets.max()], 'k--', lw=4)
+		plt.savefig(filename)
+		plt.close()
 
 
 def loss_plot(train_loss, val_loss, filename, zoomed=False):
