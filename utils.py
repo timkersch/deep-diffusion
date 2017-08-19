@@ -109,9 +109,9 @@ def mse(t, y, rmse=False):
 def diff_plot(targets, predictions, filename):
 	median = np.median(predictions, axis=0)
 	if median > 0:
-		indices = np.where(np.logical_and(predictions >= -10 * median, predictions <= 10 * median))
+		indices = np.where(np.logical_and(predictions >= -2 * median, predictions <= 2 * median))
 	else:
-		indices = np.where(np.logical_and(predictions >= 10 * median, predictions <= -10 * median))
+		indices = np.where(np.logical_and(predictions >= 2 * median, predictions <= -2 * median))
 
 	targets = targets[indices]
 	predictions = predictions[indices]
