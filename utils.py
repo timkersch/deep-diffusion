@@ -107,6 +107,10 @@ def mse(t, y, rmse=False):
 
 
 def diff_plot(targets, predictions, filename):
+	indices = predictions <= 10 * np.median(predictions)
+	targets = targets[indices]
+	predictions = predictions[indices]
+
 	fig, ax = plt.subplots()
 	fig.suptitle(str(targets.shape[0]) + ' samples, R2: ' + str(r2(targets, predictions)), fontsize=12)
 	axes = plt.gca()
