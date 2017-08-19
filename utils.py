@@ -107,14 +107,15 @@ def mse(t, y, rmse=False):
 
 
 def diff_plot(targets, predictions, filename):
-	median = np.median(predictions, axis=0)
-	if median > 0:
-		indices = np.where(np.logical_and(predictions >= -2 * median, predictions <= 2 * median))
-	else:
-		indices = np.where(np.logical_and(predictions >= 2 * median, predictions <= -2 * median))
+	predabs = np.abs(predictions)
+	targabs = np.abs(targets)
+	indices = np.where(np.logical_not(np.logical_or(predabs * 10 > targets, predabs * 10 < targabs)))
 
 	targets = targets[indices]
 	predictions = predictions[indices]
+
+	if targets.shape == 0:
+		return
 
 	fig, ax = plt.subplots()
 	fig.suptitle(str(targets.shape[0]) + ' samples, R2: ' + str(r2(targets, predictions)), fontsize=12)
