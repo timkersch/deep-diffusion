@@ -108,6 +108,10 @@ def mse(t, y, rmse=False):
 
 def diff_plot(targets, predictions, filename):
 	fig, ax = plt.subplots()
+	fig.suptitle(str(targets.shape[0]) + ' samples, R2: ' + str(r2(targets, predictions)), fontsize=12)
+	axes = plt.gca()
+	axes.set_ylim(np.min(predictions), np.max(predictions))
+	axes.set_xlim(np.min(targets), np.max(targets))
 	ax.scatter(targets, predictions, edgecolors=(0, 0, 0))
 	ax.set_xlabel('Targets')
 	ax.set_ylabel('Predictions')

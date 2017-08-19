@@ -16,7 +16,7 @@ import numpy as np
 sys.setrecursionlimit(50000)
 
 
-def train(model_id, train_set, validation_set, config, super_dir='models/', show_plot=False):
+def train(model_id, train_set, validation_set, config, super_dir='models/'):
 	input_var = T.fmatrix('inputs')
 	target_var = T.fmatrix('targets')
 
@@ -60,7 +60,8 @@ def train(model_id, train_set, validation_set, config, super_dir='models/', show
 	utils.loss_plot(network.train_loss, network.val_loss, filename=dir + 'loss-plot-zoomed', zoomed=True)
 
 	indices = np.random.choice(validation_set[1].shape[0], 1000)
-	utils.diff_plot(validation_set[1][indices], validation_pred[indices], filename=dir + 'diff-plot')
+	utils.diff_plot(validation_set[1][indices], validation_pred[indices], filename=dir + 'validation-diff-plot')
+	utils.diff_plot(train_set[1][indices], train_pred[indices], filename=dir + 'train-diff-plot')
 
 	return network, val_mse, val_mae
 
@@ -168,7 +169,7 @@ def parameter_search(dir='models/search/'):
 						config['hidden_layers'] = layer
 						config['loss'] = l
 
-						model, val_mse, val_mae = train(super_dir=dir, train_set=train_set, validation_set=validation_set, model_id=index, config=config, show_plot=False)
+						model, val_mse, val_mae = train(super_dir=dir, train_set=train_set, validation_set=validation_set, model_id=index, config=config)
 
 						id_model_list.append({'id': index, 'mse': np.asscalar(val_mse), 'mae': np.asscalar(val_mae)})
 
@@ -211,5 +212,5 @@ def run_train():
 
 
 if __name__ == '__main__':
-	parameter_search('models/loss-search-updated/')
+	parameter_search('models/loss-search-updated-2/')
 	#run_train()
