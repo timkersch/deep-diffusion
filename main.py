@@ -54,7 +54,17 @@ def train(model_id, train_set, validation_set, config, super_dir='models/', show
 	outfile.close()
 	save(dir + 'model.p', network)
 
-	# Make some plots of loss and accuracy
+	# Make some plots of loss
+	plt.plot(network.train_loss)
+	plt.plot(network.val_loss)
+	plt.ylabel('Loss')
+	plt.xlabel('Epochs')
+	plt.legend(['Train', 'Val'], loc='upper right')
+	if show_plot:
+		plt.show()
+	plt.savefig(dir + 'loss-plot')
+	plt.close()
+
 	axes = plt.gca()
 	axes.set_ylim(0, 10 * np.median(network.train_loss))
 	plt.plot(network.train_loss)
@@ -64,7 +74,7 @@ def train(model_id, train_set, validation_set, config, super_dir='models/', show
 	plt.legend(['Train', 'Val'], loc='upper right')
 	if show_plot:
 		plt.show()
-	plt.savefig(dir + 'loss-plot')
+	plt.savefig(dir + 'loss-plot-zoomed')
 	plt.close()
 
 	return network, val_mse, val_mae
@@ -216,5 +226,5 @@ def run_train():
 
 
 if __name__ == '__main__':
-	parameter_search('models/loss-search/')
+	parameter_search('models/loss-search-updated/')
 	#run_train()

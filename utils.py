@@ -106,6 +106,16 @@ def mse(t, y, rmse=False):
 	return mse
 
 
+def diff_plot(dir, targets, predictions):
+	fig, ax = plt.subplots()
+	ax.scatter(targets, predictions, edgecolors=(0, 0, 0))
+	ax.set_xlabel('Targets')
+	ax.set_ylabel('Predictions')
+	ax.plot([targets.min(), targets.max()], [targets.min(), targets.max()], 'k--', lw=4)
+	plt.savefig(dir + 'diff-plot')
+	plt.close()
+
+
 def r2(t, y):
 	return r2_score(t, y)
 
