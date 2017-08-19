@@ -10,6 +10,7 @@ import errno
 from utils import mse, mae, print_and_append
 import cPickle as pickle
 import sys
+import utils
 import numpy as np
 
 sys.setrecursionlimit(50000)
@@ -54,28 +55,12 @@ def train(model_id, train_set, validation_set, config, super_dir='models/', show
 	outfile.close()
 	save(dir + 'model.p', network)
 
-	# Make some plots of loss
-	plt.plot(network.train_loss)
-	plt.plot(network.val_loss)
-	plt.ylabel('Loss')
-	plt.xlabel('Epochs')
-	plt.legend(['Train', 'Val'], loc='upper right')
-	if show_plot:
-		plt.show()
-	plt.savefig(dir + 'loss-plot')
-	plt.close()
+	# Make some plots
+	utils.loss_plot(network.train_loss, network.val_loss, filename=dir + 'loss-plot', zoomed=False)
+	utils.loss_plot(network.train_loss, network.val_loss, filename=dir + 'loss-plot-zoomed', zoomed=True)
 
-	axes = plt.gca()
-	axes.set_ylim(0, 10 * np.median(network.train_loss))
-	plt.plot(network.train_loss)
-	plt.plot(network.val_loss)
-	plt.ylabel('Loss')
-	plt.xlabel('Epochs')
-	plt.legend(['Train', 'Val'], loc='upper right')
-	if show_plot:
-		plt.show()
-	plt.savefig(dir + 'loss-plot-zoomed')
-	plt.close()
+	indices = np.random.choice(validation_set[1].shape[0], 1000)
+	utils.diff_plot(validation_set[1][indices], validation_pred[indices], filename=dir + 'diff-plot')
 
 	return network, val_mse, val_mae
 
