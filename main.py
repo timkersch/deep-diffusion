@@ -212,5 +212,5 @@ def run_train():
 
 
 if __name__ == '__main__':
-	parameter_search('models/loss-search-updated-2/')
+	parameter_search('models/loss-search-updated/')
 	#run_train()
