@@ -24,7 +24,7 @@ class FCNet:
 
 		hidden_layers = config['hidden_layers']
 		prev_layer = l_in
-		for layer in hidden_layers:
+		for index, layer in enumerate(hidden_layers):
 			if layer['type'] == 'dropout':
 				prev_layer = lasagne.layers.DropoutLayer(prev_layer, p=layer['p'])
 			elif layer['type'] == 'fc':
@@ -35,7 +35,7 @@ class FCNet:
 				elif config ['activation_function'] == 'tanh':
 					layer = lasagne.layers.DenseLayer(prev_layer, num_units=layer['units'], W=lasagne.init.GlorotNormal(1.0), nonlinearity=lasagne.nonlinearities.tanh)
 
-				if config['batch_norm']:
+				if config['batch_norm'] and index != len(hidden_layers)-1:
 					prev_layer = lasagne.layers.batch_norm(layer)
 				else:
 					prev_layer = layer
