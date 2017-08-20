@@ -7,7 +7,7 @@ import theano.tensor as T
 import json
 import os
 import errno
-from utils import mse, mae, print_and_append
+from utils import mse, r2, print_and_append
 import cPickle as pickle
 import sys
 import utils
@@ -45,12 +45,12 @@ def train(model_id, train_set, validation_set, config, super_dir='models/'):
 	validation_pred = network.predict(validation_set[0])
 
 	val_mse = mse(validation_set[1], validation_pred)
-	val_mae = mae(validation_set[1], validation_pred)
+	val_r2 = r2(validation_set[1], validation_pred)
 
 	print_and_append('Training MSE: ' + str(mse(train_set[1], train_pred)), outfile)
 	print_and_append('Validation MSE: ' + str(val_mse), outfile)
-	print_and_append('Training MAE: ' + str(mae(train_set[1], train_pred)), outfile)
-	print_and_append('Validation MAE: ' + str(val_mae), outfile)
+	print_and_append('Training R2: ' + str(r2(train_set[1], train_pred)), outfile)
+	print_and_append('Validation R2: ' + str(val_r2), outfile)
 
 	outfile.close()
 	save(dir + 'model.p', network)
@@ -63,7 +63,7 @@ def train(model_id, train_set, validation_set, config, super_dir='models/'):
 	utils.diff_plot(validation_set[1][indices], validation_pred[indices], filename=dir + 'validation-diff-plot')
 	utils.diff_plot(train_set[1][indices], train_pred[indices], filename=dir + 'train-diff-plot')
 
-	return network, val_mse, val_mae
+	return network, val_mse, val_r2
 
 
 def parameter_search(dir='models/search/'):
@@ -131,9 +131,9 @@ def parameter_search(dir='models/search/'):
 						config['scale_inputs'] = scale_in
 						config['scale_outputs'] = scale_out
 
-						model, val_mse, val_mae = train(super_dir=dir, train_set=train_set, validation_set=validation_set, model_id=index, config=config)
+						model, val_mse, val_r2 = train(super_dir=dir, train_set=train_set, validation_set=validation_set, model_id=index, config=config)
 
-						id_model_list.append({'id': index, 'mse': np.asscalar(val_mse), 'mae': np.asscalar(val_mae)})
+						id_model_list.append({'id': index, 'mse': np.asscalar(val_mse), 'r2': np.asscalar(val_r2)})
 
 						if val_mse < lowest_mse:
 							lowest_mse = val_mse
