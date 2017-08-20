@@ -29,7 +29,7 @@ def knn(X_train, y_train, X_val, y_val, X_hpc, class_index=0):
 
 def gp():
 	gp = GaussianProcessRegressor(alpha=1e-10, optimizer='fmin_l_bfgs_b', n_restarts_optimizer=0, normalize_y=False, copy_X_train=True, random_state=None)
-	train, validation, test = dataset.load_dataset(288, split_ratio=(0.8, 0.199, 0.001))
+	train, validation, test = dataset.load_dataset(288, split_ratio=(0.6, 0.2, 0.2))
 	gp = gp.fit(train[0], train[1])
 	print gp.score(train[0], train[1])
 	print gp.score(validation[0], validation[1])

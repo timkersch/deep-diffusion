@@ -72,35 +72,22 @@ def parameter_search(dir='models/search/'):
 	train_set, validation_set, test_set = dataset.load_dataset(config['no_dwis'], split_ratio=(0.6, 0.2, 0.2))
 
 	learning_rates = 10 ** np.random.uniform(-6, -3, 20)
-	batch_norms = [False, True]
-	loss = ['l1', 'l2']
-	with_stds = [False, True]
+	batch_size = [4096, 2046, 1024, 512, 128]
+	with_stds = [False]
 	layers = [
 		[
 			{
 				"type": "fc",
-				"units": 256
+				"units": 150
 			},
 			{
 				"type": "fc",
-				"units": 256
+				"units": 150
 			},
 			{
 				"type": "fc",
-				"units": 256
+				"units": 150
 			},
-			{
-				"type": "fc",
-				"units": 256
-			},
-			{
-				"type": "fc",
-				"units": 256
-			},
-			{
-				"type": "fc",
-				"units": 256
-			}
 		],
 
 		[
@@ -123,29 +110,6 @@ def parameter_search(dir='models/search/'):
 			{
 				"type": "fc",
 				"units": 512
-			}
-		],
-
-		[
-			{
-				"type": "fc",
-				"units": 128
-			},
-			{
-				"type": "fc",
-				"units": 256
-			},
-			{
-				"type": "fc",
-				"units": 512
-			},
-			{
-				"type": "fc",
-				"units": 256
-			},
-			{
-				"type": "fc",
-				"units": 128
 			}
 		],
 	]
@@ -155,31 +119,29 @@ def parameter_search(dir='models/search/'):
 	best_index = -1
 	index = 1
 
-	no_configs = len(learning_rates)*len(batch_norms)*len(with_stds)*len(layers)*len(loss)
+	no_configs = len(learning_rates)*len(with_stds)*len(layers)*len(batch_size)
 	print "Beginning grid search with {} configurations".format(no_configs)
-	for batch_norm in batch_norms:
-		for with_std in with_stds:
-			for layer in layers:
-				for learning_rate in learning_rates:
-					for l in loss:
-						print "Fitting model {} of {} with l-rate: {}".format(index, no_configs, learning_rate)
-						config['optimizer']['learning_rate'] = np.asscalar(learning_rate)
-						config['normalize']['with_std'] = with_std
-						config['batch_norm'] = batch_norm
-						config['hidden_layers'] = layer
-						config['loss'] = l
+	for with_std in with_stds:
+		for layer in layers:
+			for learning_rate in learning_rates:
+				for bs in batch_size:
+					print "Fitting model {} of {} with l-rate: {}".format(index, no_configs, learning_rate)
+					config['optimizer']['learning_rate'] = np.asscalar(learning_rate)
+					config['normalize']['with_std'] = with_std
+					config['hidden_layers'] = layer
+					config['batch_size'] = bs
 
-						model, val_mse, val_mae = train(super_dir=dir, train_set=train_set, validation_set=validation_set, model_id=index, config=config)
+					model, val_mse, val_mae = train(super_dir=dir, train_set=train_set, validation_set=validation_set, model_id=index, config=config)
 
-						id_model_list.append({'id': index, 'mse': np.asscalar(val_mse), 'mae': np.asscalar(val_mae)})
+					id_model_list.append({'id': index, 'mse': np.asscalar(val_mse), 'mae': np.asscalar(val_mae)})
 
-						if val_mse < lowest_mse:
-							lowest_mse = val_mse
-							best_index = index
+					if val_mse < lowest_mse:
+						lowest_mse = val_mse
+						best_index = index
 
-						print 'Current best model is: {} with validation MSE: {} \n'.format(best_index, lowest_mse)
+					print 'Current best model is: {} with validation MSE: {} \n'.format(best_index, lowest_mse)
 
-						index += 1
+					index += 1
 
 	axes = plt.gca()
 	axes.set_ylim(0, 10 * np.median([k['mse'] for i, k in enumerate(id_model_list)]))
@@ -212,5 +174,5 @@ def run_train():
 
 
 if __name__ == '__main__':
-	parameter_search('models/loss-search-updated/')
+	parameter_search('models/20-aug-1/')
 	#run_train()
