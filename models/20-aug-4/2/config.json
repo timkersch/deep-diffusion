@@ -1,0 +1,36 @@
+{
+    "activation_function": "relu", 
+    "batch_norm": true, 
+    "batch_size": 256, 
+    "early_stopping": 15, 
+    "hidden_layers": [
+        {
+            "type": "fc", 
+            "units": 150
+        }, 
+        {
+            "type": "fc", 
+            "units": 150
+        }, 
+        {
+            "type": "fc", 
+            "units": 150
+        }
+    ], 
+    "loss": "l2", 
+    "no_dwis": 288, 
+    "no_epochs": 500, 
+    "normalize": {
+        "with_mean": true, 
+        "with_std": false
+    }, 
+    "optimizer": {
+        "beta1": 0.9, 
+        "beta2": 0.999, 
+        "epsilon": 1e-08, 
+        "learning_rate": 1.5399132817824148e-05, 
+        "type": "adam"
+    }, 
+    "scale_inputs": true, 
+    "scale_outputs": true
+}
