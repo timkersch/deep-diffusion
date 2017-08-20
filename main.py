@@ -57,7 +57,6 @@ def train(model_id, train_set, validation_set, config, super_dir='models/'):
 
 	# Make some plots
 	utils.loss_plot(network.train_loss, network.val_loss, filename=dir + 'loss-plot', zoomed=False)
-	utils.loss_plot(network.train_loss, network.val_loss, filename=dir + 'loss-plot-zoomed', zoomed=True)
 
 	indices = np.random.choice(validation_set[1].shape[0], 1000)
 	utils.diff_plot(validation_set[1][indices], validation_pred[indices], filename=dir + 'validation-diff-plot')
@@ -71,46 +70,47 @@ def parameter_search(dir='models/search/'):
 		config = json.load(data_file)
 	train_set, validation_set, test_set = dataset.load_dataset(config['no_dwis'], split_ratio=(0.6, 0.2, 0.2))
 
-	learning_rates = 10 ** np.random.uniform(-6, -3, 20)
+	learning_rates = 10 ** np.random.uniform(-7, -4, 20)
+	batch_size = [128, 512]
 	scale_inputs = [True, False]
 	scale_outputs = [True, False]
 	layers = [
 		[
 			{
 				"type": "fc",
-				"units": 150
+				"units": 512
 			},
 			{
 				"type": "fc",
-				"units": 150
+				"units": 512
 			},
 			{
 				"type": "fc",
-				"units": 150
+				"units": 512
+			},
+			{
+				"type": "fc",
+				"units": 512
+			},
+			{
+				"type": "fc",
+				"units": 512
 			},
 		],
 
 		[
 			{
 				"type": "fc",
-				"units": 512
+				"units": 150
 			},
 			{
 				"type": "fc",
-				"units": 256
+				"units": 150
 			},
 			{
 				"type": "fc",
-				"units": 128
+				"units": 150
 			},
-			{
-				"type": "fc",
-				"units": 256
-			},
-			{
-				"type": "fc",
-				"units": 512
-			}
 		],
 	]
 
@@ -119,17 +119,19 @@ def parameter_search(dir='models/search/'):
 	best_index = -1
 	index = 1
 
-	no_configs = len(learning_rates)*len(scale_inputs)*len(layers)*len(scale_outputs)
+	no_configs = len(learning_rates)*len(scale_inputs)*len(layers)*len(scale_outputs)*len(batch_size)
 	print "Beginning grid search with {} configurations".format(no_configs)
 	for scale_in in scale_inputs:
 		for scale_out in scale_outputs:
-			for layer in layers:
-				for learning_rate in learning_rates:
+			for bs in batch_size:
+				for layer in layers:
+					for learning_rate in learning_rates:
 						print "Fitting model {} of {} with l-rate: {}".format(index, no_configs, learning_rate)
 						config['optimizer']['learning_rate'] = np.asscalar(learning_rate)
 						config['hidden_layers'] = layer
 						config['scale_inputs'] = scale_in
 						config['scale_outputs'] = scale_out
+						config['batch_size'] = bs
 
 						model, val_mse, val_r2 = train(super_dir=dir, train_set=train_set, validation_set=validation_set, model_id=index, config=config)
 
@@ -174,5 +176,5 @@ def run_train():
 
 
 if __name__ == '__main__':
-	parameter_search('models/20-aug-4/')
+	parameter_search('models/20-aug-5/')
 	#run_train()

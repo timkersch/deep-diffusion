@@ -106,11 +106,11 @@ def mse(t, y, rmse=False):
 	return mse
 
 
-def diff_plot(targets, predictions, filename):
-	indices = np.where(np.logical_not(np.logical_or(np.abs(predictions) > 10 * np.abs(targets), np.abs(predictions) < np.abs(targets) / 10.0)))
-
-	targets = targets[indices]
-	predictions = predictions[indices]
+def diff_plot(targets, predictions, filename, remove_outliers=False):
+	if remove_outliers:
+		indices = np.where(np.logical_not(np.logical_or(np.abs(predictions) > 10 * np.abs(targets), np.abs(predictions) < np.abs(targets) / 10.0)))
+		targets = targets[indices]
+		predictions = predictions[indices]
 
 	if targets.shape[0] != 0:
 		fig, ax = plt.subplots()

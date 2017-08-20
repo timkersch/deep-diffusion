@@ -1,8 +1,8 @@
 {
   "batch_norm": true,
   "batch_size": 256,
-  "scale_inputs": false,
-  "scale_outputs": false,
+  "scale_inputs": true,
+  "scale_outputs": true,
   "normalize": {
     "with_mean": true,
     "with_std": false
@@ -32,7 +32,7 @@
     }
   ],
   "no_dwis": 288,
-  "no_epochs": 500,
+  "no_epochs": 200,
   "early_stopping": 15,
   "optimizer": {
     "beta1": 0.9,
