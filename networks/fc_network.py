@@ -57,7 +57,7 @@ class FCNet:
 		if config['optimizer']['type'] == 'adam':
 			updates = lasagne.updates.adam(loss, params, config['optimizer']['learning_rate'], config['optimizer']['beta1'], config['optimizer']['beta2'], config['optimizer']['epsilon'])
 		elif config['optimizer']['type'] == 'momentum':
-			updates = lasagne.updates.momentum(loss, params, config['optimizer']['learning_rate'], config['optimizer']['momentum'])
+			updates = lasagne.updates.nesterov_momentum(loss, params, config['optimizer']['learning_rate'], config['optimizer']['momentum'])
 
 		self.train_forward = theano.function([input_var, target_var], loss, updates=updates)
 		self.val_forward = theano.function([input_var, target_var], test_loss)

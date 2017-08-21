@@ -1,6 +1,6 @@
 {
   "batch_norm": false,
-  "batch_size": 256,
+  "batch_size": 128,
   "scale_inputs": true,
   "scale_outputs": true,
   "normalize": {
