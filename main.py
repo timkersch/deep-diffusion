@@ -71,15 +71,8 @@ def parameter_search(dir='models/search/'):
 	train_set, validation_set, test_set = dataset.load_dataset(config['no_dwis'], split_ratio=(0.6, 0.2, 0.2))
 
 	learning_rates = 10 ** np.random.uniform(-7, -3, 20)
-	loss = ['l1', 'l2']
+	loss = ['l2', 'l1']
 	optimizer = [
-		{
-			"beta1": 0.9,
-			"beta2": 0.999,
-			"epsilon": 1e-08,
-			"learning_rate": 1e-04,
-			"type": "adam"
-		},
 		{
 			"momentum": 0.5,
 			"learning_rate": 1e-04,
@@ -99,6 +92,13 @@ def parameter_search(dir='models/search/'):
 			"momentum": 0.99,
 			"learning_rate": 1e-04,
 			"type": "momentum"
+		},
+		{
+			"beta1": 0.9,
+			"beta2": 0.999,
+			"epsilon": 1e-08,
+			"learning_rate": 1e-04,
+			"type": "adam"
 		}
 	]
 
