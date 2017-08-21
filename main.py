@@ -71,13 +71,21 @@ def parameter_search(dir='models/search/'):
 	train_set, validation_set, test_set = dataset.load_dataset(config['no_dwis'], split_ratio=(0.6, 0.2, 0.2))
 
 	learning_rates = 10 ** np.random.uniform(-6, -3.5, 10)
-	batch_size = [128]
-	scale_inputs = [True, False]
-	batch_norm = [False, True]
-	with_std = [False, True]
+	batch_size = [64, 128, 1024, 2048]
+	scale_inputs = [True]
+	batch_norm = [False]
+	with_std = [False]
 
 	layers = [
 		[
+			{
+				"type": "fc",
+				"units": 512
+			},
+			{
+				"type": "fc",
+				"units": 512
+			},
 			{
 				"type": "fc",
 				"units": 512
@@ -169,5 +177,5 @@ def run_train():
 
 
 if __name__ == '__main__':
-	parameter_search('models/21-aug-1/‘)
+	parameter_search('models/21-aug-1/')
 	#run_train()
