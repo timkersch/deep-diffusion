@@ -72,6 +72,7 @@ def parameter_search(dir='models/search/'):
 
 	learning_rates = 10 ** np.random.uniform(-7, -3, 20)
 	loss = ['l2', 'l1']
+	nonlinearity = ['tanh', 'relu']
 	optimizer = [
 		{
 			"momentum": 0.5,
@@ -106,32 +107,16 @@ def parameter_search(dir='models/search/'):
 		[
 			{
 				"type": "fc",
-				"units": 1024
+				"units": 150
 			},
 			{
 				"type": "fc",
-				"units": 1024
+				"units": 150
 			},
 			{
 				"type": "fc",
-				"units": 2048
-			},
-			{
-				"type": "fc",
-				"units": 2048
-			},
-			{
-				"type": "fc",
-				"units": 2048
-			},
-			{
-				"type": "fc",
-				"units": 1024
-			},
-			{
-				"type": "fc",
-				"units": 1024
-			},
+				"units": 150
+			}
 		],
 	]
 
@@ -142,27 +127,29 @@ def parameter_search(dir='models/search/'):
 
 	no_configs = len(learning_rates)*len(loss)*len(layers)*len(optimizer)
 	print "Beginning grid search with {} configurations".format(no_configs)
-	for optim in optimizer:
-		for l in loss:
-			for layer in layers:
-				for learning_rate in learning_rates:
-					print "Fitting model {} of {} with l-rate: {}".format(index, no_configs, learning_rate)
-					config['optimizer'] = optim
-					config['loss'] = l
-					config['optimizer']['learning_rate'] = np.asscalar(learning_rate)
-					config['hidden_layers'] = layer
+	for nonlin in nonlinearity:
+		for optim in optimizer:
+			for l in loss:
+				for layer in layers:
+					for learning_rate in learning_rates:
+						print "Fitting model {} of {} with l-rate: {}".format(index, no_configs, learning_rate)
+						config['optimizer'] = optim
+						config['loss'] = l
+						config['activation_function'] = nonlin
+						config['optimizer']['learning_rate'] = np.asscalar(learning_rate)
+						config['hidden_layers'] = layer
 
-					model, val_mse, val_r2 = train(super_dir=dir, train_set=train_set, validation_set=validation_set, model_id=index, config=config)
+						model, val_mse, val_r2 = train(super_dir=dir, train_set=train_set, validation_set=validation_set, model_id=index, config=config)
 
-					id_model_list.append({'id': index, 'mse': np.asscalar(val_mse), 'r2': np.asscalar(val_r2)})
+						id_model_list.append({'id': index, 'mse': np.asscalar(val_mse), 'r2': np.asscalar(val_r2)})
 
-					if val_mse < lowest_mse:
-						lowest_mse = val_mse
-						best_index = index
+						if val_mse < lowest_mse:
+							lowest_mse = val_mse
+							best_index = index
 
-					print 'Current best model is: {} with validation MSE: {} \n'.format(best_index, lowest_mse)
+						print 'Current best model is: {} with validation MSE: {} \n'.format(best_index, lowest_mse)
 
-					index += 1
+						index += 1
 
 	axes = plt.gca()
 	axes.set_ylim(0, 10 * np.median([k['mse'] for i, k in enumerate(id_model_list)]))
@@ -195,5 +182,5 @@ def run_train():
 
 
 if __name__ == '__main__':
-	parameter_search('models/22-aug-1/')
+	parameter_search('models/22-aug-2/')
 	#run_train()

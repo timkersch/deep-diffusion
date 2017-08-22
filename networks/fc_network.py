@@ -100,7 +100,7 @@ class FCNet:
 			X_val = self.in_scaler.transform(X_val)
 
 		if self.config['scale_outputs']:
-			self.out_scaler = MinMaxScaler(feature_range=(0, 1))
+			self.out_scaler = MinMaxScaler(feature_range=(-1, 1))
 			self.out_scaler.fit(y_train)
 			y_train = self.out_scaler.transform(y_train)
 			y_val = self.out_scaler.transform(y_val)
