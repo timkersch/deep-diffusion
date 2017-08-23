@@ -78,7 +78,7 @@ def parameter_search():
 		config = json.load(data_file)
 	train_set, validation_set, test_set = dataset.load_dataset(config['no_dwis'], split_ratio=(0.6, 0.2, 0.2))
 
-	learning_rates = 10 ** np.random.uniform(-5, -3, 20)
+	learning_rates = 10 ** np.random.uniform(-4, -3, 5)
 
 	id_model_list = []
 	lowest_mse = 1000
