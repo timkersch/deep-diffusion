@@ -126,5 +126,5 @@ def run_train():
 
 
 if __name__ == '__main__':
-	parameter_search('models/23-aug-1/')
-	#run_train()
+	#parameter_search('models/23-aug-1/')
+	run_train()
