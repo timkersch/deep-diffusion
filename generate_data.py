@@ -4,16 +4,19 @@ import errno
 import json
 import numpy as np
 import time
+import datetime
 
+# Seed the random generator
 np.random.seed(int(round(time.time())))
 
 
+# Mehtod that calls bash script which in turn calls camino to generate data
 def run(begin=0, no_iter=100, no_voxels=100, cylinder_rad_from=1E-8, cylinder_rad_to=1E-6, cylinder_sep_from=2.1E-6, cylinder_sep_to=2.1E-6):
 	print 'Begin data generation with ' + str(no_iter) + ' iterations and ' + str(no_voxels) + ' in every iteration'
 	for i in range(begin, begin + no_iter):
 		print('Running iteration ' + str(i+1 - begin) + ' of ' + str(no_iter))
 		print(time.strftime("%c"))
-		dirname = "./data/gen/" + str(i) + '/'
+		dirname = "./data/gen/" + str(i) + '-' + str(datetime.datetime.now().isoformat()) + '/'
 
 		radius = (cylinder_rad_to - cylinder_rad_from) * np.random.random_sample() + cylinder_rad_from
 		separation = (cylinder_sep_to - cylinder_sep_from) * np.random.random_sample() + cylinder_sep_from
@@ -22,6 +25,7 @@ def run(begin=0, no_iter=100, no_voxels=100, cylinder_rad_from=1E-8, cylinder_ra
 		_generate_data(config)
 
 
+# Helper method to call bash script
 def _generate_data(config):
 	if not os.path.exists(config['dir_name']):
 		try:
@@ -43,6 +47,7 @@ def _generate_data(config):
 	np.savetxt(config['dir_name'] + 'targets.txt', np.transpose([rad, sep]))
 
 
+# Generates a config over what is generated
 def _get_config(walkers=100000, tmax=1000, voxels=1, p=0.0, scheme_path='hpc.scheme', cylinder_rad=1E-6, cylinder_sep=2.1E-6, dir_name=''):
 	out_name = str(dir_name) + 'cylinders.bfloat'
 	obj = {

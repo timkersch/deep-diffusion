@@ -41,28 +41,35 @@
 ### Data generation
 Generate data with 100 iterations and 1000 voxels in every iteration
 
--i no. iteraions
--v no. voxels
+**-i** no. iteraions
+**-v** no. voxels
 
-python main generate -i 100 -v 1000
+`python main generate -i 100 -v 1000`
 
 ### Training
 Train with ./config.json as config file and save model in ./models/model2
 
--m where to save model
--c path to config file to use
+**-m** where to save model
+**-c** path to config file to use
 
-python main training -m ./models/model2 -c ./config.json
+`python main training -m ./models/model2 -c ./config.json`
 
 
 ### Inference
 Perform inference on voxels.bfloat with model.p, save output to predictions.txt
 
--d path to data in float32 bfloat format
--m path to model to perform inference
--f file on which to save the outputs
+**-d** path to data in float32 bfloat format
+**-m** path to model to perform inference
+**-f** file on which to save the outputs
 
-python main inference -d ./data/voxels.bfloat -m ./models/model1/model.p -f ./predictions.txt
+`python main inference -d ./data/voxels.bfloat -m ./models/model1/model.p -f ./predictions.txt`
+
+### Search
+Search for hyperparameters defined in parameter_search() in main.py
+
+`python main search`
+
+
 
 
 

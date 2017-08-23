@@ -3,6 +3,7 @@ import os
 import utils
 
 
+# Loads dataset from disk
 def load_dataset(dwis, dir_path='./data/gen/', split_ratio=(0.7, 0.2, 0.1), class_index=0):
 	folders = [folder for folder in os.listdir(dir_path) if folder != '.DS_Store']
 
@@ -24,6 +25,7 @@ def load_dataset(dwis, dir_path='./data/gen/', split_ratio=(0.7, 0.2, 0.1), clas
 	return _split(X, t[:, class_index].reshape(-1, 1), split_ratio)
 
 
+# Splits dataset into three folds (training, val, test)
 def _split(X, t, ratio=(0.7, 0.2, 0.1)):
 		no_samples = X.shape[0]
 		split = int(no_samples * ratio[0])

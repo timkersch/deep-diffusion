@@ -20,7 +20,7 @@ class FCNet:
 		self.val_loss = []
 		self.train_loss = []
 
-		l_in = lasagne.layers.InputLayer(shape=(config['batch_size'], config['no_dwis']), input_var=input_var)
+		l_in = lasagne.layers.InputLayer(shape=(config['batch_size'], config['no_dwis']), input_var=T_input_var)
 
 		hidden_layers = config['hidden_layers']
 		prev_layer = l_in

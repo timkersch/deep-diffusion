@@ -19,6 +19,7 @@ import datetime
 sys.setrecursionlimit(50000)
 
 
+# Method calling the network to perform training
 def train(train_set, validation_set, config='./config.json', model_path='models/model/'):
 	T_input_var = T.fmatrix('inputs')
 	T_target_var = T.fmatrix('targets')
@@ -69,8 +70,10 @@ def train(train_set, validation_set, config='./config.json', model_path='models/
 	return network, val_mse, val_r2
 
 
+# Runs a hyperparameter search.
+# Prints results and plots graphs to help find best hyperparameters
 def parameter_search():
-	dir='models/search/' + str(datetime.datetime.now().isoformat())
+	dir='models/' + str(datetime.datetime.now().isoformat()) + '/'
 	with open('config.json') as data_file:
 		config = json.load(data_file)
 	train_set, validation_set, test_set = dataset.load_dataset(config['no_dwis'], split_ratio=(0.6, 0.2, 0.2))
@@ -114,21 +117,26 @@ def parameter_search():
 	print "Done... Best was model with index {} and validation MSE {}".format(best_index, lowest_mse)
 
 
+# Loads model from disk
 def load(path):
 	network = pickle.load(open(path, "rb"))
 	return network
 
 
+# Saves model to disk
 def save(path, network):
 	pickle.dump(network, open(path, 'wb'))
 
 
+# Helper method to run training
 def run_train(config_path='./config.json', model_path='models/model/'):
 	with open(config_path) as data_file:
 		config = json.load(data_file)
 	train_set, validation_set, test_set = dataset.load_dataset(config['no_dwis'], split_ratio=(0.6, 0.2, 0.2))
 	model, _, _ = train(model_path=model_path, train_set=train_set, validation_set=validation_set, config=config)
 
+
+# Parsing the command line happens here
 
 parser = argparse.ArgumentParser()
 subparsers = parser.add_subparsers(help='commands')
@@ -148,9 +156,13 @@ inference_parser.set_defaults(which='inference')
 
 # Genreation
 generate_parser = subparsers.add_parser('generate', help='Generate data')
-generate_parser.add_argument('-i', action="store", help='No iterations to run', dest='no_iter')
-generate_parser.add_argument('-v', action="store", help='No voxels in every iteration', dest='no_voxels')
+generate_parser.add_argument('-i', type=int, action="store", help='No iterations to run', dest='no_iter')
+generate_parser.add_argument('-v', type=int, action="store", help='No voxels in every iteration', dest='no_voxels')
 generate_parser.set_defaults(which='generate')
+
+# Search
+search_parser = subparsers.add_parser('search', help='Search parameter')
+search_parser.set_defaults(which='search')
 
 args = parser.parse_args()
 
@@ -160,9 +172,12 @@ if args.which == 'training':
 	run_train(config_path=config, model_path=model)
 elif args.which == 'inference':
 	network = load(args.model_file)
-	preds = network.predict(args.data_file)
+	data = utils.to_voxels(utils.read_float(args.data_file))
+	preds = network.predict(data)
 	np.savetxt(args.save_file, preds)
 elif args.which == 'generate':
 	run(no_iter=args.no_iter, no_voxels=args.no_voxels)
+elif args.which == 'search':
+	parameter_search()
 else:
 	print 'Illegal argument'

@@ -1,5 +1,5 @@
 {
-  "batch_norm": false,
+  "batch_norm": true,
   "batch_size": 128,
   "scale_inputs": true,
   "scale_outputs": true,
@@ -24,7 +24,7 @@
     }
   ],
   "no_dwis": 288,
-  "no_epochs": 1000,
+  "no_epochs": 400,
   "early_stopping": 0,
   "optimizer": {
     "beta1": 0.9,
