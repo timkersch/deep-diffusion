@@ -1,0 +1,1008 @@
+Training network with 75120 training samples and 14085 validation samples
+Epoch 1 of 200
+  training loss:		1.104222E-01
+  validation loss:		4.494608E-02
+Epoch took 8.032s
+
+Epoch 2 of 200
+  training loss:		4.005203E-02
+  validation loss:		4.033248E-02
+Epoch took 8.390s
+
+Epoch 3 of 200
+  training loss:		3.535834E-02
+  validation loss:		3.747312E-02
+Epoch took 8.286s
+
+Epoch 4 of 200
+  training loss:		3.347552E-02
+  validation loss:		3.215771E-02
+Epoch took 7.599s
+
+Epoch 5 of 200
+  training loss:		3.241590E-02
+  validation loss:		3.294941E-02
+Epoch took 7.360s
+
+Epoch 6 of 200
+  training loss:		3.120060E-02
+  validation loss:		3.228614E-02
+Epoch took 7.480s
+
+Epoch 7 of 200
+  training loss:		3.165237E-02
+  validation loss:		2.911125E-02
+Epoch took 7.295s
+
+Epoch 8 of 200
+  training loss:		2.980230E-02
+  validation loss:		3.067011E-02
+Epoch took 8.814s
+
+Epoch 9 of 200
+  training loss:		2.942516E-02
+  validation loss:		2.925838E-02
+Epoch took 8.256s
+
+Epoch 10 of 200
+  training loss:		2.901686E-02
+  validation loss:		3.252099E-02
+Epoch took 8.006s
+
+Epoch 11 of 200
+  training loss:		2.964305E-02
+  validation loss:		2.927426E-02
+Epoch took 7.778s
+
+Epoch 12 of 200
+  training loss:		2.940116E-02
+  validation loss:		2.987201E-02
+Epoch took 8.059s
+
+Epoch 13 of 200
+  training loss:		2.873227E-02
+  validation loss:		2.881433E-02
+Epoch took 8.265s
+
+Epoch 14 of 200
+  training loss:		2.857066E-02
+  validation loss:		2.838511E-02
+Epoch took 8.004s
+
+Epoch 15 of 200
+  training loss:		2.798168E-02
+  validation loss:		2.831403E-02
+Epoch took 8.776s
+
+Epoch 16 of 200
+  training loss:		2.797819E-02
+  validation loss:		3.028273E-02
+Epoch took 8.924s
+
+Epoch 17 of 200
+  training loss:		2.811871E-02
+  validation loss:		2.726215E-02
+Epoch took 7.913s
+
+Epoch 18 of 200
+  training loss:		2.817128E-02
+  validation loss:		2.832832E-02
+Epoch took 9.128s
+
+Epoch 19 of 200
+  training loss:		2.819944E-02
+  validation loss:		2.795711E-02
+Epoch took 7.401s
+
+Epoch 20 of 200
+  training loss:		2.754637E-02
+  validation loss:		2.802875E-02
+Epoch took 8.471s
+
+Epoch 21 of 200
+  training loss:		2.767832E-02
+  validation loss:		2.803914E-02
+Epoch took 9.113s
+
+Epoch 22 of 200
+  training loss:		2.759725E-02
+  validation loss:		2.844121E-02
+Epoch took 7.317s
+
+Epoch 23 of 200
+  training loss:		2.805384E-02
+  validation loss:		2.854829E-02
+Epoch took 8.498s
+
+Epoch 24 of 200
+  training loss:		2.759250E-02
+  validation loss:		2.752321E-02
+Epoch took 8.284s
+
+Epoch 25 of 200
+  training loss:		2.750072E-02
+  validation loss:		2.788492E-02
+Epoch took 7.541s
+
+Epoch 26 of 200
+  training loss:		2.805782E-02
+  validation loss:		2.738711E-02
+Epoch took 9.828s
+
+Epoch 27 of 200
+  training loss:		2.792773E-02
+  validation loss:		3.016149E-02
+Epoch took 8.316s
+
+Epoch 28 of 200
+  training loss:		2.770765E-02
+  validation loss:		2.724468E-02
+Epoch took 8.307s
+
+Epoch 29 of 200
+  training loss:		2.742342E-02
+  validation loss:		2.713067E-02
+Epoch took 7.576s
+
+Epoch 30 of 200
+  training loss:		2.748271E-02
+  validation loss:		2.790542E-02
+Epoch took 8.897s
+
+Epoch 31 of 200
+  training loss:		2.728373E-02
+  validation loss:		2.806839E-02
+Epoch took 7.465s
+
+Epoch 32 of 200
+  training loss:		2.770729E-02
+  validation loss:		2.745452E-02
+Epoch took 8.038s
+
+Epoch 33 of 200
+  training loss:		2.718632E-02
+  validation loss:		2.737976E-02
+Epoch took 8.017s
+
+Epoch 34 of 200
+  training loss:		2.754101E-02
+  validation loss:		2.761480E-02
+Epoch took 8.339s
+
+Epoch 35 of 200
+  training loss:		2.732790E-02
+  validation loss:		2.733107E-02
+Epoch took 7.785s
+
+Epoch 36 of 200
+  training loss:		2.751784E-02
+  validation loss:		2.693755E-02
+Epoch took 8.154s
+
+Epoch 37 of 200
+  training loss:		2.721612E-02
+  validation loss:		2.838048E-02
+Epoch took 7.025s
+
+Epoch 38 of 200
+  training loss:		2.681818E-02
+  validation loss:		2.692820E-02
+Epoch took 8.063s
+
+Epoch 39 of 200
+  training loss:		2.736252E-02
+  validation loss:		2.757203E-02
+Epoch took 7.478s
+
+Epoch 40 of 200
+  training loss:		2.705462E-02
+  validation loss:		2.733321E-02
+Epoch took 7.133s
+
+Epoch 41 of 200
+  training loss:		2.795699E-02
+  validation loss:		2.703283E-02
+Epoch took 7.382s
+
+Epoch 42 of 200
+  training loss:		2.726775E-02
+  validation loss:		2.691259E-02
+Epoch took 8.590s
+
+Epoch 43 of 200
+  training loss:		2.684005E-02
+  validation loss:		2.685792E-02
+Epoch took 7.574s
+
+Epoch 44 of 200
+  training loss:		2.695575E-02
+  validation loss:		2.811348E-02
+Epoch took 7.886s
+
+Epoch 45 of 200
+  training loss:		2.691481E-02
+  validation loss:		2.697089E-02
+Epoch took 7.560s
+
+Epoch 46 of 200
+  training loss:		2.702004E-02
+  validation loss:		2.708063E-02
+Epoch took 8.217s
+
+Epoch 47 of 200
+  training loss:		2.704632E-02
+  validation loss:		2.774674E-02
+Epoch took 8.358s
+
+Epoch 48 of 200
+  training loss:		2.712152E-02
+  validation loss:		2.779382E-02
+Epoch took 7.806s
+
+Epoch 49 of 200
+  training loss:		2.714065E-02
+  validation loss:		2.763828E-02
+Epoch took 8.227s
+
+Epoch 50 of 200
+  training loss:		2.774258E-02
+  validation loss:		2.725533E-02
+Epoch took 7.729s
+
+Epoch 51 of 200
+  training loss:		2.699403E-02
+  validation loss:		2.764530E-02
+Epoch took 7.761s
+
+Epoch 52 of 200
+  training loss:		2.709567E-02
+  validation loss:		2.663464E-02
+Epoch took 7.247s
+
+Epoch 53 of 200
+  training loss:		2.663650E-02
+  validation loss:		2.718717E-02
+Epoch took 7.922s
+
+Epoch 54 of 200
+  training loss:		2.681301E-02
+  validation loss:		2.789420E-02
+Epoch took 7.969s
+
+Epoch 55 of 200
+  training loss:		2.665354E-02
+  validation loss:		2.676664E-02
+Epoch took 8.036s
+
+Epoch 56 of 200
+  training loss:		2.665045E-02
+  validation loss:		2.715353E-02
+Epoch took 7.672s
+
+Epoch 57 of 200
+  training loss:		2.694346E-02
+  validation loss:		2.671724E-02
+Epoch took 8.900s
+
+Epoch 58 of 200
+  training loss:		2.668384E-02
+  validation loss:		2.702695E-02
+Epoch took 8.255s
+
+Epoch 59 of 200
+  training loss:		2.655909E-02
+  validation loss:		2.688484E-02
+Epoch took 8.227s
+
+Epoch 60 of 200
+  training loss:		2.674668E-02
+  validation loss:		2.630514E-02
+Epoch took 7.936s
+
+Epoch 61 of 200
+  training loss:		2.690222E-02
+  validation loss:		2.684549E-02
+Epoch took 8.295s
+
+Epoch 62 of 200
+  training loss:		2.712303E-02
+  validation loss:		2.776377E-02
+Epoch took 9.046s
+
+Epoch 63 of 200
+  training loss:		2.672014E-02
+  validation loss:		2.676885E-02
+Epoch took 9.088s
+
+Epoch 64 of 200
+  training loss:		2.649561E-02
+  validation loss:		2.685008E-02
+Epoch took 7.974s
+
+Epoch 65 of 200
+  training loss:		2.646965E-02
+  validation loss:		2.656077E-02
+Epoch took 8.591s
+
+Epoch 66 of 200
+  training loss:		2.644743E-02
+  validation loss:		2.657107E-02
+Epoch took 8.047s
+
+Epoch 67 of 200
+  training loss:		2.634597E-02
+  validation loss:		2.604894E-02
+Epoch took 9.205s
+
+Epoch 68 of 200
+  training loss:		2.640718E-02
+  validation loss:		2.689183E-02
+Epoch took 7.592s
+
+Epoch 69 of 200
+  training loss:		2.773085E-02
+  validation loss:		2.679820E-02
+Epoch took 8.522s
+
+Epoch 70 of 200
+  training loss:		2.676032E-02
+  validation loss:		2.683248E-02
+Epoch took 7.430s
+
+Epoch 71 of 200
+  training loss:		2.641917E-02
+  validation loss:		2.601060E-02
+Epoch took 8.386s
+
+Epoch 72 of 200
+  training loss:		2.638388E-02
+  validation loss:		2.642287E-02
+Epoch took 8.458s
+
+Epoch 73 of 200
+  training loss:		2.661535E-02
+  validation loss:		2.653340E-02
+Epoch took 8.515s
+
+Epoch 74 of 200
+  training loss:		2.636313E-02
+  validation loss:		2.639442E-02
+Epoch took 7.800s
+
+Epoch 75 of 200
+  training loss:		2.631905E-02
+  validation loss:		2.630384E-02
+Epoch took 7.402s
+
+Epoch 76 of 200
+  training loss:		2.796562E-02
+  validation loss:		2.798346E-02
+Epoch took 7.868s
+
+Epoch 77 of 200
+  training loss:		2.678774E-02
+  validation loss:		2.661575E-02
+Epoch took 8.219s
+
+Epoch 78 of 200
+  training loss:		2.627459E-02
+  validation loss:		2.607030E-02
+Epoch took 9.245s
+
+Epoch 79 of 200
+  training loss:		2.618727E-02
+  validation loss:		2.620007E-02
+Epoch took 7.675s
+
+Epoch 80 of 200
+  training loss:		2.626377E-02
+  validation loss:		2.639755E-02
+Epoch took 8.176s
+
+Epoch 81 of 200
+  training loss:		2.624354E-02
+  validation loss:		2.635181E-02
+Epoch took 7.810s
+
+Epoch 82 of 200
+  training loss:		2.635847E-02
+  validation loss:		2.644705E-02
+Epoch took 7.310s
+
+Epoch 83 of 200
+  training loss:		2.616993E-02
+  validation loss:		2.611514E-02
+Epoch took 8.249s
+
+Epoch 84 of 200
+  training loss:		2.631070E-02
+  validation loss:		2.628181E-02
+Epoch took 7.696s
+
+Epoch 85 of 200
+  training loss:		2.633237E-02
+  validation loss:		2.626632E-02
+Epoch took 7.969s
+
+Epoch 86 of 200
+  training loss:		2.621598E-02
+  validation loss:		2.656863E-02
+Epoch took 8.274s
+
+Epoch 87 of 200
+  training loss:		2.621854E-02
+  validation loss:		2.630223E-02
+Epoch took 8.131s
+
+Epoch 88 of 200
+  training loss:		2.611978E-02
+  validation loss:		2.634111E-02
+Epoch took 7.499s
+
+Epoch 89 of 200
+  training loss:		2.627600E-02
+  validation loss:		2.639731E-02
+Epoch took 8.855s
+
+Epoch 90 of 200
+  training loss:		2.638125E-02
+  validation loss:		2.601171E-02
+Epoch took 7.848s
+
+Epoch 91 of 200
+  training loss:		2.615205E-02
+  validation loss:		2.625350E-02
+Epoch took 7.490s
+
+Epoch 92 of 200
+  training loss:		2.610577E-02
+  validation loss:		2.618918E-02
+Epoch took 8.381s
+
+Epoch 93 of 200
+  training loss:		2.615342E-02
+  validation loss:		2.628919E-02
+Epoch took 7.729s
+
+Epoch 94 of 200
+  training loss:		2.613099E-02
+  validation loss:		2.595168E-02
+Epoch took 8.209s
+
+Epoch 95 of 200
+  training loss:		2.690093E-02
+  validation loss:		2.631098E-02
+Epoch took 7.983s
+
+Epoch 96 of 200
+  training loss:		2.624006E-02
+  validation loss:		2.602463E-02
+Epoch took 9.449s
+
+Epoch 97 of 200
+  training loss:		2.610352E-02
+  validation loss:		2.593715E-02
+Epoch took 8.160s
+
+Epoch 98 of 200
+  training loss:		2.608429E-02
+  validation loss:		2.623901E-02
+Epoch took 8.132s
+
+Epoch 99 of 200
+  training loss:		2.608961E-02
+  validation loss:		2.627034E-02
+Epoch took 8.472s
+
+Epoch 100 of 200
+  training loss:		2.603719E-02
+  validation loss:		2.623981E-02
+Epoch took 7.378s
+
+Epoch 101 of 200
+  training loss:		2.605337E-02
+  validation loss:		2.646793E-02
+Epoch took 8.541s
+
+Epoch 102 of 200
+  training loss:		2.611250E-02
+  validation loss:		2.613132E-02
+Epoch took 7.970s
+
+Epoch 103 of 200
+  training loss:		2.613783E-02
+  validation loss:		2.597308E-02
+Epoch took 8.076s
+
+Epoch 104 of 200
+  training loss:		2.626411E-02
+  validation loss:		2.576844E-02
+Epoch took 7.744s
+
+Epoch 105 of 200
+  training loss:		2.594974E-02
+  validation loss:		2.597704E-02
+Epoch took 8.208s
+
+Epoch 106 of 200
+  training loss:		2.594703E-02
+  validation loss:		2.607490E-02
+Epoch took 7.952s
+
+Epoch 107 of 200
+  training loss:		2.823721E-02
+  validation loss:		2.611768E-02
+Epoch took 7.921s
+
+Epoch 108 of 200
+  training loss:		2.596473E-02
+  validation loss:		2.600218E-02
+Epoch took 8.355s
+
+Epoch 109 of 200
+  training loss:		2.603696E-02
+  validation loss:		2.636542E-02
+Epoch took 8.620s
+
+Epoch 110 of 200
+  training loss:		2.603182E-02
+  validation loss:		2.625035E-02
+Epoch took 7.832s
+
+Epoch 111 of 200
+  training loss:		2.597111E-02
+  validation loss:		2.601535E-02
+Epoch took 7.984s
+
+Epoch 112 of 200
+  training loss:		2.593335E-02
+  validation loss:		2.602802E-02
+Epoch took 7.545s
+
+Epoch 113 of 200
+  training loss:		2.590773E-02
+  validation loss:		2.611757E-02
+Epoch took 8.186s
+
+Epoch 114 of 200
+  training loss:		2.589089E-02
+  validation loss:		2.597007E-02
+Epoch took 8.101s
+
+Epoch 115 of 200
+  training loss:		2.597377E-02
+  validation loss:		2.601376E-02
+Epoch took 7.450s
+
+Epoch 116 of 200
+  training loss:		2.590850E-02
+  validation loss:		2.600790E-02
+Epoch took 7.734s
+
+Epoch 117 of 200
+  training loss:		2.589339E-02
+  validation loss:		2.603637E-02
+Epoch took 9.715s
+
+Epoch 118 of 200
+  training loss:		2.685539E-02
+  validation loss:		2.922456E-02
+Epoch took 7.432s
+
+Epoch 119 of 200
+  training loss:		2.736466E-02
+  validation loss:		2.622928E-02
+Epoch took 8.224s
+
+Epoch 120 of 200
+  training loss:		2.595959E-02
+  validation loss:		2.606379E-02
+Epoch took 7.927s
+
+Epoch 121 of 200
+  training loss:		2.590489E-02
+  validation loss:		2.605140E-02
+Epoch took 8.375s
+
+Epoch 122 of 200
+  training loss:		2.589694E-02
+  validation loss:		2.601100E-02
+Epoch took 8.249s
+
+Epoch 123 of 200
+  training loss:		2.584826E-02
+  validation loss:		2.582134E-02
+Epoch took 7.928s
+
+Epoch 124 of 200
+  training loss:		2.598797E-02
+  validation loss:		2.603361E-02
+Epoch took 7.942s
+
+Epoch 125 of 200
+  training loss:		2.596340E-02
+  validation loss:		2.610836E-02
+Epoch took 8.047s
+
+Epoch 126 of 200
+  training loss:		2.585320E-02
+  validation loss:		2.590951E-02
+Epoch took 7.909s
+
+Epoch 127 of 200
+  training loss:		2.583715E-02
+  validation loss:		2.611202E-02
+Epoch took 7.537s
+
+Epoch 128 of 200
+  training loss:		2.581684E-02
+  validation loss:		2.613493E-02
+Epoch took 7.877s
+
+Epoch 129 of 200
+  training loss:		2.692815E-02
+  validation loss:		2.588257E-02
+Epoch took 8.109s
+
+Epoch 130 of 200
+  training loss:		2.591548E-02
+  validation loss:		2.594673E-02
+Epoch took 7.722s
+
+Epoch 131 of 200
+  training loss:		2.589656E-02
+  validation loss:		2.595939E-02
+Epoch took 8.051s
+
+Epoch 132 of 200
+  training loss:		2.588161E-02
+  validation loss:		2.591970E-02
+Epoch took 7.973s
+
+Epoch 133 of 200
+  training loss:		2.582792E-02
+  validation loss:		2.596452E-02
+Epoch took 7.378s
+
+Epoch 134 of 200
+  training loss:		2.583543E-02
+  validation loss:		2.574591E-02
+Epoch took 6.872s
+
+Epoch 135 of 200
+  training loss:		2.581110E-02
+  validation loss:		2.601117E-02
+Epoch took 6.737s
+
+Epoch 136 of 200
+  training loss:		2.752976E-02
+  validation loss:		2.625662E-02
+Epoch took 8.070s
+
+Epoch 137 of 200
+  training loss:		2.596481E-02
+  validation loss:		2.614001E-02
+Epoch took 8.441s
+
+Epoch 138 of 200
+  training loss:		2.590409E-02
+  validation loss:		2.584550E-02
+Epoch took 7.441s
+
+Epoch 139 of 200
+  training loss:		2.589952E-02
+  validation loss:		2.598178E-02
+Epoch took 7.385s
+
+Epoch 140 of 200
+  training loss:		2.587775E-02
+  validation loss:		2.591300E-02
+Epoch took 8.264s
+
+Epoch 141 of 200
+  training loss:		2.584757E-02
+  validation loss:		2.603499E-02
+Epoch took 8.319s
+
+Epoch 142 of 200
+  training loss:		2.588219E-02
+  validation loss:		2.586609E-02
+Epoch took 6.865s
+
+Epoch 143 of 200
+  training loss:		2.587039E-02
+  validation loss:		2.585687E-02
+Epoch took 6.946s
+
+Epoch 144 of 200
+  training loss:		2.583631E-02
+  validation loss:		2.579530E-02
+Epoch took 8.033s
+
+Epoch 145 of 200
+  training loss:		2.587808E-02
+  validation loss:		2.583459E-02
+Epoch took 7.856s
+
+Epoch 146 of 200
+  training loss:		2.707585E-02
+  validation loss:		2.602589E-02
+Epoch took 9.144s
+
+Epoch 147 of 200
+  training loss:		2.589820E-02
+  validation loss:		2.607270E-02
+Epoch took 8.424s
+
+Epoch 148 of 200
+  training loss:		2.586300E-02
+  validation loss:		2.592074E-02
+Epoch took 7.771s
+
+Epoch 149 of 200
+  training loss:		2.579721E-02
+  validation loss:		2.589005E-02
+Epoch took 7.864s
+
+Epoch 150 of 200
+  training loss:		2.572923E-02
+  validation loss:		2.591797E-02
+Epoch took 8.094s
+
+Epoch 151 of 200
+  training loss:		2.583584E-02
+  validation loss:		2.583801E-02
+Epoch took 8.357s
+
+Epoch 152 of 200
+  training loss:		2.584278E-02
+  validation loss:		2.578938E-02
+Epoch took 8.952s
+
+Epoch 153 of 200
+  training loss:		2.577243E-02
+  validation loss:		2.591253E-02
+Epoch took 7.741s
+
+Epoch 154 of 200
+  training loss:		2.579447E-02
+  validation loss:		2.582876E-02
+Epoch took 7.588s
+
+Epoch 155 of 200
+  training loss:		2.576736E-02
+  validation loss:		2.591750E-02
+Epoch took 7.542s
+
+Epoch 156 of 200
+  training loss:		2.637814E-02
+  validation loss:		2.926942E-02
+Epoch took 7.722s
+
+Epoch 157 of 200
+  training loss:		2.632127E-02
+  validation loss:		2.604397E-02
+Epoch took 8.383s
+
+Epoch 158 of 200
+  training loss:		2.581772E-02
+  validation loss:		2.580292E-02
+Epoch took 7.209s
+
+Epoch 159 of 200
+  training loss:		2.579491E-02
+  validation loss:		2.587021E-02
+Epoch took 8.026s
+
+Epoch 160 of 200
+  training loss:		2.579581E-02
+  validation loss:		2.595355E-02
+Epoch took 8.146s
+
+Epoch 161 of 200
+  training loss:		2.576405E-02
+  validation loss:		2.598813E-02
+Epoch took 8.556s
+
+Epoch 162 of 200
+  training loss:		2.579018E-02
+  validation loss:		2.592769E-02
+Epoch took 7.865s
+
+Epoch 163 of 200
+  training loss:		2.577024E-02
+  validation loss:		2.608451E-02
+Epoch took 7.753s
+
+Epoch 164 of 200
+  training loss:		2.577130E-02
+  validation loss:		2.583143E-02
+Epoch took 8.265s
+
+Epoch 165 of 200
+  training loss:		2.575158E-02
+  validation loss:		2.588918E-02
+Epoch took 7.555s
+
+Epoch 166 of 200
+  training loss:		2.575944E-02
+  validation loss:		2.577272E-02
+Epoch took 6.634s
+
+Epoch 167 of 200
+  training loss:		2.576520E-02
+  validation loss:		2.587296E-02
+Epoch took 7.354s
+
+Epoch 168 of 200
+  training loss:		2.577100E-02
+  validation loss:		2.588414E-02
+Epoch took 7.229s
+
+Epoch 169 of 200
+  training loss:		2.624890E-02
+  validation loss:		2.591376E-02
+Epoch took 7.938s
+
+Epoch 170 of 200
+  training loss:		2.582239E-02
+  validation loss:		2.598427E-02
+Epoch took 6.740s
+
+Epoch 171 of 200
+  training loss:		2.632874E-02
+  validation loss:		2.598610E-02
+Epoch took 8.074s
+
+Epoch 172 of 200
+  training loss:		2.578875E-02
+  validation loss:		2.579587E-02
+Epoch took 7.983s
+
+Epoch 173 of 200
+  training loss:		2.576448E-02
+  validation loss:		2.587025E-02
+Epoch took 8.359s
+
+Epoch 174 of 200
+  training loss:		2.575329E-02
+  validation loss:		2.587760E-02
+Epoch took 8.201s
+
+Epoch 175 of 200
+  training loss:		2.580280E-02
+  validation loss:		2.592116E-02
+Epoch took 7.571s
+
+Epoch 176 of 200
+  training loss:		2.575468E-02
+  validation loss:		2.587232E-02
+Epoch took 7.946s
+
+Epoch 177 of 200
+  training loss:		2.577299E-02
+  validation loss:		2.585778E-02
+Epoch took 6.176s
+
+Epoch 178 of 200
+  training loss:		2.580491E-02
+  validation loss:		2.569649E-02
+Epoch took 6.211s
+
+Epoch 179 of 200
+  training loss:		2.584250E-02
+  validation loss:		2.615151E-02
+Epoch took 6.268s
+
+Epoch 180 of 200
+  training loss:		2.578102E-02
+  validation loss:		2.586623E-02
+Epoch took 7.417s
+
+Epoch 181 of 200
+  training loss:		2.579444E-02
+  validation loss:		2.584157E-02
+Epoch took 8.016s
+
+Epoch 182 of 200
+  training loss:		2.576747E-02
+  validation loss:		2.610349E-02
+Epoch took 6.953s
+
+Epoch 183 of 200
+  training loss:		2.581313E-02
+  validation loss:		2.571506E-02
+Epoch took 8.559s
+
+Epoch 184 of 200
+  training loss:		2.578582E-02
+  validation loss:		2.589641E-02
+Epoch took 7.744s
+
+Epoch 185 of 200
+  training loss:		2.574006E-02
+  validation loss:		2.593204E-02
+Epoch took 8.369s
+
+Epoch 186 of 200
+  training loss:		2.584723E-02
+  validation loss:		2.615368E-02
+Epoch took 7.984s
+
+Epoch 187 of 200
+  training loss:		2.706825E-02
+  validation loss:		2.662307E-02
+Epoch took 7.248s
+
+Epoch 188 of 200
+  training loss:		2.588133E-02
+  validation loss:		2.575532E-02
+Epoch took 8.205s
+
+Epoch 189 of 200
+  training loss:		2.577729E-02
+  validation loss:		2.572542E-02
+Epoch took 7.522s
+
+Epoch 190 of 200
+  training loss:		2.576125E-02
+  validation loss:		2.575048E-02
+Epoch took 8.454s
+
+Epoch 191 of 200
+  training loss:		2.573280E-02
+  validation loss:		2.582588E-02
+Epoch took 8.716s
+
+Epoch 192 of 200
+  training loss:		2.576669E-02
+  validation loss:		2.573201E-02
+Epoch took 7.311s
+
+Epoch 193 of 200
+  training loss:		2.579598E-02
+  validation loss:		2.593911E-02
+Epoch took 7.687s
+
+Epoch 194 of 200
+  training loss:		2.573868E-02
+  validation loss:		2.586951E-02
+Epoch took 8.114s
+
+Epoch 195 of 200
+  training loss:		2.572865E-02
+  validation loss:		2.556557E-02
+Epoch took 7.874s
+
+Epoch 196 of 200
+  training loss:		2.575673E-02
+  validation loss:		2.565118E-02
+Epoch took 7.084s
+
+Epoch 197 of 200
+  training loss:		2.572034E-02
+  validation loss:		2.572305E-02
+Epoch took 8.437s
+
+Epoch 198 of 200
+  training loss:		2.576008E-02
+  validation loss:		2.581314E-02
+Epoch took 8.671s
+
+Epoch 199 of 200
+  training loss:		2.573265E-02
+  validation loss:		2.587526E-02
+Epoch took 7.969s
+
+Epoch 200 of 200
+  training loss:		2.575998E-02
+  validation loss:		2.601717E-02
+Epoch took 7.991s
+
+Training RMSE: 1.57142737866e-07
+Validation RMSE: 1.5737473146e-07
+Test RMSE: 1.58373541941e-07
+Test MSE: 2.50821787868e-14
+Test MAE: 8.32545222731e-08
+Test R2: 0.737367576375 
+

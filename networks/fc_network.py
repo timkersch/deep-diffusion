@@ -29,11 +29,11 @@ class FCNet:
 				prev_layer = lasagne.layers.DropoutLayer(prev_layer, p=layer['p'])
 			elif layer['type'] == 'fc':
 				if config['activation_function'] == 'relu':
-					layer = lasagne.layers.DenseLayer(prev_layer, num_units=layer['units'], W=lasagne.init.HeNormal('relu'), nonlinearity=lasagne.nonlinearities.rectify)
+					layer = lasagne.layers.DenseLayer(prev_layer, num_units=layer['units'], W=lasagne.init.HeNormal(), nonlinearity=lasagne.nonlinearities.rectify)
 				elif config['activation_function'] == 'sigmoid':
-					layer = lasagne.layers.DenseLayer(prev_layer, num_units=layer['units'], W=lasagne.init.GlorotNormal(1.0), nonlinearity=lasagne.nonlinearities.sigmoid)
+					layer = lasagne.layers.DenseLayer(prev_layer, num_units=layer['units'], W=lasagne.init.GlorotNormal(), nonlinearity=lasagne.nonlinearities.sigmoid)
 				elif config ['activation_function'] == 'tanh':
-					layer = lasagne.layers.DenseLayer(prev_layer, num_units=layer['units'], W=lasagne.init.GlorotNormal(1.0), nonlinearity=lasagne.nonlinearities.tanh)
+					layer = lasagne.layers.DenseLayer(prev_layer, num_units=layer['units'], W=lasagne.init.GlorotNormal(), nonlinearity=lasagne.nonlinearities.tanh)
 
 				if config['batch_norm'] and index != len(hidden_layers)-1:
 					prev_layer = lasagne.layers.batch_norm(layer)
@@ -55,9 +55,11 @@ class FCNet:
 
 		params = lasagne.layers.get_all_params(self.network, trainable=True)
 		if config['optimizer']['type'] == 'adam':
-			updates = lasagne.updates.adam(loss, params, config['optimizer']['learning_rate'], config['optimizer']['beta1'], config['optimizer']['beta2'], config['optimizer']['epsilon'])
+			updates = lasagne.updates.adam(loss, params, learning_rate=config['optimizer']['learning_rate'],
+										   beta1=config['optimizer']['beta1'], beta2=config['optimizer']['beta2'],
+										   epsilon=config['optimizer']['epsilon'])
 		elif config['optimizer']['type'] == 'momentum':
-			updates = lasagne.updates.nesterov_momentum(loss, params, config['optimizer']['learning_rate'], config['optimizer']['momentum'])
+			updates = lasagne.updates.nesterov_momentum(loss, params, learning_rate=config['optimizer']['learning_rate'], momentum=config['optimizer']['momentum'])
 
 		self.train_forward = theano.function([input_var, target_var], loss, updates=updates)
 		self.val_forward = theano.function([input_var, target_var], test_loss)
@@ -112,10 +114,12 @@ class FCNet:
 
 			print_and_append("Epoch {} of {}".format(epoch + 1, no_epochs), outfile)
 
+			# Train one epoch and print loss
 			train_loss = self._train(X_train, y_train, shuffle=shuffle, log_nth=log_nth)
 			self.train_loss.append(train_loss)
 			print_and_append("  training loss:\t\t{:.6E}".format(train_loss), outfile)
 
+			# Compute the loss over the validation set
 			val_loss = self._val(X_val, y_val, shuffle=shuffle)
 			self.val_loss.append(val_loss)
 			print_and_append("  validation loss:\t\t{:.6E}".format(val_loss), outfile)
@@ -172,14 +176,6 @@ class FCNet:
 	def reset(self):
 		self.train_loss = []
 		self.val_loss = []
-
-	def save(self, filename):
-		np.savez(filename, *lasagne.layers.get_all_param_values(self.network))
-
-	def load(self, filename):
-		with np.load(filename) as f:
-			param_values = [f['arr_%d' % i] for i in range(len(f.files))]
-			lasagne.layers.set_all_param_values(self.network, param_values)
 
 	@staticmethod
 	def _absolute_error(a, b):
