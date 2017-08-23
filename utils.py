@@ -153,6 +153,22 @@ def residual_plot(targets, predictions, filename):
 	plt.close()
 
 
+def heat_plot(matrix, filename, xTicks, yTicks, xLabel='X', yLabel='Y'):
+	fig = plt.figure()
+	ax = fig.add_subplot(111)
+	cax = ax.matshow(matrix, vmin=0, vmax=1)
+	fig.colorbar(cax)
+	ticks = np.arange(0, matrix.shape[0], 1)
+	ax.set_xticks(ticks)
+	ax.set_yticks(ticks)
+	ax.set_xticklabels(xTicks)
+	ax.set_yticklabels(yTicks)
+	ax.set_xlabel(xLabel)
+	ax.set_ylabel(yLabel)
+	plt.savefig(filename)
+	plt.close()
+
+
 def r2(t, y):
 	return r2_score(t, y)
 
