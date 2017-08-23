@@ -139,6 +139,20 @@ def loss_plot(train_loss, val_loss, filename, zoomed=False):
 	plt.close()
 
 
+def residual_plot(targets, predictions, filename):
+	fig, ax = plt.subplots()
+	fig.suptitle(str(targets.shape[0]) + ' samples, Residual Plot', fontsize=12)
+	residuals = targets - predictions
+	axes = plt.gca()
+	axes.set_ylim(np.min(residuals), np.max(residuals))
+	axes.set_xlim(np.min(predictions), np.max(predictions))
+	ax.scatter(targets, predictions, edgecolors=(0, 0, 0))
+	ax.set_xlabel('Predictions')
+	ax.set_ylabel('Residuals')
+	plt.savefig(filename)
+	plt.close()
+
+
 def r2(t, y):
 	return r2_score(t, y)
 

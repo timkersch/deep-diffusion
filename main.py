@@ -66,6 +66,8 @@ def train(train_set, validation_set, config='./config.json', model_path='models/
 	indices = np.random.choice(validation_set[1].shape[0], 1000)
 	utils.diff_plot(validation_set[1][indices], validation_pred[indices], filename=model_path + 'validation-diff-plot')
 	utils.diff_plot(train_set[1][indices], train_pred[indices], filename=model_path + 'train-diff-plot')
+	utils.residual_plot(validation_set[1][indices], validation_pred[indices], filename=model_path + 'validation-residual-plot')
+	utils.residual_plot(train_set[1][indices], train_pred[indices], filename=model_path + 'train-residual-plot')
 
 	return network, val_mse, val_r2
 
