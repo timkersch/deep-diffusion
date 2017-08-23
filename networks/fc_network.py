@@ -10,7 +10,7 @@ import theano.tensor as T
 
 class FCNet:
 
-	def __init__(self, input_var, target_var, config):
+	def __init__(self, T_input_var, T_target_var, config):
 		self.config = config
 
 		self.in_scaler = None
@@ -47,11 +47,11 @@ class FCNet:
 		test_prediction = lasagne.layers.get_output(self.network, deterministic=True)
 
 		if config['loss'] == 'l2':
-			loss = lasagne.objectives.squared_error(prediction, target_var).mean()
-			test_loss = lasagne.objectives.squared_error(test_prediction, target_var).mean()
+			loss = lasagne.objectives.squared_error(prediction, T_target_var).mean()
+			test_loss = lasagne.objectives.squared_error(test_prediction, T_target_var).mean()
 		elif config['loss'] == 'l1':
-			loss = FCNet._absolute_error(prediction, target_var).mean()
-			test_loss = FCNet._absolute_error(test_prediction, target_var).mean()
+			loss = FCNet._absolute_error(prediction, T_target_var).mean()
+			test_loss = FCNet._absolute_error(test_prediction, T_target_var).mean()
 
 		params = lasagne.layers.get_all_params(self.network, trainable=True)
 		if config['optimizer']['type'] == 'adam':
@@ -61,10 +61,10 @@ class FCNet:
 		elif config['optimizer']['type'] == 'momentum':
 			updates = lasagne.updates.nesterov_momentum(loss, params, learning_rate=config['optimizer']['learning_rate'], momentum=config['optimizer']['momentum'])
 
-		self.train_forward = theano.function([input_var, target_var], loss, updates=updates)
-		self.val_forward = theano.function([input_var, target_var], test_loss)
+		self.train_forward = theano.function([T_input_var, T_target_var], loss, updates=updates)
+		self.val_forward = theano.function([T_input_var, T_target_var], test_loss)
 
-		self.predict_fun = theano.function([input_var], test_prediction)
+		self.predict_fun = theano.function([T_input_var], test_prediction)
 
 	def predict(self, data):
 		# Normalize input

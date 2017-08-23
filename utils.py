@@ -40,7 +40,7 @@ def get_data(split_ratio=0.7):
 	return X[training_idx, :], y[training_idx, :], X[test_idx, :], y[test_idx, :]
 
 
-def get_pred_data(sample_size=None):
+def get_hpc_data(sample_size=None):
 	arr = to_voxels(read_float(hpc))
 	if sample_size is not None:
 		np.random.shuffle(arr)

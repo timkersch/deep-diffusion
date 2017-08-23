@@ -12,33 +12,37 @@ import cPickle as pickle
 import sys
 import utils
 import numpy as np
+import argparse
+from generate_data import run
+import datetime
 
 sys.setrecursionlimit(50000)
 
 
-def train(model_id, train_set, validation_set, config, super_dir='models/'):
-	input_var = T.fmatrix('inputs')
-	target_var = T.fmatrix('targets')
+def train(train_set, validation_set, config='./config.json', model_path='models/model/'):
+	T_input_var = T.fmatrix('inputs')
+	T_target_var = T.fmatrix('targets')
 
-	model_id = str(model_id)
-	if not os.path.exists(super_dir + model_id):
+	if not os.path.exists(model_path):
 		try:
-			os.makedirs(super_dir + model_id)
+			os.makedirs(model_path)
 		except OSError as exc:
 			if exc.errno != errno.EEXIST:
 				raise
-	dir = super_dir + model_id + '/'
+
+	if not model_path.endswith('/'):
+		model_path += '/'
 
 	# Write the config file
-	with open(dir + 'config.json', 'w') as outfile:
+	with open(model_path + 'config.json', 'w') as outfile:
 		json.dump(config, outfile, sort_keys=True, indent=4)
 
 	# Open file for appending output
-	outfile = open(dir + 'out.txt', 'a')
+	outfile = open(model_path + 'out.txt', 'a')
 	print_and_append('Training network with {} training samples and {} validation samples'.format(train_set[0].shape[0], validation_set[0].shape[0]), outfile)
 
 	# Create neural network model
-	network = FCNet(input_var, target_var, config)
+	network = FCNet(T_input_var, T_target_var, config)
 	network.train(train_set[0], train_set[1], validation_set[0], validation_set[1], outfile=outfile)
 
 	train_pred = network.predict(train_set[0])
@@ -53,19 +57,20 @@ def train(model_id, train_set, validation_set, config, super_dir='models/'):
 	print_and_append('Validation R2: ' + str(val_r2), outfile)
 
 	outfile.close()
-	save(dir + 'model.p', network)
+	save(model_path + 'model.p', network)
 
 	# Make some plots
-	utils.loss_plot(network.train_loss, network.val_loss, filename=dir + 'loss-plot', zoomed=False)
+	utils.loss_plot(network.train_loss, network.val_loss, filename=model_path + 'loss-plot', zoomed=False)
 
 	indices = np.random.choice(validation_set[1].shape[0], 1000)
-	utils.diff_plot(validation_set[1][indices], validation_pred[indices], filename=dir + 'validation-diff-plot')
-	utils.diff_plot(train_set[1][indices], train_pred[indices], filename=dir + 'train-diff-plot')
+	utils.diff_plot(validation_set[1][indices], validation_pred[indices], filename=model_path + 'validation-diff-plot')
+	utils.diff_plot(train_set[1][indices], train_pred[indices], filename=model_path + 'train-diff-plot')
 
 	return network, val_mse, val_r2
 
 
-def parameter_search(dir='models/search/'):
+def parameter_search():
+	dir='models/search/' + str(datetime.datetime.now().isoformat())
 	with open('config.json') as data_file:
 		config = json.load(data_file)
 	train_set, validation_set, test_set = dataset.load_dataset(config['no_dwis'], split_ratio=(0.6, 0.2, 0.2))
@@ -83,7 +88,7 @@ def parameter_search(dir='models/search/'):
 		print "Fitting model {} of {} with l-rate: {}".format(index, no_configs, learning_rate)
 		config['optimizer']['learning_rate'] = np.asscalar(learning_rate)
 
-		model, val_mse, val_r2 = train(super_dir=dir, train_set=train_set, validation_set=validation_set, model_id=index, config=config)
+		model, val_mse, val_r2 = train(train_set=train_set, validation_set=validation_set, model_path=dir + str(index), config=config)
 
 		id_model_list.append({'id': index, 'mse': np.asscalar(val_mse), 'r2': np.asscalar(val_r2)})
 
@@ -118,13 +123,46 @@ def save(path, network):
 	pickle.dump(network, open(path, 'wb'))
 
 
-def run_train():
-	with open('config.json') as data_file:
+def run_train(config_path='./config.json', model_path='models/model/'):
+	with open(config_path) as data_file:
 		config = json.load(data_file)
 	train_set, validation_set, test_set = dataset.load_dataset(config['no_dwis'], split_ratio=(0.6, 0.2, 0.2))
-	model, _, _ = train(model_id='test', train_set=train_set, validation_set=validation_set, config=config)
+	model, _, _ = train(model_path=model_path, train_set=train_set, validation_set=validation_set, config=config)
 
 
-if __name__ == '__main__':
-	#parameter_search('models/23-aug-1/')
-	run_train()
+parser = argparse.ArgumentParser()
+subparsers = parser.add_subparsers(help='commands')
+
+# Training
+training_parser = subparsers.add_parser('training', help='Train model')
+training_parser.add_argument('-m', action="store", help='Set path to save model', dest='model_dest')
+training_parser.add_argument('-c', action="store", help='Config file', dest='config_file')
+training_parser.set_defaults(which='training')
+
+# Inference
+inference_parser = subparsers.add_parser('inference', help='Perform inference with trained model')
+inference_parser.add_argument('-d', action="store", help='Data to perform inference on', dest='data_file')
+inference_parser.add_argument('-m', action="store", help='Model file', dest='model_file')
+inference_parser.add_argument('-f', action="store", help='Save file', dest='save_file')
+inference_parser.set_defaults(which='inference')
+
+# Genreation
+generate_parser = subparsers.add_parser('generate', help='Generate data')
+generate_parser.add_argument('-i', action="store", help='No iterations to run', dest='no_iter')
+generate_parser.add_argument('-v', action="store", help='No voxels in every iteration', dest='no_voxels')
+generate_parser.set_defaults(which='generate')
+
+args = parser.parse_args()
+
+if args.which == 'training':
+	config = args.config_file
+	model = args.model_dest
+	run_train(config_path=config, model_path=model)
+elif args.which == 'inference':
+	network = load(args.model_file)
+	preds = network.predict(args.data_file)
+	np.savetxt(args.save_file, preds)
+elif args.which == 'generate':
+	run(no_iter=args.no_iter, no_voxels=args.no_voxels)
+else:
+	print 'Illegal argument'
