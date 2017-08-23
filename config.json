@@ -12,33 +12,25 @@
   "hidden_layers": [
     {
       "type": "fc",
-      "units": 512
+      "units": 150
     },
     {
       "type": "fc",
-      "units": 512
+      "units": 150
     },
     {
       "type": "fc",
-      "units": 512
-    },
-    {
-      "type": "fc",
-      "units": 512
-    },
-    {
-      "type": "fc",
-      "units": 512
+      "units": 150
     }
   ],
   "no_dwis": 288,
-  "no_epochs": 300,
-  "early_stopping": 20,
+  "no_epochs": 1000,
+  "early_stopping": 0,
   "optimizer": {
     "beta1": 0.9,
     "beta2": 0.999,
     "epsilon": 1e-08,
-    "learning_rate": 1e-04,
+    "learning_rate": 2.5e-04,
     "type": "adam"
   }
 }
