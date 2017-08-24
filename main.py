@@ -100,7 +100,7 @@ def parameter_search():
 
 			for l in xrange(len(config['hidden_layers'])):
 				if config['hidden_layers'][l]['type'] == 'fc':
-					config['hidden_layers'][l]['units'] = j
+					config['hidden_layers'][l]['units'] = hs
 				else:
 					config['hidden_layers'][l]['p'] = p
 
