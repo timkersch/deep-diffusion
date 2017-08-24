@@ -80,35 +80,43 @@ def parameter_search():
 		config = json.load(data_file)
 	train_set, validation_set, test_set = dataset.load_dataset(config['no_dwis'], split_ratio=(0.6, 0.2, 0.2))
 
-	learning_rates = 10 ** np.random.uniform(-5, -3, 10)
+	#learning_rates = 10 ** np.random.uniform(-5, -3, 20)
+
+	learning_rates = [1e-5, 5e-5, 1e-4, 5e-4, 1e-3]
+	batch_size = [64, 128, 256, 512, 1024]
+
+	batch_norm = [False, True]
 
 	id_model_list = []
 	lowest_mse = 1000
 	best_index = -1
 	index = 1
 
-	#heat_matrix = np.empty(([len(dropout), len(learning_rates)]))
-
-	no_configs = len(learning_rates)
+	no_configs = len(learning_rates)*len(batch_size)*len(batch_norm)
 	print "Beginning grid search with {} configurations".format(no_configs)
-	for i, lr in enumerate(learning_rates):
-		print "Fitting model {} of {}".format(index, no_configs)
-		config['learning_rate'] = lr
+	for bn in batch_norm:
+		heat_matrix = np.empty(([len(learning_rates), len(batch_size)]))
+		for i, lr in enumerate(learning_rates):
+			for j, bs in enumerate(batch_size):
+				print "Fitting model {} of {}".format(index, no_configs)
 
-		model, val_mse, val_r2 = train(train_set=train_set, validation_set=validation_set, model_path=dir + str(index), config=config)
-		id_model_list.append({'id': index, 'mse': np.asscalar(val_mse), 'r2': np.asscalar(val_r2)})
+				config['learning_rate'] = lr
+				config['batch_size'] = bs
 
-		# heat_matrix[i][j] = np.asscalar(val_r2)
+				model, val_mse, val_r2 = train(train_set=train_set, validation_set=validation_set, model_path=dir + str(index), config=config)
+				id_model_list.append({'id': index, 'mse': np.asscalar(val_mse), 'r2': np.asscalar(val_r2)})
 
-		if val_mse < lowest_mse:
-			lowest_mse = val_mse
-			best_index = index
+				heat_matrix[i][j] = np.asscalar(val_r2)
 
-		print 'Current best model is: {} with validation MSE: {} \n'.format(best_index, lowest_mse)
+				if val_mse < lowest_mse:
+					lowest_mse = val_mse
+					best_index = index
 
-		index += 1
+				print 'Current best model is: {} with validation MSE: {} \n'.format(best_index, lowest_mse)
 
-	# utils.heat_plot(heat_matrix, dir + 'heat-plot-dropout-vs-width', dropout, hidden_layer_size, xLabel='Dropout fraction', yLabel='Hidden layers size')
+				index += 1
+
+		utils.heat_plot(heat_matrix, dir + 'heat-plot-lr-vs-bs-bn:'+str(bn), learning_rates, batch_size, xLabel='Learning rate', yLabel='Batch size')
 
 	axes = plt.gca()
 	axes.set_ylim(0, 10 * np.median([k['mse'] for i, k in enumerate(id_model_list)]))
