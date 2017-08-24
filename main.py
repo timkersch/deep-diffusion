@@ -80,9 +80,9 @@ def parameter_search():
 		config = json.load(data_file)
 	train_set, validation_set, test_set = dataset.load_dataset(config['no_dwis'], split_ratio=(0.6, 0.2, 0.2))
 
-	learning_rates = 10 ** np.random.uniform(-5, -3, 10)
+	# learning_rates = 10 ** np.random.uniform(-5, -3, 10)
 
-	batch_size = [32, 128, 512, 2048, 4096]
+	no_hidden_layers = [1, 2, 3, 5, 8]
 	hidden_layer_size = [50, 150, 300, 500, 750]
 
 	id_model_list = []
@@ -90,33 +90,35 @@ def parameter_search():
 	best_index = -1
 	index = 1
 
-	heat_matrix = np.empty(([len(batch_size), len(hidden_layer_size)]))
+	heat_matrix = np.empty(([len(no_hidden_layers), len(hidden_layer_size)]))
 
-	no_configs = len(learning_rates)*len(batch_size)*len(hidden_layer_size)
+	no_configs = len(no_hidden_layers)*len(hidden_layer_size)
 	print "Beginning grid search with {} configurations".format(no_configs)
-	for learning_rate in learning_rates:
-		for i, bs in enumerate(batch_size):
-			for j, hs in enumerate(hidden_layer_size):
-				print "Fitting model {} of {} with l-rate: {}".format(index, no_configs, learning_rate)
-				config['optimizer']['learning_rate'] = np.asscalar(learning_rate)
-				config['batch_size'] = bs
-				for layer in config['hidden_layers']:
-					layer['units'] = hs
-				model, val_mse, val_r2 = train(train_set=train_set, validation_set=validation_set, model_path=dir + str(index), config=config)
+	for i, nh in enumerate(no_hidden_layers):
+		for j, hs in enumerate(hidden_layer_size):
+			print "Fitting model {} of {}".format(index, no_configs)
+			config['hidden_layers'] = []
+			for l in xrange(nh):
+				config['hidden_layers'] += {
+					"type": "fc",
+					"units": hs
+				}
 
-				id_model_list.append({'id': index, 'mse': np.asscalar(val_mse), 'r2': np.asscalar(val_r2)})
+			model, val_mse, val_r2 = train(train_set=train_set, validation_set=validation_set, model_path=dir + str(index), config=config)
 
-				heat_matrix[i][j] = np.asscalar(val_r2)
+			id_model_list.append({'id': index, 'mse': np.asscalar(val_mse), 'r2': np.asscalar(val_r2)})
 
-				if val_mse < lowest_mse:
-					lowest_mse = val_mse
-					best_index = index
+			heat_matrix[i][j] = np.asscalar(val_r2)
 
-				print 'Current best model is: {} with validation MSE: {} \n'.format(best_index, lowest_mse)
+			if val_mse < lowest_mse:
+				lowest_mse = val_mse
+				best_index = index
 
-				index += 1
+			print 'Current best model is: {} with validation MSE: {} \n'.format(best_index, lowest_mse)
 
-	utils.heat_plot(heat_matrix, dir + 'heat-plot', batch_size, hidden_layer_size, xLabel='Batch Size', yLabel='Hidden-layers size')
+			index += 1
+
+	utils.heat_plot(heat_matrix, dir + 'heat-plot-depth-vs-width', no_hidden_layers, hidden_layer_size, xLabel='No. Hidden layers', yLabel='Hidden layers size')
 
 	axes = plt.gca()
 	axes.set_ylim(0, 10 * np.median([k['mse'] for i, k in enumerate(id_model_list)]))

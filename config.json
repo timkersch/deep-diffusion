@@ -24,13 +24,13 @@
     }
   ],
   "no_dwis": 288,
-  "no_epochs": 300,
+  "no_epochs": 200,
   "early_stopping": 0,
   "optimizer": {
     "beta1": 0.9,
     "beta2": 0.999,
     "epsilon": 1e-08,
-    "learning_rate": 2.5e-04,
+    "learning_rate": 1e-05,
     "type": "adam"
   }
 }
