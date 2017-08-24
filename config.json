@@ -15,16 +15,8 @@
       "units": 150
     },
     {
-      "type": "dropout",
-      "p": 0.5
-    },
-    {
       "type": "fc",
       "units": 150
-    },
-    {
-      "type": "dropout",
-      "p": 0.5
     },
     {
       "type": "fc",

@@ -3,7 +3,7 @@ import theano
 import lasagne
 import numpy as np
 from utils import print_and_append
-from sklearn.preprocessing import MinMaxScaler, StandardScaler
+from sklearn.preprocessing import MinMaxScaler, MaxAbsScaler, StandardScaler
 import time
 import theano.tensor as T
 
@@ -96,13 +96,13 @@ class FCNet:
 		X_val = self.normalizer.transform(X_val)
 
 		if self.config['scale_inputs']:
-			self.in_scaler = MinMaxScaler(feature_range=(-1, 1))
+			self.in_scaler = MaxAbsScaler()
 			self.in_scaler.fit(X_train)
 			X_train = self.in_scaler.transform(X_train)
 			X_val = self.in_scaler.transform(X_val)
 
 		if self.config['scale_outputs']:
-			self.out_scaler = MinMaxScaler(feature_range=(-1, 1))
+			self.out_scaler = MinMaxScaler(feature_range=(0, 1))
 			self.out_scaler.fit(y_train)
 			y_train = self.out_scaler.transform(y_train)
 			y_val = self.out_scaler.transform(y_val)
