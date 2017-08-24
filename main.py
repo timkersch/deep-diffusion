@@ -118,7 +118,7 @@ def parameter_search():
 
 			index += 1
 
-	utils.heat_plot(heat_matrix, dir + 'heat-plot-depth-vs-width', no_hidden_layers, hidden_layer_size, xLabel='No. Hidden layers', yLabel='Hidden layers size')
+	utils.heat_plot(heat_matrix, dir + 'heat-plot-dropout-vs-width', dropout, hidden_layer_size, xLabel='Dropout fraction', yLabel='Hidden layers size')
 
 	axes = plt.gca()
 	axes.set_ylim(0, 10 * np.median([k['mse'] for i, k in enumerate(id_model_list)]))
