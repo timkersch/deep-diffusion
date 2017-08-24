@@ -146,7 +146,7 @@ def residual_plot(targets, predictions, filename):
 	axes = plt.gca()
 	axes.set_ylim(np.min(residuals), np.max(residuals))
 	axes.set_xlim(np.min(predictions), np.max(predictions))
-	ax.scatter(targets, predictions, edgecolors=(0, 0, 0))
+	ax.scatter(predictions, residuals, edgecolors=(0, 0, 0))
 	ax.set_xlabel('Predictions')
 	ax.set_ylabel('Residuals')
 	plt.savefig(filename)

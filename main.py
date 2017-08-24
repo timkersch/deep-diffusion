@@ -144,47 +144,47 @@ def run_train(config_path='./config.json', model_path='models/model/'):
 
 
 # Parsing the command line happens here
+if __name__ == '__main__':
+	parser = argparse.ArgumentParser()
+	subparsers = parser.add_subparsers(help='commands')
 
-parser = argparse.ArgumentParser()
-subparsers = parser.add_subparsers(help='commands')
+	# Training
+	training_parser = subparsers.add_parser('training', help='Train model')
+	training_parser.add_argument('-m', action="store", help='Set path to save model', dest='model_dest')
+	training_parser.add_argument('-c', action="store", help='Config file', dest='config_file')
+	training_parser.set_defaults(which='training')
 
-# Training
-training_parser = subparsers.add_parser('training', help='Train model')
-training_parser.add_argument('-m', action="store", help='Set path to save model', dest='model_dest')
-training_parser.add_argument('-c', action="store", help='Config file', dest='config_file')
-training_parser.set_defaults(which='training')
+	# Inference
+	inference_parser = subparsers.add_parser('inference', help='Perform inference with trained model')
+	inference_parser.add_argument('-d', action="store", help='Data to perform inference on', dest='data_file')
+	inference_parser.add_argument('-m', action="store", help='Model file', dest='model_file')
+	inference_parser.add_argument('-f', action="store", help='Save file', dest='save_file')
+	inference_parser.set_defaults(which='inference')
 
-# Inference
-inference_parser = subparsers.add_parser('inference', help='Perform inference with trained model')
-inference_parser.add_argument('-d', action="store", help='Data to perform inference on', dest='data_file')
-inference_parser.add_argument('-m', action="store", help='Model file', dest='model_file')
-inference_parser.add_argument('-f', action="store", help='Save file', dest='save_file')
-inference_parser.set_defaults(which='inference')
+	# Genreation
+	generate_parser = subparsers.add_parser('generate', help='Generate data')
+	generate_parser.add_argument('-i', type=int, action="store", help='No iterations to run', dest='no_iter')
+	generate_parser.add_argument('-v', type=int, action="store", help='No voxels in every iteration', dest='no_voxels')
+	generate_parser.set_defaults(which='generate')
 
-# Genreation
-generate_parser = subparsers.add_parser('generate', help='Generate data')
-generate_parser.add_argument('-i', type=int, action="store", help='No iterations to run', dest='no_iter')
-generate_parser.add_argument('-v', type=int, action="store", help='No voxels in every iteration', dest='no_voxels')
-generate_parser.set_defaults(which='generate')
+	# Search
+	search_parser = subparsers.add_parser('search', help='Search parameter')
+	search_parser.set_defaults(which='search')
 
-# Search
-search_parser = subparsers.add_parser('search', help='Search parameter')
-search_parser.set_defaults(which='search')
+	args = parser.parse_args()
 
-args = parser.parse_args()
-
-if args.which == 'training':
-	config = args.config_file
-	model = args.model_dest
-	run_train(config_path=config, model_path=model)
-elif args.which == 'inference':
-	network = load(args.model_file)
-	data = utils.to_voxels(utils.read_float(args.data_file))
-	preds = network.predict(data)
-	np.savetxt(args.save_file, preds)
-elif args.which == 'generate':
-	run(no_iter=args.no_iter, no_voxels=args.no_voxels)
-elif args.which == 'search':
-	parameter_search()
-else:
-	print 'Illegal argument'
+	if args.which == 'training':
+		config = args.config_file
+		model = args.model_dest
+		run_train(config_path=config, model_path=model)
+	elif args.which == 'inference':
+		network = load(args.model_file)
+		data = utils.to_voxels(utils.read_float(args.data_file))
+		preds = network.predict(data)
+		np.savetxt(args.save_file, preds)
+	elif args.which == 'generate':
+		run(no_iter=args.no_iter, no_voxels=args.no_voxels)
+	elif args.which == 'search':
+		parameter_search()
+	else:
+		print 'Illegal argument'

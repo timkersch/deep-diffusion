@@ -1,11 +1,11 @@
 {
-  "batch_norm": true,
+  "batch_norm": false,
   "batch_size": 128,
-  "scale_inputs": true,
+  "scale_inputs": false,
   "scale_outputs": true,
   "normalize": {
     "with_mean": true,
-    "with_std": false
+    "with_std": true
   },
   "loss": "l2",
   "activation_function": "relu",
@@ -24,7 +24,7 @@
     }
   ],
   "no_dwis": 288,
-  "no_epochs": 200,
+  "no_epochs": 250,
   "early_stopping": 0,
   "optimizer": {
     "beta1": 0.9,

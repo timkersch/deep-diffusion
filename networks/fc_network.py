@@ -29,18 +29,18 @@ class FCNet:
 				prev_layer = lasagne.layers.DropoutLayer(prev_layer, p=layer['p'])
 			elif layer['type'] == 'fc':
 				if config['activation_function'] == 'relu':
-					layer = lasagne.layers.DenseLayer(prev_layer, num_units=layer['units'], W=lasagne.init.HeNormal(), nonlinearity=lasagne.nonlinearities.rectify)
+					layer = lasagne.layers.DenseLayer(prev_layer, num_units=layer['units'], W=lasagne.init.HeNormal(gain='relu'), nonlinearity=lasagne.nonlinearities.rectify)
 				elif config['activation_function'] == 'sigmoid':
-					layer = lasagne.layers.DenseLayer(prev_layer, num_units=layer['units'], W=lasagne.init.GlorotNormal(), nonlinearity=lasagne.nonlinearities.sigmoid)
-				elif config ['activation_function'] == 'tanh':
-					layer = lasagne.layers.DenseLayer(prev_layer, num_units=layer['units'], W=lasagne.init.GlorotNormal(), nonlinearity=lasagne.nonlinearities.tanh)
+					layer = lasagne.layers.DenseLayer(prev_layer, num_units=layer['units'], W=lasagne.init.GlorotNormal(gain=1.0), nonlinearity=lasagne.nonlinearities.sigmoid)
+				elif config['activation_function'] == 'tanh':
+					layer = lasagne.layers.DenseLayer(prev_layer, num_units=layer['units'], W=lasagne.init.GlorotNormal(gain=1.0), nonlinearity=lasagne.nonlinearities.tanh)
 
 				if config['batch_norm'] and index != len(hidden_layers)-1:
 					prev_layer = lasagne.layers.batch_norm(layer)
 				else:
 					prev_layer = layer
 
-		l_out = lasagne.layers.DenseLayer(prev_layer, 1, nonlinearity=lasagne.nonlinearities.linear)
+		l_out = lasagne.layers.DenseLayer(prev_layer, 1, W=lasagne.init.GlorotNormal(gain=1.0), nonlinearity=lasagne.nonlinearities.linear)
 		self.network = l_out
 
 		prediction = lasagne.layers.get_output(self.network)
