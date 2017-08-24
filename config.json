@@ -15,8 +15,16 @@
       "units": 150
     },
     {
+      "type": "dropout",
+      "p": 0.5
+    },
+    {
       "type": "fc",
       "units": 150
+    },
+    {
+      "type": "dropout",
+      "p": 0.5
     },
     {
       "type": "fc",
@@ -30,7 +38,7 @@
     "beta1": 0.9,
     "beta2": 0.999,
     "epsilon": 1e-08,
-    "learning_rate": 1e-05,
+    "learning_rate": 2.5e-04,
     "type": "adam"
   }
 }

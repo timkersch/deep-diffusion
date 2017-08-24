@@ -82,7 +82,7 @@ def parameter_search():
 
 	# learning_rates = 10 ** np.random.uniform(-5, -3, 10)
 
-	no_hidden_layers = [1, 2, 3, 5, 8]
+	dropout = [0.1, 0.2, 0.3, 0.4, 0.5]
 	hidden_layer_size = [50, 150, 300, 500, 750]
 
 	id_model_list = []
@@ -90,21 +90,19 @@ def parameter_search():
 	best_index = -1
 	index = 1
 
-	heat_matrix = np.empty(([len(no_hidden_layers), len(hidden_layer_size)]))
+	heat_matrix = np.empty(([len(dropout), len(hidden_layer_size)]))
 
-	no_configs = len(no_hidden_layers)*len(hidden_layer_size)
+	no_configs = len(dropout)*len(hidden_layer_size)
 	print "Beginning grid search with {} configurations".format(no_configs)
-	for i, nh in enumerate(no_hidden_layers):
+	for i, p in enumerate(dropout):
 		for j, hs in enumerate(hidden_layer_size):
 			print "Fitting model {} of {}".format(index, no_configs)
 
-			config['hidden_layers'] = []
-			for l in xrange(nh):
-				obj = {
-					"type": "fc",
-					"units": hs
-				}
-				config['hidden_layers'].append(obj)
+			for l in xrange(len(config['hidden_layers'])):
+				if config['hidden_layers'][l]['type'] == 'fc':
+					config['hidden_layers'][l]['units'] = j
+				else:
+					config['hidden_layers'][l]['p'] = p
 
 			model, val_mse, val_r2 = train(train_set=train_set, validation_set=validation_set, model_path=dir + str(index), config=config)
 
