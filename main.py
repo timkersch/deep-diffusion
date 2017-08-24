@@ -97,12 +97,14 @@ def parameter_search():
 	for i, nh in enumerate(no_hidden_layers):
 		for j, hs in enumerate(hidden_layer_size):
 			print "Fitting model {} of {}".format(index, no_configs)
+
 			config['hidden_layers'] = []
 			for l in xrange(nh):
-				config['hidden_layers'] += {
+				obj = {
 					"type": "fc",
 					"units": hs
 				}
+				config['hidden_layers'].append(obj)
 
 			model, val_mse, val_r2 = train(train_set=train_set, validation_set=validation_set, model_path=dir + str(index), config=config)
 
