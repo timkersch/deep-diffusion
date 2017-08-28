@@ -46,23 +46,28 @@ def train(train_set, validation_set, config='./config.json', model_path='models/
 	network = FCNet(T_input_var, T_target_var, config)
 	network.train(train_set[0], train_set[1], validation_set[0], validation_set[1], outfile=outfile)
 
+	# Make predictions on the full train and validation set
 	train_pred = network.predict(train_set[0])
 	validation_pred = network.predict(validation_set[0])
 
+	# Compute MSE and R2 score for the validationset
 	val_mse = mse(validation_set[1], validation_pred)
 	val_r2 = r2(validation_set[1], validation_pred)
 
+	# Append output
 	print_and_append('Training MSE: ' + str(mse(train_set[1], train_pred)), outfile)
 	print_and_append('Validation MSE: ' + str(val_mse), outfile)
 	print_and_append('Training R2: ' + str(r2(train_set[1], train_pred)), outfile)
 	print_and_append('Validation R2: ' + str(val_r2), outfile)
 
+	# Close file and save model
 	outfile.close()
 	save(model_path + 'model.p', network)
 
-	# Make some plots
+	# Create loss plot
 	utils.loss_plot(network.train_loss, network.val_loss, filename=model_path + 'loss-plot', zoomed=False)
 
+	# Create scatter plots for 1000 randomly sampled indicies from train and validation sets
 	indices = np.random.choice(validation_set[1].shape[0], 1000)
 	utils.diff_plot(validation_set[1][indices], validation_pred[indices], filename=model_path + 'validation-diff-plot')
 	utils.diff_plot(train_set[1][indices], train_pred[indices], filename=model_path + 'train-diff-plot')
@@ -80,7 +85,7 @@ def parameter_search():
 		config = json.load(data_file)
 	train_set, validation_set, test_set = dataset.load_dataset(config['no_dwis'], split_ratio=(0.6, 0.2, 0.2))
 
-	#learning_rates = 10 ** np.random.uniform(-5, -3, 20)
+	# learning_rates = 10 ** np.random.uniform(-5, -3, 20)
 
 	learning_rates = [1e-5, 5e-5, 1e-4, 5e-4, 1e-3]
 	batch_size = [64, 128, 256, 512, 1024]
@@ -169,7 +174,7 @@ if __name__ == '__main__':
 	inference_parser.add_argument('-f', action="store", help='Save file', dest='save_file')
 	inference_parser.set_defaults(which='inference')
 
-	# Genreation
+	# Generation
 	generate_parser = subparsers.add_parser('generate', help='Generate data')
 	generate_parser.add_argument('-i', type=int, action="store", help='No iterations to run', dest='no_iter')
 	generate_parser.add_argument('-v', type=int, action="store", help='No voxels in every iteration', dest='no_voxels')

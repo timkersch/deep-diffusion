@@ -47,8 +47,8 @@ def _generate_data(config):
 	np.savetxt(config['dir_name'] + 'targets.txt', np.transpose([rad, sep]))
 
 
-# Generates a config over what is generated
-def _get_config(walkers=100000, tmax=1000, voxels=1, p=0.0, scheme_path='hpc.scheme', cylinder_rad=1E-6, cylinder_sep=2.1E-6, dir_name=''):
+# Generates a config about what is generated
+def _get_config(walkers=100000, tmax=1000, voxels=1, p=0.0, scheme_path='./data/hpc.scheme', cylinder_rad=1E-6, cylinder_sep=2.1E-6, dir_name=''):
 	out_name = str(dir_name) + 'cylinders.bfloat'
 	obj = {
 		'walkers': walkers,

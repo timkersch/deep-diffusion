@@ -6,7 +6,7 @@
 	Each subfolder has a config file with info about with what settings it was generated.
 	* hpc_scanned_voxels.Bfloat - A big file with HPC scanned voxels (the ground truth) 
 - models - Models are saved here
-	* model1 - The model that performed best on the training set. 
+	* model1 - The model that performed best on the test-set. 
 	Holds a config file with its setting, a plot of loss vs epoch, a pickled model, output from the run, and two scatter plots of prediction vs target for training and validation set.
 - networks
 	* fc_network.py - The network used for fitting the model
@@ -17,7 +17,7 @@
 - main.py - Parses the command line and calls appropriate methods
 - run_camino.sh - The shell script calling camino toolkit
 - run_param_eval.py - Methods for running knn on the training set and predicting on HPC data
-- utils.py - Several helper functions for plotting and loading / parsing data
+- utils.py - Several helper functions for plotting and loading / parsing and plotting data
 
 
 ## Configuration (config.json)

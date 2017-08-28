@@ -10,6 +10,7 @@ import theano.tensor as T
 
 class FCNet:
 
+	# Init function which creates the network according to config dict
 	def __init__(self, T_input_var, T_target_var, config):
 		self.config = config
 
@@ -22,6 +23,7 @@ class FCNet:
 
 		l_in = lasagne.layers.InputLayer(shape=(config['batch_size'], config['no_dwis']), input_var=T_input_var)
 
+		# Build network accoriding to config file
 		hidden_layers = config['hidden_layers']
 		prev_layer = l_in
 		for index, layer in enumerate(hidden_layers):
@@ -46,6 +48,7 @@ class FCNet:
 		prediction = lasagne.layers.get_output(self.network)
 		test_prediction = lasagne.layers.get_output(self.network, deterministic=True)
 
+		# Set network loss function
 		if config['loss'] == 'l2':
 			loss = lasagne.objectives.squared_error(prediction, T_target_var).mean()
 			test_loss = lasagne.objectives.squared_error(test_prediction, T_target_var).mean()
@@ -54,18 +57,23 @@ class FCNet:
 			test_loss = FCNet._absolute_error(test_prediction, T_target_var).mean()
 
 		params = lasagne.layers.get_all_params(self.network, trainable=True)
+
+		# Set network optimizer
 		if config['optimizer']['type'] == 'adam':
 			updates = lasagne.updates.adam(loss, params, learning_rate=config['optimizer']['learning_rate'],
 										   beta1=config['optimizer']['beta1'], beta2=config['optimizer']['beta2'],
 										   epsilon=config['optimizer']['epsilon'])
 		elif config['optimizer']['type'] == 'momentum':
-			updates = lasagne.updates.nesterov_momentum(loss, params, learning_rate=config['optimizer']['learning_rate'], momentum=config['optimizer']['momentum'])
+			updates = lasagne.updates.nesterov_momentum(loss, params,
+			                                            learning_rate=config['optimizer']['learning_rate'],
+			                                            momentum=config['optimizer']['momentum'])
 
+		# Construct Theano functions
 		self.train_forward = theano.function([T_input_var, T_target_var], loss, updates=updates)
 		self.val_forward = theano.function([T_input_var, T_target_var], test_loss)
-
 		self.predict_fun = theano.function([T_input_var], test_prediction)
 
+	# Function for making prediction with the network
 	def predict(self, data):
 		# Normalize input
 		data = self.normalizer.transform(data)
@@ -83,6 +91,7 @@ class FCNet:
 
 		return pred
 
+	# Base trianing function
 	def train(self, X_train, y_train, X_val, y_val, outfile=None, shuffle=True, log_nth=None):
 		self.reset()
 
@@ -95,6 +104,7 @@ class FCNet:
 		X_train = self.normalizer.transform(X_train)
 		X_val = self.normalizer.transform(X_val)
 
+		# Set scalers if present
 		if self.config['scale_inputs']:
 			self.in_scaler = MaxAbsScaler()
 			self.in_scaler.fit(X_train)
@@ -137,9 +147,12 @@ class FCNet:
 					return
 				prev_net = lasagne.layers.get_all_param_values(self.network)
 
+	# Helper train function for iterating over minibatches
 	def _train(self, X, y, shuffle=True, log_nth=None):
 		train_loss = 0
 		batch_index = 0
+
+		# Go over each minibatch and update the network
 		for batch in self._iterate_minibatches(X, y, shuffle=shuffle):
 			inputs, targets = batch
 			loss = self.train_forward(inputs, targets)
@@ -150,6 +163,7 @@ class FCNet:
 			batch_index += 1
 		return train_loss / batch_index
 
+	# Helper validation function for iterating over minibatches without updating network
 	def _val(self, X, y, shuffle=True):
 		val_loss = 0
 		batch_index = 0
@@ -159,6 +173,7 @@ class FCNet:
 			batch_index += 1
 		return val_loss / batch_index
 
+	# Helper method for generating minibatches from the data
 	def _iterate_minibatches(self, X, y, shuffle=True):
 		batch_size = self.config['batch_size']
 		assert batch_size <= X.shape[0]
@@ -173,10 +188,12 @@ class FCNet:
 				excerpt = slice(start_idx, start_idx + batch_size)
 			yield X[excerpt], y[excerpt]
 
+	# Method for reseting history
 	def reset(self):
 		self.train_loss = []
 		self.val_loss = []
 
+	# Helper method for the absolute error, (L1 loss)
 	@staticmethod
 	def _absolute_error(a, b):
 		a, b = lasagne.objectives.align_targets(a, b)

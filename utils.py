@@ -5,20 +5,23 @@ from matplotlib.pyplot import hist
 import matplotlib.pyplot as plt
 from sklearn.metrics import r2_score, mean_squared_error, mean_absolute_error
 
+# Directory to HPC voxel data (Not included due to its size)
 hpc = './data/hpc_scanned_voxels.Bfloat'
 
-files = ['./data/old/1000voxels_uniform_p=0_rad=0.1E-6_sep=1.1E-6_HPC-scheme.bfloat',
-			'./data/old/1000voxels_uniform_p=0_rad=0.1E-6_sep=2.1E-6_HPC-scheme.bfloat',
-			'./data/old/1000voxels_uniform_p=0_rad=0.5E-6_sep=1.1E-6_HPC-scheme.bfloat',
-			'./data/old/1000voxels_uniform_p=0_rad=1.5E-6_sep=3.1E-6_HPC-scheme.bfloat',
-			'./data/old/1000voxels_uniform_p=0_rad=1E-6_sep=3.1E-6_HPC-scheme.bfloat',
-			'./data/old/1000voxels_uniform_p=0_rad=2E-6_sep=4.1E-6_HPC-scheme.bfloat',
-			'./data/old/1000voxels_uniform_p=0_rad=1.5E-7_sep=1.1E-6_HPC-scheme.bfloat',
-			 './data/old/1000voxels_uniform_p=0_rad=1E-7_sep=1.1E-6_HPC-scheme.bfloat',
-			 './data/old/1000voxels_uniform_p=0_rad=1E-8_sep=1.1E-6_HPC-scheme.bfloat',
-			 './data/old/1000voxels_uniform_p=0_rad=2E-7_sep=1.1E-6_HPC-scheme.bfloat',
-			 './data/old/1000voxels_uniform_p=0_rad=5E-8_sep=1.1E-6_HPC-scheme.bfloat']
+# Files used for simulated voxel files for searching
+files = ['./data/search/1000voxels_uniform_p=0_rad=0.1E-6_sep=1.1E-6_HPC-scheme.bfloat',
+			'./data/search/1000voxels_uniform_p=0_rad=0.1E-6_sep=2.1E-6_HPC-scheme.bfloat',
+			'./data/search/1000voxels_uniform_p=0_rad=0.5E-6_sep=1.1E-6_HPC-scheme.bfloat',
+			'./data/search/1000voxels_uniform_p=0_rad=1.5E-6_sep=3.1E-6_HPC-scheme.bfloat',
+			'./data/search/1000voxels_uniform_p=0_rad=1E-6_sep=3.1E-6_HPC-scheme.bfloat',
+			'./data/search/1000voxels_uniform_p=0_rad=2E-6_sep=4.1E-6_HPC-scheme.bfloat',
+			'./data/search/1000voxels_uniform_p=0_rad=1.5E-7_sep=1.1E-6_HPC-scheme.bfloat',
+			 './data/search/1000voxels_uniform_p=0_rad=1E-7_sep=1.1E-6_HPC-scheme.bfloat',
+			 './data/search/1000voxels_uniform_p=0_rad=1E-8_sep=1.1E-6_HPC-scheme.bfloat',
+			 './data/search/1000voxels_uniform_p=0_rad=2E-7_sep=1.1E-6_HPC-scheme.bfloat',
+			 './data/searchh/1000voxels_uniform_p=0_rad=5E-8_sep=1.1E-6_HPC-scheme.bfloat']
 
+# A list of targets for the simulations (Cylinder rad, Cylinder sep)
 targets = [(0.1E-6, 1.1E-6),
 			   (0.1E-6, 2.1E-6),
 			   (0.5E-6, 1.1E-6),
@@ -40,6 +43,7 @@ def get_data(split_ratio=0.7):
 	return X[training_idx, :], y[training_idx, :], X[test_idx, :], y[test_idx, :]
 
 
+# Helper method to load and sample HPC data
 def get_hpc_data(sample_size=None):
 	arr = to_voxels(read_float(hpc))
 	if sample_size is not None:
@@ -48,6 +52,7 @@ def get_hpc_data(sample_size=None):
 	return arr
 
 
+# Helper method to plot features in histogram
 def plot_features():
 	X, y = _load_data(files)
 	for i in range(0, X.shape[1]):
@@ -56,11 +61,13 @@ def plot_features():
 		plt.show()
 
 
+# Helper method to plot targets in histogram
 def plot_targets(targets):
 	n, bins, patches = hist(targets, bins='auto', range=None, normed=False, weights=None, cumulative=False, bottom=None)
 	plt.show()
 
 
+# Helper method to load data from files
 def _load_data(file_list, target_list):
 	X = np.empty((len(file_list) * 1000, 288))
 	y = np.empty((len(file_list) * 1000, 2))
@@ -81,17 +88,20 @@ def _load_data(file_list, target_list):
 	return X, y
 
 
+# Helper method for reading floats from file
 def read_float(filename):
 	f = open(filename, "r")
 	arr = np.fromfile(f, dtype='>f4')
 	return arr
 
 
+# Helper method for reading
 def read_ni(filename):
 	arr = nib.load(filename)
 	return arr
 
 
+# Helper method to convert 1D-array to voxel arranged data
 def to_voxels(arr, channels=288, skip_ones=True):
 	no_samples = int(arr.size / channels)
 	if skip_ones:
@@ -99,13 +109,7 @@ def to_voxels(arr, channels=288, skip_ones=True):
 	return np.reshape(arr, (no_samples, 1, 1, 1, channels))
 
 
-def mse(t, y, rmse=False):
-	mse = mean_squared_error(t, y)
-	if rmse:
-		mse = mse ** 0.5
-	return mse
-
-
+# Method that plots a scatter plot of targets vs predictions
 def diff_plot(targets, predictions, filename, remove_outliers=False):
 	if remove_outliers:
 		indices = np.where(np.logical_not(np.logical_or(np.abs(predictions) > 10 * np.abs(targets), np.abs(predictions) < np.abs(targets) / 10.0)))
@@ -126,6 +130,7 @@ def diff_plot(targets, predictions, filename, remove_outliers=False):
 		plt.close()
 
 
+# Method that plots the loss vs epochs
 def loss_plot(train_loss, val_loss, filename, zoomed=False):
 	if zoomed:
 		axes = plt.gca()
@@ -139,6 +144,7 @@ def loss_plot(train_loss, val_loss, filename, zoomed=False):
 	plt.close()
 
 
+# Method that plots a residual plot
 def residual_plot(targets, predictions, filename):
 	fig, ax = plt.subplots()
 	fig.suptitle(str(targets.shape[0]) + ' samples, Residual Plot', fontsize=12)
@@ -153,6 +159,7 @@ def residual_plot(targets, predictions, filename):
 	plt.close()
 
 
+# Method that plots a heat plot between two hyperparameters
 def heat_plot(matrix, filename, xTicks, yTicks, xLabel='X', yLabel='Y'):
 	fig = plt.figure()
 	ax = fig.add_subplot(111)
@@ -169,14 +176,25 @@ def heat_plot(matrix, filename, xTicks, yTicks, xLabel='X', yLabel='Y'):
 	plt.close()
 
 
+# Method that computes the R2 score
 def r2(t, y):
 	return r2_score(t, y)
 
 
+# Method that computes the mean absolute error
 def mae(t, y):
 	return mean_absolute_error(t, y)
 
 
+# Method that computes mean squared error
+def mse(t, y, rmse=False):
+	mse = mean_squared_error(t, y)
+	if rmse:
+		mse = mse ** 0.5
+	return mse
+
+
+# Helper method for both printing and appending to an output file
 def print_and_append(string, outfile, new_line=False):
 	if outfile is not None:
 		outfile.write(string)

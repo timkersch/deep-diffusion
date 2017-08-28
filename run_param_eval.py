@@ -5,13 +5,18 @@ from matplotlib.pyplot import hist
 import matplotlib.pyplot as plt
 
 
+# Method for fitting kNN to data
+# Used for comparing HPC data with generated data
 def knn(X_train, y_train, X_val, y_val, X_hpc, class_index=0):
+	# Fit model to training data
 	model = KNeighborsRegressor(n_neighbors=10, weights='distance', algorithm='brute', leaf_size=30, p=2, metric='minkowski', metric_params=None, n_jobs=1)
 	model.fit(X_train, y_train[:, class_index])
 
+	# Print kNN scores for train and validation set to measure how good the fit is
 	print('Score train: ' + str(model.score(X_train, y_train[:, class_index])))
 	print('Score val: ' + str(model.score(X_val, y_val[:, class_index])))
 
+	# Make prediction on the HPC set
 	predictions = model.predict(X_hpc)
 	print(predictions)
 	print('Min: ' + str(np.min(predictions)))
@@ -32,10 +37,12 @@ if __name__ == '__main__':
 	# Load HPC data
 	X_hpc = utils.get_hpc_data(10000)
 
+	# Run on cylinder radius, i.e class index 0
 	print('Cylinder radius:')
 	knn(X_train, y_train, X_val, y_val, X_hpc, 0)
 
 	print('')
 
+	# Run on cylinder separation, i.e class index 1
 	print('Cylinder separation:')
 	knn(X_train, y_train, X_val, y_val, X_hpc, 1)
