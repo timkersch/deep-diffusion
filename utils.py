@@ -70,7 +70,7 @@ def _load_data(file_list, target_list):
 	return X, y
 
 
-def get_hpc_data(filename='./data/hpc_scanned_voxels.Bfloat', sample_size=None):
+def get_hpc_data(filename='./data/hpc/50000_scanned_voxels.Bfloat', sample_size=None):
 	"""
 	Helper method for loading HPC data from disk
 	@param filename: a string specifying the path to the binary HPC data
