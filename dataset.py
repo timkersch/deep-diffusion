@@ -3,13 +3,21 @@ import os
 import utils
 
 
-# Loads dataset from disk
-def load_dataset(dwis, dir_path='./data/gen/', split_ratio=(0.7, 0.2, 0.1), class_index=0):
+def load_dataset(dwis, dir_path='./data/gen/', split_ratio=(0.7, 0.2, 0.1)):
+	"""
+	Load the dataset from disk
+	@param dwis: number of diffusion weighted images, i.e features in dataset 
+	@param dir_path: string, the super-directory of the data 
+	@param split_ratio: how to split the dataset in (training, validation, test) 
+	@return: 
+	"""
+
 	folders = [folder for folder in os.listdir(dir_path) if folder != '.DS_Store']
 
 	X_list = []
 	t_list = []
 
+	# Go trough each folder in the directory
 	for folder in folders:
 		X_path = dir_path + folder + str('/cylinders.bfloat')
 		t_path = dir_path + folder + str('/targets.txt')
@@ -22,7 +30,7 @@ def load_dataset(dwis, dir_path='./data/gen/', split_ratio=(0.7, 0.2, 0.1), clas
 
 	X = np.concatenate(X_list)
 	t = np.concatenate(t_list)
-	return _split(X, t[:, class_index].reshape(-1, 1), split_ratio)
+	return _split(X, t[:, 0].reshape(-1, 1), split_ratio)
 
 
 # Splits dataset into three folds (training, val, test)

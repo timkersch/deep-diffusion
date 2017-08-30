@@ -10,8 +10,13 @@ import theano.tensor as T
 
 class FCNet:
 
-	# Init function which creates the network according to config dict
 	def __init__(self, T_input_var, T_target_var, config):
+		"""
+		Initialize the neural network 
+		@param T_input_var: A theano tensor variable for inputs
+		@param T_target_var: A theano tensor variable for targets
+		@param config: A config dict holding network coniguration (see config.json)
+		"""
 		self.config = config
 
 		self.in_scaler = None
@@ -65,16 +70,20 @@ class FCNet:
 										   epsilon=config['optimizer']['epsilon'])
 		elif config['optimizer']['type'] == 'momentum':
 			updates = lasagne.updates.nesterov_momentum(loss, params,
-			                                            learning_rate=config['optimizer']['learning_rate'],
-			                                            momentum=config['optimizer']['momentum'])
+														learning_rate=config['optimizer']['learning_rate'],
+														momentum=config['optimizer']['momentum'])
 
 		# Construct Theano functions
 		self.train_forward = theano.function([T_input_var, T_target_var], loss, updates=updates)
 		self.val_forward = theano.function([T_input_var, T_target_var], test_loss)
 		self.predict_fun = theano.function([T_input_var], test_prediction)
 
-	# Function for making prediction with the network
 	def predict(self, data):
+		"""
+		Make prediction with the network 
+		@param data: the input data to predict on 
+		@return: Inferred outputs for each input
+		"""
 		# Normalize input
 		data = self.normalizer.transform(data)
 
@@ -91,10 +100,20 @@ class FCNet:
 
 		return pred
 
-	# Base trianing function
 	def train(self, X_train, y_train, X_val, y_val, outfile=None, shuffle=True, log_nth=None):
-		self.reset()
+		"""
+		Method for training the neural network
+		@param X_train: The training data inputs
+		@param y_train: The training data targets
+		@param X_val: The validation data inputs
+		@param y_val: The validation data targets
+		@param outfile: A opened file that training logs are appended to 
+		@param shuffle: Shuffle training data 
+		@param log_nth: number, if logging should be done every n:th minibatch 
+		@return: nothing
+		"""
 
+		self._reset()
 		early_stopping = self.config['early_stopping']
 		no_epochs = self.config['no_epochs']
 
@@ -147,7 +166,7 @@ class FCNet:
 					return
 				prev_net = lasagne.layers.get_all_param_values(self.network)
 
-	# Helper train function for iterating over minibatches
+	# Helper train function iterating over minibatches
 	def _train(self, X, y, shuffle=True, log_nth=None):
 		train_loss = 0
 		batch_index = 0
@@ -163,7 +182,7 @@ class FCNet:
 			batch_index += 1
 		return train_loss / batch_index
 
-	# Helper validation function for iterating over minibatches without updating network
+	# Helper validation function iterating over minibatches without updating network
 	def _val(self, X, y, shuffle=True):
 		val_loss = 0
 		batch_index = 0
@@ -189,7 +208,7 @@ class FCNet:
 			yield X[excerpt], y[excerpt]
 
 	# Method for reseting history
-	def reset(self):
+	def _reset(self):
 		self.train_loss = []
 		self.val_loss = []
 

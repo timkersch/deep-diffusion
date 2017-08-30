@@ -1,6 +1,5 @@
 import matplotlib
 matplotlib.use('Agg')
-import matplotlib.pyplot as plt
 import dataset
 from networks.fc_network import FCNet
 import theano.tensor as T
@@ -19,8 +18,16 @@ import datetime
 sys.setrecursionlimit(50000)
 
 
-# Method calling the network to perform training
 def train(train_set, validation_set, config='./config.json', model_path='models/model/'):
+	"""
+	Creates and calls a network to perform training	
+	@param train_set: tuple holding the training set (X, y)
+	@param validation_set: tuple holding the validation set (X, y)
+	@param config: configuration file holding network settings
+	@param model_path: Path where trained model should be saved
+	@return: tuple - (network, validation_mse, validation_r2)
+	"""
+
 	T_input_var = T.fmatrix('inputs')
 	T_target_var = T.fmatrix('targets')
 
@@ -65,7 +72,7 @@ def train(train_set, validation_set, config='./config.json', model_path='models/
 	save(model_path + 'model.p', network)
 
 	# Create loss plot
-	utils.loss_plot(network.train_loss, network.val_loss, filename=model_path + 'loss-plot', zoomed=False)
+	utils.loss_plot(network.train_loss, network.val_loss, filename=model_path + 'loss-plot')
 
 	# Create scatter plots for 1000 randomly sampled indicies from train and validation sets
 	indices = np.random.choice(validation_set[1].shape[0], 1000)
@@ -77,19 +84,19 @@ def train(train_set, validation_set, config='./config.json', model_path='models/
 	return network, val_mse, val_r2
 
 
-# Runs a hyperparameter search.
-# Prints results and plots graphs to help find best hyperparameters
 def parameter_search():
+	"""
+	Train several networks to find good hyperparameters 	
+	@return: nothing 
+	"""
 	dir='models/' + str(datetime.datetime.now().isoformat()) + '/'
 	with open('config.json') as data_file:
 		config = json.load(data_file)
-	train_set, validation_set, test_set = dataset.load_dataset(config['no_dwis'], split_ratio=(0.6, 0.2, 0.2))
+	train_set, validation_set = dataset.load_dataset(config['no_dwis'], split_ratio=(0.6, 0.2, 0.2))
 
-	# learning_rates = 10 ** np.random.uniform(-5, -3, 20)
-
-	learning_rates = [1e-5, 5e-5, 1e-4, 5e-4, 1e-3]
+	# Define the search space
+	learning_rates = np.sort(10 ** np.random.uniform(-5, -3, 5))
 	batch_size = [64, 128, 256, 512, 1024]
-
 	batch_norm = [False, True]
 
 	id_model_list = []
@@ -97,6 +104,7 @@ def parameter_search():
 	best_index = -1
 	index = 1
 
+	# Grid search over configurations
 	no_configs = len(learning_rates)*len(batch_size)*len(batch_norm)
 	print "Beginning grid search with {} configurations".format(no_configs)
 	for bn in batch_norm:
@@ -120,43 +128,54 @@ def parameter_search():
 				print 'Current best model is: {} with validation MSE: {} \n'.format(best_index, lowest_mse)
 
 				index += 1
+		# Generate heat-plot
+		utils.heat_plot(heat_matrix, dir + 'heat-plot-lr-vs-bs-bn:' + str(bn), learning_rates, batch_size, xLabel='Learning rate', yLabel='Batch size')
 
-		utils.heat_plot(heat_matrix, dir + 'heat-plot-lr-vs-bs-bn:'+str(bn), learning_rates, batch_size, xLabel='Learning rate', yLabel='Batch size')
+	# Generate scatter plot of each model vs mse
+	utils.model_comp_plot(id_model_list, dir + 'model-mse-plot')
 
-	axes = plt.gca()
-	axes.set_ylim(0, 10 * np.median([k['mse'] for i, k in enumerate(id_model_list)]))
-	plt.plot([k['id'] for i, k in enumerate(id_model_list)], [k['mse'] for i, k in enumerate(id_model_list)], 'bo')
-	plt.ylabel('Validation MSE')
-	plt.xlabel('Model ID')
-	plt.savefig(dir + 'model-mse-plot')
-	plt.close()
-
+	# Save list of models, sorted by best performing
 	id_model_list = sorted(id_model_list, key=lambda obj: obj['mse'])
 	with open(dir + 'res.json', 'w') as outfile:
 		json.dump(id_model_list, outfile, indent=4)
 	print "Done... Best was model with index {} and validation MSE {}".format(best_index, lowest_mse)
 
 
-# Loads model from disk
 def load(path):
+	"""
+	(OBSERVE) models trained on GPU can only be loaded on GPU
+	Load network model from disk
+	@param path: the path to the model
+	@return: a FCNet object
+	"""
 	network = pickle.load(open(path, "rb"))
 	return network
 
 
-# Saves model to disk
 def save(path, network):
+	"""
+	Save neural network model to disk
+	@param path: Where to save the network
+	@param network: The network to save
+	@return: nothing
+	"""
 	pickle.dump(network, open(path, 'wb'))
 
 
-# Helper method to run training
 def run_train(config_path='./config.json', model_path='models/model/'):
+	"""
+	Helper method to start training
+	@param config_path: path to the config file to use
+	@param model_path: path where to save the trained model
+	@return: nothing
+	"""
 	with open(config_path) as data_file:
 		config = json.load(data_file)
 	train_set, validation_set, test_set = dataset.load_dataset(config['no_dwis'], split_ratio=(0.6, 0.2, 0.2))
 	model, _, _ = train(model_path=model_path, train_set=train_set, validation_set=validation_set, config=config)
 
 
-# Parsing the command line happens here
+# Parsing the command line happens here (See README.md)
 if __name__ == '__main__':
 	parser = argparse.ArgumentParser()
 	subparsers = parser.add_subparsers(help='commands')

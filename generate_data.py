@@ -10,18 +10,32 @@ import datetime
 np.random.seed(int(round(time.time())))
 
 
-# Mehtod that calls bash script which in turn calls camino to generate data
-def run(begin=0, no_iter=100, no_voxels=100, cylinder_rad_from=1E-8, cylinder_rad_to=1E-6, cylinder_sep_from=2.1E-6, cylinder_sep_to=2.1E-6):
+def run(no_iter=100, no_voxels=100, cylinder_rad_from=1E-8, cylinder_rad_to=1E-6, cylinder_sep_from=2.1E-6, cylinder_sep_to=2.1E-6):
+	"""
+	Main method for generating data with camino
+	Calls bash-script which in turn calls camino to generate data 
+	@param no_iter: Number of 
+	@param no_voxels: Number of voxels to generate
+	@param cylinder_rad_from: random cylinder radius in range from
+	@param cylinder_rad_to: random cylinder radius in range to
+	@param cylinder_sep_from: random cylinder separation in range from
+	@param cylinder_sep_to: random cylinder separation in range to
+	@return: nothing
+	"""
+
 	print 'Begin data generation with ' + str(no_iter) + ' iterations and ' + str(no_voxels) + ' in every iteration'
-	for i in range(begin, begin + no_iter):
-		print('Running iteration ' + str(i+1 - begin) + ' of ' + str(no_iter))
+	for i in range(0, no_iter):
+		print('Running iteration ' + str(i+1) + ' of ' + str(no_iter))
 		print(time.strftime("%c"))
 		dirname = "./data/gen/" + str(i) + '-' + str(datetime.datetime.now().isoformat()) + '/'
 
+		# Sample cylinder radius and separation in range
 		radius = (cylinder_rad_to - cylinder_rad_from) * np.random.random_sample() + cylinder_rad_from
 		separation = (cylinder_sep_to - cylinder_sep_from) * np.random.random_sample() + cylinder_sep_from
 
+		# Get a config file from describing the generated data
 		config = _get_config(voxels=no_voxels, cylinder_rad=radius, cylinder_sep=separation, dir_name=dirname)
+		# Perform the actual data generation
 		_generate_data(config)
 
 
@@ -33,13 +47,14 @@ def _generate_data(config):
 		except OSError as exc:
 			if exc.errno != errno.EEXIST:
 				raise
+
 	# Write the config file
 	with open(config['dir_name'] + 'config.json', 'w') as outfile:
 		json.dump(config, outfile, sort_keys=True, indent=4)
 
 	# Run camino and generate data
 	p = subprocess.Popen(['./run_camino.sh', str(config['walkers']), str(config['tmax']), str(config['voxels']), str(config['p']), str(config['scheme_path']), str(config['cylinder_rad']), str(config['cylinder_sep']), str(config['out_name'])], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-	out, err = p.communicate()
+	p.communicate()
 
 	# Write the target file
 	rad = np.full(config['voxels'], config['cylinder_rad'])
