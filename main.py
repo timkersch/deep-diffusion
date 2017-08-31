@@ -92,7 +92,7 @@ def parameter_search():
 	dir='models/' + str(datetime.datetime.now().isoformat()) + '/'
 	with open('config.json') as data_file:
 		config = json.load(data_file)
-	train_set, validation_set = dataset.load_dataset(config['no_dwis'], split_ratio=(0.6, 0.2, 0.2))
+	train_set, validation_set, test_set = dataset.load_dataset(config['no_dwis'], split_ratio=(0.6, 0.2, 0.2))
 
 	# Define the search space
 	learning_rates = np.sort(10 ** np.random.uniform(-5, -3, 5))
@@ -213,7 +213,7 @@ if __name__ == '__main__':
 		network = load(args.model_file)
 		data = utils.to_voxels(utils.read_float(args.data_file))
 		preds = network.predict(data)
-		np.savetxt(args.save_file, preds)
+		preds.tofile(args.save_file)
 	elif args.which == 'generate':
 		run(no_iter=args.no_iter, no_voxels=args.no_voxels)
 	elif args.which == 'search':

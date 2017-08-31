@@ -2,6 +2,13 @@
 
 Author: Tim Kerschbaumer (2017-08-31)
 
+## General
+Please set the Theano flags before executing the scripts
+
+floatX should be 'float32' and device should be either 'gpu' or 'cpu'
+
+THEANO_FLAGS='device=gpu,floatX=float32'
+
 ## File structure
 - data
 	* gen -  holds data generated from the camino toolkit. 
@@ -59,15 +66,15 @@ All .bfloat datafiles are binary float32 1-D arrays.
 ## Running
 
 ### Data generation
-`python main generate -i 100 -v 1000`
+`python main.py generate -i 100 -v 1000`
 
-Generate data with 100 iterations and 1000 voxels in every iteration
+Generate data with 100 iterations and 1000 voxels in every iteration (requires camino to be installed an in $PATH)
 
 **-i** no. iteraions
 **-v** no. voxels
 
 ### Training
-`python main training -m ./models/model2 -c ./config.json`
+`python main.py training -m ./models/model2 -c ./config.json`
 
 Train with ./config.json as config file and save model in ./models/model2
 
@@ -76,7 +83,7 @@ Train with ./config.json as config file and save model in ./models/model2
 
 
 ### Inference
-`python main inference -d ./data/voxels.bfloat -m ./models/model1/model.p -f ./predictions.txt`
+`python main.py inference -d ./data/voxels.bfloat -m ./models/model1/model.p -f ./predictions.txt`
 
 Perform inference on voxels.bfloat with model.p, save output to predictions.txt
 
@@ -85,7 +92,7 @@ Perform inference on voxels.bfloat with model.p, save output to predictions.txt
 **-f** file on which to save the outputs
 
 ### Search
-`python main search`
+`python main.py search`
 
 Search for hyperparameters defined in parameter_search() in main.py
 
