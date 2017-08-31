@@ -69,7 +69,8 @@ All .bfloat datafiles are saved and loaded as binary float32 1-D arrays.
 
 Generate data with 100 iterations and 1000 voxels in every iteration (requires camino to be installed an in $PATH)
 
-**-i** no. iteraions
+**-i** no. iterations
+
 **-v** no. voxels
 
 ### Training
@@ -78,17 +79,20 @@ Generate data with 100 iterations and 1000 voxels in every iteration (requires c
 Train with ./config.json as config file and save model in ./models/model2
 
 **-m** where to save model
+
 **-c** path to config file to use
 
 
 ### Inference
-`python main.py inference -d ./data/voxels.bfloat -m ./models/model1/model.p -f ./predictions.txt`
+`python main.py inference -d ./data/hpc/50000_scanned_voxels.Bfloat -m ./models/model1/model.p -f ./predictions.bfloat`
 
-Perform inference on voxels.bfloat with model.p, save output to predictions.txt
+Perform inference on 50000_scanned_voxels.Bfloat with model.p, save output to predictions.bfloat
 
 **-d** path to data in float32 bfloat format
+
 **-m** path to model to perform inference
-**-f** file on which to save the outputs
+
+**-f** file on which to save the outputs (float32 .bfloat format)
 
 ### Search
 `python main.py search`
