@@ -3,11 +3,13 @@
 Author: Tim Kerschbaumer (2017-08-31)
 
 ## General
-Please set the Theano flags environment parameters before executing scripts
+Project in "Practical Course: Hands-on Deep Learning for Computer Vision and Biomedicine" at TU Munich SS 2017.
 
-floatX should be 'float32' and device should be either 'gpu' or 'cpu'
+The purpose of the project was to simulate diffusion MRI data using the Camino Diffusion MRI Toolkit and then train a
+neural network on the simulated data. The networks aim was to be able to predict the configurations used to generate the data, i.e the inverse mapping.
 
-THEANO_FLAGS='device=gpu,floatX=float32'
+Please see './presentation/Presentation.pdf' for details. 
+
 
 ## File structure
 - data
@@ -63,6 +65,11 @@ All .bfloat datafiles are saved and loaded as binary float32 1-D arrays.
 
 
 ## Running
+Please set the Theano flags environment parameters before executing scripts
+
+floatX should be 'float32' and device should be either 'gpu' or 'cpu'
+
+THEANO_FLAGS='device=gpu,floatX=float32'
 
 ### Data generation
 `python main.py generate -i 100 -v 1000`
