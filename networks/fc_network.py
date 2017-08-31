@@ -92,13 +92,13 @@ class FCNet:
 			data = self.in_scaler.transform(data)
 
 		# Make prediction
-		pred = self.predict_fun(data)
+		pred = self.predict_fun(data.astype(np.float32))
 
 		# Scale output back
 		if self.out_scaler is not None:
 			pred = self.out_scaler.inverse_transform(pred)
 
-		return pred
+		return pred.astype(np.float32)
 
 	def train(self, X_train, y_train, X_val, y_val, outfile=None, shuffle=True, log_nth=None):
 		"""

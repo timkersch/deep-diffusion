@@ -57,7 +57,7 @@ def train(train_set, validation_set, config='./config.json', model_path='models/
 	train_pred = network.predict(train_set[0])
 	validation_pred = network.predict(validation_set[0])
 
-	# Compute MSE and R2 score for the validationset
+	# Compute MSE and R2 score for the validation set
 	val_mse = mse(validation_set[1], validation_pred)
 	val_r2 = r2(validation_set[1], validation_pred)
 
@@ -212,7 +212,7 @@ if __name__ == '__main__':
 	elif args.which == 'inference':
 		network = load(args.model_file)
 		data = utils.to_voxels(utils.read_float(args.data_file))
-		preds = network.predict(data)
+		preds = network.predict(data).reshape(-1)
 		preds.tofile(args.save_file)
 	elif args.which == 'generate':
 		run(no_iter=args.no_iter, no_voxels=args.no_voxels)

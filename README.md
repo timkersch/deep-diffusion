@@ -3,7 +3,7 @@
 Author: Tim Kerschbaumer (2017-08-31)
 
 ## General
-Please set the Theano flags before executing the scripts
+Please set the Theano flags environment parameters before executing scripts
 
 floatX should be 'float32' and device should be either 'gpu' or 'cpu'
 
@@ -59,8 +59,7 @@ THEANO_FLAGS='device=gpu,floatX=float32'
 - Generated data for kNN settings comparison with HPC in /data/search/ - (samples x features) = (11000 x 288)
 - HPC Data for kNN settings comparison in /data/hpc/ - (samples x features) = (50000 x 288)
 
-All .bfloat datafiles are binary float32 1-D arrays.
-
+All .bfloat datafiles are saved and loaded as binary float32 1-D arrays.
 
 
 ## Running
