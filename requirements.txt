@@ -3,5 +3,6 @@ scipy
 matplotlib
 Theano
 Lasagne
-dipy
 scikit-learn
+nibabel
+dipy
