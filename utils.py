@@ -37,7 +37,7 @@ def get_param_eval_data(split_ratio=0.7):
 	'data/search/1000voxels_uniform_p=0_rad=5E-8_sep=1.1e-6_HPC-scheme.bfloat']
 
 	# A list of targets for the simulations (Cylinder rad, Cylinder sep)
-	targets = [(0.5E-6, 0),
+	targets = [(5E-7, 0),
 			   (1.5E-7, 0),
 			   (1E-7, 0),
 			   (1E-8, 0),
@@ -94,7 +94,7 @@ def get_hpc_data(filename='./data/hpc/50000_scanned_voxels.Bfloat', sample_size=
 	return arr
 
 
-def plot_features(inputs):
+def plot_features(inputs, nbins=50):
 	"""
 	Helper method for plotting each feature in a histogram 
 	@param inputs: the inputs to plot
@@ -102,7 +102,9 @@ def plot_features(inputs):
 	"""
 	for i in range(0, inputs.shape[1]):
 		x = inputs[:, i]
-		hist(x, bins='auto', range=None, normed=False, weights=None, cumulative=False, bottom=None)
+		n, bins, patches = hist(x, bins=nbins, range=None, rwidth=0.8, normed=False, weights=None, cumulative=False, bottom=None)
+		print('BINS: %i', bins)
+		print('N: %i', n)
 		plt.show()
 
 
@@ -125,6 +127,12 @@ def read_float(filename):
 	f = open(filename, "r")
 	arr = np.fromfile(f, dtype='>f4')
 	return arr
+
+
+def filter_zeros(X):
+	noNonzeros = np.count_nonzero(X, axis=1)
+	mask = np.where(noNonzeros > 0)
+	return X[mask[0], :]
 
 
 def to_voxels(arr, channels=288, skip_ones=True):

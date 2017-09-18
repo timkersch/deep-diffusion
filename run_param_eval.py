@@ -4,7 +4,6 @@ import utils
 from sklearn.neighbors import KNeighborsRegressor
 import numpy as np
 from matplotlib.pyplot import hist
-import dataset
 import matplotlib.pyplot as plt
 
 
@@ -30,22 +29,21 @@ def knn(X_train, y_train, X_hpc, class_index=0):
 
 	# Make prediction on the HPC set
 	predictions = model.predict(X_hpc)
+	#print(predictions[np.where((predictions >= 1e-10) & (predictions <= 5e-10))].shape)
+	#print(predictions[np.where((predictions <= 1e-9) & (predictions > 5e-10))].shape)
 	print('Predictions:')
-	print(predictions)
 	print('Min: ' + str(np.min(predictions)))
 	print('Max: ' + str(np.max(predictions)))
 
 	print('')
 
 	print('Targets:')
-	print(targets)
 	print('Min: ' + str(np.min(targets)))
 	print('Max: ' + str(np.max(targets)))
 
 	fig, ax = plt.subplots()
 	ax.xaxis.set_major_formatter(FormatStrFormatter('%.1e'))
-
-	n, bins, patches = hist(predictions, rwidth=0.8, bins=10, facecolor='green')
+	n, bins, patches = hist(predictions, rwidth=0.8, bins='auto', facecolor='green')
 	print('BINS: %i', bins)
 	print('N: %i', n)
 
@@ -61,8 +59,8 @@ def knn(X_train, y_train, X_hpc, class_index=0):
 if __name__ == '__main__':
 	# Load the generated dataset
 	X_train, y_train, _, _ = utils.get_param_eval_data(split_ratio=1.0)
-	targets = y_train[:, 0]
 
+	#targets = y_train[:, 0]
 	#fig, ax = plt.subplots()
 	#ax.xaxis.set_major_formatter(FormatStrFormatter('%.1e'))
 	#hist(targets, bins=[1e-10, 1e-9, 1e-8, 2e-8, 5e-8, 1e-7, 1.5e-7, 2e-7, 5e-7, 1e-6], rwidth=0.8, facecolor='blue', alpha=0.75)
@@ -74,8 +72,9 @@ if __name__ == '__main__':
 	#plt.setp(ax.get_xticklabels(), rotation=90, horizontalalignment='right')
 	#plt.show()
 
-	# Load randomly sampeld HPC voxels
-	X_hpc = utils.get_hpc_data(sample_size=10000)
+	# Load randomly sampled HPC voxels
+	X_hpc = utils.get_hpc_data(sample_size=50000)
+	X_hpc = utils.filter_zeros(X_hpc)
 
 	# Run on cylinder radius, i.e class index 0
 	knn(X_train, y_train, X_hpc, 0)
