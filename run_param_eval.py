@@ -1,11 +1,14 @@
+from matplotlib.ticker import FormatStrFormatter
+
 import utils
 from sklearn.neighbors import KNeighborsRegressor
 import numpy as np
 from matplotlib.pyplot import hist
+import dataset
 import matplotlib.pyplot as plt
 
 
-def knn(X_train, y_train, X_val, y_val, X_hpc, class_index=0):
+def knn(X_train, y_train, X_hpc, class_index=0):
 	"""
 	Method used for fitting kNN to training data
 	Used for comparing HPC data with generated data
@@ -18,40 +21,61 @@ def knn(X_train, y_train, X_val, y_val, X_hpc, class_index=0):
 	@return: nothing 
 	"""
 	# Fit model to training data
-	model = KNeighborsRegressor(n_neighbors=10, weights='distance', algorithm='brute', leaf_size=30, p=2, metric='minkowski', metric_params=None, n_jobs=1)
-	model.fit(X_train, y_train[:, class_index])
+	model = KNeighborsRegressor(n_neighbors=10, weights='distance', algorithm='auto', metric='euclidean', n_jobs=4)
+	targets = y_train[:, class_index]
+	model.fit(X_train, targets)
 
 	# Print kNN scores for train and validation set to measure how good the fit is
-	print('Score train: ' + str(model.score(X_train, y_train[:, class_index])))
-	print('Score val: ' + str(model.score(X_val, y_val[:, class_index])))
+	print('Score train: ' + str(model.score(X_train, targets)))
 
 	# Make prediction on the HPC set
 	predictions = model.predict(X_hpc)
+	print('Predictions:')
 	print(predictions)
 	print('Min: ' + str(np.min(predictions)))
-	print('Mean: ' + str(np.mean(predictions)))
 	print('Max: ' + str(np.max(predictions)))
-
-	n, bins, patches = hist(predictions, bins='auto', range=None, normed=False, weights=None, cumulative=False, bottom=None)
-	print(n)
-	print(bins)
-
-	plt.show()
-
-
-if __name__ == '__main__':
-	# Load the generated dataset
-	X_train, y_train, X_val, y_val = utils.get_param_eval_data(split_ratio=0.7)
-
-	# Load 10000 randomly sampeld HPC voxels
-	X_hpc = utils.get_hpc_data(10000)
-
-	# Run on cylinder radius, i.e class index 0
-	print('Cylinder radius:')
-	knn(X_train, y_train, X_val, y_val, X_hpc, 0)
 
 	print('')
 
-	# Run on cylinder separation, i.e class index 1
-	print('Cylinder separation:')
-	knn(X_train, y_train, X_val, y_val, X_hpc, 1)
+	print('Targets:')
+	print(targets)
+	print('Min: ' + str(np.min(targets)))
+	print('Max: ' + str(np.max(targets)))
+
+	fig, ax = plt.subplots()
+	ax.xaxis.set_major_formatter(FormatStrFormatter('%.1e'))
+
+	n, bins, patches = hist(predictions, rwidth=0.8, bins=10, facecolor='green')
+	print('BINS: %i', bins)
+	print('N: %i', n)
+
+	plt.xlabel('Cylinder radius')
+	plt.ylabel('Instance count')
+	plt.title('Histogram of cylinder radiuses')
+	plt.xticks(bins)
+	plt.setp(ax.get_xticklabels(), rotation=90, horizontalalignment='right')
+	plt.grid(True)
+
+	plt.show()
+
+if __name__ == '__main__':
+	# Load the generated dataset
+	X_train, y_train, _, _ = utils.get_param_eval_data(split_ratio=1.0)
+	targets = y_train[:, 0]
+
+	#fig, ax = plt.subplots()
+	#ax.xaxis.set_major_formatter(FormatStrFormatter('%.1e'))
+	#hist(targets, bins=[1e-10, 1e-9, 1e-8, 2e-8, 5e-8, 1e-7, 1.5e-7, 2e-7, 5e-7, 1e-6], rwidth=0.8, facecolor='blue', alpha=0.75)
+	#plt.xlabel('Cylinder radius')
+	#plt.ylabel('Instance count')
+	#plt.title('Histogram of target cylinder radius')
+	#plt.grid(True)
+	#plt.xticks([1e-10, 1e-9, 1e-8, 2e-8, 5e-8, 1e-7, 1.5e-7, 2e-7, 5e-7, 1e-6])
+	#plt.setp(ax.get_xticklabels(), rotation=90, horizontalalignment='right')
+	#plt.show()
+
+	# Load randomly sampeld HPC voxels
+	X_hpc = utils.get_hpc_data(sample_size=10000)
+
+	# Run on cylinder radius, i.e class index 0
+	knn(X_train, y_train, X_hpc, 0)

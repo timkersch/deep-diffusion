@@ -10,7 +10,24 @@ import datetime
 np.random.seed(int(round(time.time())))
 
 
-def run(no_iter=100, no_voxels=100, cylinder_rad_from=1E-8, cylinder_rad_to=1E-6, cylinder_sep_from=2.1E-6, cylinder_sep_to=2.1E-6):
+def run2(no_voxels=1000):
+	cylinder_rads = [1e-13, 1e-12, 5e-12, 1e-11] #5e-10, 5e-9, 1e-6, 1e-5
+	print 'Begin data generation with ' + str(len(cylinder_rads)) + ' iterations and ' + str(no_voxels) + ' in every iteration'
+	for i in range(0, len(cylinder_rads)):
+		print('Running iteration ' + str(i+1) + ' of ' + str(len(cylinder_rads)))
+		print(time.strftime("%c"))
+		dirname = "./data/search/gen" + str(i) + '-' + str(datetime.datetime.now().isoformat()) + '/'
+
+		# Get radius
+		radius = cylinder_rads[i]
+
+		# Get a config file from describing the generated data
+		config = _get_config(voxels=no_voxels, cylinder_rad=radius, cylinder_sep=1.1E-6, dir_name=dirname)
+		# Perform the actual data generation
+		_generate_data(config)
+
+
+def run(no_iter=100, no_voxels=1000, cylinder_rad_from=1E-8, cylinder_rad_to=1E-6, cylinder_sep_from=1.1E-6, cylinder_sep_to=1.1E-6):
 	"""
 	Main method for generating data with camino
 	Calls bash-script which in turn calls camino to generate data 
@@ -22,7 +39,6 @@ def run(no_iter=100, no_voxels=100, cylinder_rad_from=1E-8, cylinder_rad_to=1E-6
 	@param cylinder_sep_to: random cylinder separation in range to
 	@return: nothing
 	"""
-
 	print 'Begin data generation with ' + str(no_iter) + ' iterations and ' + str(no_voxels) + ' in every iteration'
 	for i in range(0, no_iter):
 		print('Running iteration ' + str(i+1) + ' of ' + str(no_iter))
