@@ -3,6 +3,7 @@ import numpy as np
 from matplotlib.pyplot import hist
 import matplotlib.pyplot as plt
 from sklearn.metrics import r2_score, mean_squared_error, mean_absolute_error
+import dataset
 
 
 def get_param_eval_data(split_ratio=0.7):
@@ -47,7 +48,15 @@ def get_param_eval_data(split_ratio=0.7):
 			   (2E-8, 0),
 			   (5E-8, 0)]
 
+
 	X, y = _load_data(files, targets)
+
+	train, val, test = dataset.load_dataset(288, './data/search/gen/', split_ratio=(1,0,0))
+
+	X = np.concatenate((train[0], X))
+	y = y[:,0].reshape(-1,1)
+	y = np.concatenate((train[1], y))
+
 	split = int(X.shape[0] * split_ratio)
 	indices = np.random.permutation(X.shape[0])
 	training_idx, test_idx = indices[:split], indices[split:]

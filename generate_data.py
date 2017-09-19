@@ -11,12 +11,12 @@ np.random.seed(int(round(time.time())))
 
 
 def run2(no_voxels=1000):
-	cylinder_rads = [2e-10, 2e-9, 5e-9] #[1e-12, 1e-11, 5e-10]
+	cylinder_rads = [1e-15, 1e-14, 1e-13]
 	print 'Begin data generation with ' + str(len(cylinder_rads)) + ' iterations and ' + str(no_voxels) + ' in every iteration'
 	for i in range(0, len(cylinder_rads)):
 		print('Running iteration ' + str(i+1) + ' of ' + str(len(cylinder_rads)))
 		print(time.strftime("%c"))
-		dirname = "./data/search/gen" + str(i) + '-' + str(datetime.datetime.now().isoformat()) + '/'
+		dirname = "./data/search/gen/" + str(i) + '-' + str(datetime.datetime.now().isoformat()) + '/'
 
 		# Get radius
 		radius = cylinder_rads[i]
