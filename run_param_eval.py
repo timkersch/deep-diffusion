@@ -40,13 +40,15 @@ def knn(input, targets, hpc):
 	print('Min: ' + str(np.min(targets)))
 	print('Max: ' + str(np.max(targets)))
 
-	#predictions = predictions[np.where(predictions <= 1e-9)]
+	predictions = predictions[np.where(predictions <= 1e-11)]
 
 	fig, ax = plt.subplots()
 	ax.xaxis.set_major_formatter(FormatStrFormatter('%.1e'))
 	n, bins, patches = hist(predictions, rwidth=0.8, bins=20, facecolor='green')
 	print('BINS: %i', bins)
 	print('N: %i', n)
+
+
 
 	plt.xlabel('Cylinder radius')
 	plt.ylabel('Instance count')
@@ -60,6 +62,8 @@ def knn(input, targets, hpc):
 if __name__ == '__main__':
 	# Load the generated dataset
 	X_train, y_train, _, _ = utils.get_param_eval_data(split_ratio=1.0)
+	print(X_train.shape)
+	print(y_train.shape)
 
 	# Load randomly sampled HPC voxels
 	X_hpc = utils.get_hpc_data(sample_size=50000)
