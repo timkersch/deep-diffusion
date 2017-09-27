@@ -72,7 +72,7 @@ def fit_subset(X_train, y_train):
 
 def fit_full(X_train, y_train):
 	# Load full HPC dataset
-	X_hpc = utils.load_nib_data('./data/data.nii.gz')
+	X_hpc = utils.load_nib_data('./data/hpc/data.nii.gz')
 	print('Done loading')
 
 	hpc_dimensions = X_hpc.shape
@@ -88,7 +88,7 @@ def fit_full(X_train, y_train):
 	spatialPredictions = predictions.reshape(hpc_dimensions[0], hpc_dimensions[1], hpc_dimensions[2])
 
 	for i in range(0, hpc_dimensions[2]):
-		heat_plot(spatialPredictions[:, :, i], './heat-plot-z-slice-' + str(i) + '.png', show=False)
+		heat_plot(spatialPredictions[:, :, i], './plots/heat-plot-z-slice-' + str(i) + '.png', show=False)
 
 if __name__ == '__main__':
 	# Load the generated dataset
