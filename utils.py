@@ -4,6 +4,7 @@ from matplotlib.pyplot import hist
 import matplotlib.pyplot as plt
 from sklearn.metrics import r2_score, mean_squared_error, mean_absolute_error
 import dataset
+import nibabel as nib
 
 
 def get_param_eval_data(split_ratio=0.7):
@@ -12,19 +13,6 @@ def get_param_eval_data(split_ratio=0.7):
 	@param split_ratio: Ratio to split data into training and testing set 0.7 -> 70% training 30% testing 
 	@return: (X_train, y_train, X_test, y_test)
 	"""
-
-	# Files used for simulated voxel files for searching
-	#files = ['./data/search/1000voxels_uniform_p=0_rad=0.1E-6_sep=1.1E-6_HPC-scheme.bfloat',
-	#		 './data/search/1000voxels_uniform_p=0_rad=0.1E-6_sep=2.1E-6_HPC-scheme.bfloat',
-	#		 './data/search/1000voxels_uniform_p=0_rad=0.5E-6_sep=1.1E-6_HPC-scheme.bfloat',
-	#		 './data/search/1000voxels_uniform_p=0_rad=1.5E-6_sep=3.1E-6_HPC-scheme.bfloat',
-	#		 './data/search/1000voxels_uniform_p=0_rad=1E-6_sep=3.1E-6_HPC-scheme.bfloat',
-	#		 './data/search/1000voxels_uniform_p=0_rad=2E-6_sep=4.1E-6_HPC-scheme.bfloat',
-	#		 './data/search/1000voxels_uniform_p=0_rad=1.5E-7_sep=1.1E-6_HPC-scheme.bfloat',
-	#		 './data/search/1000voxels_uniform_p=0_rad=1E-7_sep=1.1E-6_HPC-scheme.bfloat',
-	#		 './data/search/1000voxels_uniform_p=0_rad=1E-8_sep=1.1E-6_HPC-scheme.bfloat',
-	#		 './data/search/1000voxels_uniform_p=0_rad=2E-7_sep=1.1E-6_HPC-scheme.bfloat',
-	#		 './data/search/1000voxels_uniform_p=0_rad=5E-8_sep=1.1E-6_HPC-scheme.bfloat']
 
 	files = [
 	'data/search/1000voxels_uniform_p=0_rad=0.5E-6_sep=1.1E-6_HPC-scheme.bfloat',
@@ -47,7 +35,6 @@ def get_param_eval_data(split_ratio=0.7):
 			   (2E-7, 0),
 			   (2E-8, 0),
 			   (5E-8, 0)]
-
 
 	X, y = _load_data(files, targets)
 
@@ -101,6 +88,21 @@ def get_hpc_data(filename='./data/hpc/50000_scanned_voxels.Bfloat', sample_size=
 		np.random.shuffle(arr)
 		return arr[0:sample_size, :]
 	return arr
+
+
+def load_nib_data(filename, sample_size=None):
+	"""
+	Helper method for loading nib data from disk
+	@param filename: the filename to the nib file
+	@param sample_size: None if all data should be returnd or if number a random sample is taken
+	@return: The data in a 4d matrix (x, y, z, d)
+	"""
+	img = nib.load(filename)
+	data = img.get_data()
+	if sample_size is not None:
+		np.random.shuffle(data)
+		return data[0:sample_size, :, :, :]
+	return data
 
 
 def plot_features(inputs, nbins=50):

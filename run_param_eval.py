@@ -3,67 +3,90 @@ from matplotlib.ticker import FormatStrFormatter
 import utils
 from sklearn.neighbors import KNeighborsRegressor
 import numpy as np
-from matplotlib.pyplot import hist
 import matplotlib.pyplot as plt
+import matplotlib.cm as cm
+
+
+def heat_plot(matrix, filename):
+	fig = plt.figure()
+	ax = fig.add_subplot(111)
+	cax = ax.matshow(matrix, cmap=cm.gray)
+	fig.colorbar(cax)
+
+	#plt.show()
+	#ticks = np.arange(0, matrix.shape[0], 1)
+	#ax.set_xticks(ticks)
+	#ax.set_yticks(ticks)
+	#ax.set_xticklabels(xTicks)
+	#ax.set_yticklabels(yTicks)
+	#ax.set_xlabel(xLabel)
+	#ax.set_ylabel(yLabel)
+
+	plt.savefig(filename)
+	plt.close()
 
 
 def knn(input, targets, hpc):
 	"""
 	Method used for fitting kNN to training data
 	Used for comparing HPC data with generated data
-	@param X_train: The input training data
-	@param y_train: The target training data
-	@param X_val: The input validation data
-	@param y_val: The target validation data
-	@param X_hpc: The HPC input data
-	@param class_index: The class to fit on (0 = cylinder radius, 1 = cylinder separation)
+	@param input: The input training data
+	@param targets: The target training data
+	@param hpc: The HPC input data to make predictions on
 	@return: nothing 
 	"""
 	# Fit model to training data
-	model = KNeighborsRegressor(n_neighbors=10, weights='distance', algorithm='auto', metric='euclidean', n_jobs=4)
+	model = KNeighborsRegressor(n_neighbors=5, weights='distance', algorithm='auto', metric='euclidean', n_jobs=4)
 	model.fit(input, targets)
-
-	# Print kNN scores for train and validation set to measure how good the fit is
-	print('Score train: ' + str(model.score(input, targets)))
 
 	# Make prediction on the HPC set
 	predictions = model.predict(hpc)
-	#print(predictions[np.where((predictions >= 1e-10) & (predictions <= 5e-10))].shape)
-	#print(predictions[np.where((predictions <= 1e-9) & (predictions > 5e-10))].shape)
-	print('Predictions:')
-	print('Min: ' + str(np.min(predictions)))
-	print('Max: ' + str(np.max(predictions)))
-
-	print('')
-
-	print('Targets:')
-	print('Min: ' + str(np.min(targets)))
-	print('Max: ' + str(np.max(targets)))
-
-	#predictions = predictions[np.where(predictions <= 1e-9)]
 
 	fig, ax = plt.subplots()
-	ax.xaxis.set_major_formatter(FormatStrFormatter('%.1e'))
-	n, bins, patches = hist(predictions, rwidth=0.8, bins=20, facecolor='green')
-	print('BINS: %i', bins)
-	print('N: %i', n)
+	ax.xaxis.set_major_formatter(FormatStrFormatter('%.2f'))
+	unique_values, counts = np.unique(np.log10(targets), return_counts=True)
+	ax.scatter(unique_values, counts, edgecolors=(0, 0, 0), label='Targets')
+	n, bins, patches = ax.hist(np.log10(predictions), rwidth=0.8, bins=30, range=(np.log10(np.min(targets)), np.log10(np.max(targets))), facecolor='green', label='Predictions')
 
-	plt.xlabel('Cylinder radius')
+	plt.xlabel('Log base 10 Cylinder radius')
 	plt.ylabel('Instance count')
-	plt.title('Histogram of cylinder radiuses')
+	plt.title('Histogram of log Cylinder radiuses')
 	plt.xticks(bins)
 	plt.setp(ax.get_xticklabels(), rotation=90, horizontalalignment='right')
 	plt.grid(True)
+	ax.legend()
+
+	print('BINS: %i', bins)
+	print('N: %i', n)
 
 	plt.show()
+	return predictions
 
 if __name__ == '__main__':
 	# Load the generated dataset
 	X_train, y_train, _, _ = utils.get_param_eval_data(split_ratio=1.0)
 
 	# Load randomly sampled HPC voxels
-	X_hpc = utils.get_hpc_data(sample_size=50000)
-	X_hpc = utils.filter_zeros(X_hpc)
+	# X_hpc = utils.get_hpc_data(sample_size=50000)
+	# X_hpc = utils.filter_zeros(X_hpc)
 
-	# Run on cylinder radius, i.e class index 0
-	knn(X_train, y_train, X_hpc)
+	X_hpc = utils.load_nib_data('./data.nii.gz')
+	print('Done loading')
+
+	hpc_dimensions = X_hpc.shape
+	X_hpc = X_hpc.reshape(-1, 288)
+	print('Done reshaping')
+
+	noNonzeros = np.count_nonzero(X_hpc, axis=1)
+	mask = np.where(noNonzeros == 0)
+
+	predictions = knn(X_train, y_train, X_hpc)
+
+	predictions[mask[0]] = 0
+
+	spatialPredictions = predictions.reshape(hpc_dimensions[0], hpc_dimensions[1], hpc_dimensions[2])
+
+	for i in range(0, hpc_dimensions[2]):
+		heat_plot(spatialPredictions[:, :, i], './heat-plot-z-slice-' + str(i) + '.png')
+
+
