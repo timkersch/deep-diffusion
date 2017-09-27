@@ -4,6 +4,7 @@ from matplotlib.pyplot import hist
 import matplotlib.pyplot as plt
 from sklearn.metrics import r2_score, mean_squared_error, mean_absolute_error
 import dataset
+import nibabel as nib
 
 
 def get_param_eval_data(split_ratio=0.7):
@@ -87,6 +88,21 @@ def get_hpc_data(filename='./data/hpc/50000_scanned_voxels.Bfloat', sample_size=
 		np.random.shuffle(arr)
 		return arr[0:sample_size, :]
 	return arr
+
+
+def load_nib_data(filename, sample_size=None):
+	"""
+	Helper method for loading nib data from disk
+	@param filename: the filename to the nib file
+	@param sample_size: None if all data should be returnd or if number a random sample is taken
+	@return: The data in a 4d matrix (x, y, z, d)
+	"""
+	img = nib.load(filename)
+	data = img.get_data()
+	if sample_size is not None:
+		np.random.shuffle(data)
+		return data[0:sample_size, :, :, :]
+	return data
 
 
 def plot_features(inputs, nbins=50):
