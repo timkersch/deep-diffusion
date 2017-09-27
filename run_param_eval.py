@@ -1,7 +1,6 @@
 import matplotlib
 matplotlib.use('Agg')
 from matplotlib.ticker import FormatStrFormatter
-
 import utils
 from sklearn.neighbors import KNeighborsRegressor
 import numpy as np
@@ -20,14 +19,6 @@ def heat_plot(matrix, filename, show=False):
 	else:
 		plt.savefig(filename)
 		plt.close()
-
-	#ticks = np.arange(0, matrix.shape[0], 1)
-	#ax.set_xticks(ticks)
-	#ax.set_yticks(ticks)
-	#ax.set_xticklabels(xTicks)
-	#ax.set_yticklabels(yTicks)
-	#ax.set_xlabel(xLabel)
-	#ax.set_ylabel(yLabel)
 
 
 def predictions_plot(targets, predictions, show=False):
@@ -97,7 +88,7 @@ def fit_full(X_train, y_train):
 	spatialPredictions = predictions.reshape(hpc_dimensions[0], hpc_dimensions[1], hpc_dimensions[2])
 
 	for i in range(0, hpc_dimensions[2]):
-		heat_plot(spatialPredictions[:, :, i], './heat-plot-z-slice-' + str(i) + '.png', show=True)
+		heat_plot(spatialPredictions[:, :, i], './heat-plot-z-slice-' + str(i) + '.png', show=False)
 
 if __name__ == '__main__':
 	# Load the generated dataset
