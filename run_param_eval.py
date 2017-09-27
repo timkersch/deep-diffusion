@@ -7,13 +7,18 @@ import matplotlib.pyplot as plt
 import matplotlib.cm as cm
 
 
-def heat_plot(matrix, filename):
+def heat_plot(matrix, filename, show=False):
 	fig = plt.figure()
 	ax = fig.add_subplot(111)
 	cax = ax.matshow(matrix, cmap=cm.gray)
 	fig.colorbar(cax)
 
-	#plt.show()
+	if show:
+		plt.show()
+	else:
+		plt.savefig(filename)
+		plt.close()
+
 	#ticks = np.arange(0, matrix.shape[0], 1)
 	#ax.set_xticks(ticks)
 	#ax.set_yticks(ticks)
@@ -22,8 +27,27 @@ def heat_plot(matrix, filename):
 	#ax.set_xlabel(xLabel)
 	#ax.set_ylabel(yLabel)
 
-	plt.savefig(filename)
-	plt.close()
+
+def predictions_plot(targets, predictions, show=False):
+	fig, ax = plt.subplots()
+	ax.xaxis.set_major_formatter(FormatStrFormatter('%.2f'))
+	unique_values, counts = np.unique(np.log10(targets), return_counts=True)
+	n, bins, patches = ax.hist(np.log10(predictions), rwidth=0.8, bins=30, range=(np.log10(np.min(targets)), np.log10(np.max(targets))), facecolor='green', alpha=0.7, label='HPC Predictions')
+	ax.scatter(unique_values, counts, edgecolors=(0, 0, 0), label='Simulated training targets')
+
+	plt.xlabel('Log base 10 Cylinder radius')
+	plt.ylabel('Instance count')
+	plt.title('Histogram of Cylinder radiuses')
+	plt.xticks(bins)
+	plt.setp(ax.get_xticklabels(), rotation=90, horizontalalignment='right')
+	plt.grid(True)
+	ax.legend()
+
+	if show:
+		plt.show()
+	else:
+		plt.savefig('predictions-plot.png')
+		plt.close()
 
 
 def knn(input, targets, hpc):
@@ -41,35 +65,20 @@ def knn(input, targets, hpc):
 
 	# Make prediction on the HPC set
 	predictions = model.predict(hpc)
-
-	fig, ax = plt.subplots()
-	ax.xaxis.set_major_formatter(FormatStrFormatter('%.2f'))
-	unique_values, counts = np.unique(np.log10(targets), return_counts=True)
-	ax.scatter(unique_values, counts, edgecolors=(0, 0, 0), label='Targets')
-	n, bins, patches = ax.hist(np.log10(predictions), rwidth=0.8, bins=30, range=(np.log10(np.min(targets)), np.log10(np.max(targets))), facecolor='green', label='Predictions')
-
-	plt.xlabel('Log base 10 Cylinder radius')
-	plt.ylabel('Instance count')
-	plt.title('Histogram of log Cylinder radiuses')
-	plt.xticks(bins)
-	plt.setp(ax.get_xticklabels(), rotation=90, horizontalalignment='right')
-	plt.grid(True)
-	ax.legend()
-
-	print('BINS: %i', bins)
-	print('N: %i', n)
-
-	plt.show()
 	return predictions
 
-if __name__ == '__main__':
-	# Load the generated dataset
-	X_train, y_train, _, _ = utils.get_param_eval_data(split_ratio=1.0)
 
+def fit_subset(X_train, y_train):
 	# Load randomly sampled HPC voxels
-	# X_hpc = utils.get_hpc_data(sample_size=50000)
-	# X_hpc = utils.filter_zeros(X_hpc)
+	X_hpc = utils.get_hpc_data(sample_size=50000)
+	X_hpc = utils.filter_zeros(X_hpc)
 
+	predictions = knn(X_train, y_train, X_hpc)
+	predictions_plot(y_train, predictions, show=True)
+
+
+def fit_full(X_train, y_train):
+	# Load full HPC dataset
 	X_hpc = utils.load_nib_data('./data.nii.gz')
 	print('Done loading')
 
@@ -81,12 +90,15 @@ if __name__ == '__main__':
 	mask = np.where(noNonzeros == 0)
 
 	predictions = knn(X_train, y_train, X_hpc)
-
 	predictions[mask[0]] = 0
 
 	spatialPredictions = predictions.reshape(hpc_dimensions[0], hpc_dimensions[1], hpc_dimensions[2])
 
 	for i in range(0, hpc_dimensions[2]):
-		heat_plot(spatialPredictions[:, :, i], './heat-plot-z-slice-' + str(i) + '.png')
+		heat_plot(spatialPredictions[:, :, i], './heat-plot-z-slice-' + str(i) + '.png', show=False)
 
+if __name__ == '__main__':
+	# Load the generated dataset
+	X_train, y_train, _, _ = utils.get_param_eval_data(split_ratio=1.0)
 
+	fit_full(X_train, y_train)
