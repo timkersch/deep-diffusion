@@ -19,6 +19,7 @@ Please see './presentation/Presentation.pdf' for details.
 	* search - holds data generated from Camino Toolkit that is used to find appropriate simulation ranges.
 	Data in this directory is used to fit a kNN model.
 	* hpc/50000_scanned_voxels.Bfloat - A file with 50000 scanned voxels from the HPC dataset
+	* hpc/data.nii.gz - Not included in git repo, contains full diffusion MRI scan from HPC. Can be downloaded from HPC
 	* hpc.scheme - Schemefile for Camino Toolkit simulation (from HPC dataset)
 - models - Trained models are saved here
 	* model1 - The model that performed best during hyperparameter search
@@ -32,6 +33,11 @@ Please see './presentation/Presentation.pdf' for details.
 		* validation-residual-plot.png - scatter residual plot of validation set
 - networks
 	* fc_network.py - The neural network class
+- plots - Contains some plots  
+	* hpc-heat-plots - Shows heat plots of predicted radiuses on each z-slice on a full HPC dataset scan (data.nii.gz)
+	* heat-plot-depth-vs-width shows a heat plot of R2 score on network depth vs height
+	* heat-plot-dropout-vs-width shows a heat plot of R2 score on dropout factor vs network width
+	* hpc-voxel-predictions-histogram shows a histogram of predicted radiuses on HPC data with kNN fitted to the search data
 - config.json - This file is used to configure the network and the optimizer. See below.
 - dataset.py - Loads and splits the dataset.
 - generate_data.py - Used for calling a bash script that then calls the Camino Toolkit for generating data. 
@@ -60,8 +66,9 @@ Please see './presentation/Presentation.pdf' for details.
 
 ## Data
 - Generated data for training the network in /data/gen/ - (samples x features) = (93900 x 288)
-- Generated data for kNN settings comparison with HPC in /data/search/ - (samples x features) = (11000 x 288)
-- HPC Data for kNN settings comparison in /data/hpc/ - (samples x features) = (50000 x 288)
+- Generated data for kNN settings comparison with HPC in /data/search/ - (samples x features) = (21000 x 288)
+- Sample HPC Data for kNN settings comparison in /data/hpc/50000_scanned_voxels.Bfloat - (samples x features) = (50000 x 288)
+- All HPC Data for kNN settings comparison in /data/hpc/data.nii.gz - (shape) = (145 x 174 x 145 x 288)
 
 All .bfloat datafiles are saved and loaded as binary float32 1-D arrays.
 

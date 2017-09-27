@@ -9,6 +9,12 @@ import matplotlib.cm as cm
 
 
 def heat_plot(matrix, filename, show=False):
+	"""
+	Do a heat plot in image space
+	@param matrix: the HPC image data
+	@param filename: the filename in which save 
+	@param show: if the plot is to be shown or not
+	"""
 	fig = plt.figure()
 	ax = fig.add_subplot(111)
 	cax = ax.matshow(matrix, cmap=cm.gray)
@@ -22,6 +28,12 @@ def heat_plot(matrix, filename, show=False):
 
 
 def predictions_plot(targets, predictions, show=False):
+	"""
+	Plot predictions in histogram
+	@param targets: the training data targets
+	@param predictions: the HPC predictions made by kNN 
+	@param show: if the plot is to be shown or saved
+	"""
 	fig, ax = plt.subplots()
 	ax.xaxis.set_major_formatter(FormatStrFormatter('%.2f'))
 	unique_values, counts = np.unique(np.log10(targets), return_counts=True)
@@ -39,7 +51,7 @@ def predictions_plot(targets, predictions, show=False):
 	if show:
 		plt.show()
 	else:
-		plt.savefig('predictions-plot.png')
+		plt.savefig('./plots/predictions-plot.png')
 		plt.close()
 
 
@@ -50,7 +62,6 @@ def knn(input, targets, hpc):
 	@param input: The input training data
 	@param targets: The target training data
 	@param hpc: The HPC input data to make predictions on
-	@return: nothing 
 	"""
 	# Fit model to training data
 	model = KNeighborsRegressor(n_neighbors=5, weights='distance', algorithm='auto', metric='euclidean', n_jobs=4)
@@ -62,6 +73,12 @@ def knn(input, targets, hpc):
 
 
 def fit_subset(X_train, y_train):
+	"""
+	Load randomly sampeld HPC data and make predictions on them
+	Also plot the predictions in a histogram
+	@param X_train: The input training data to fit kNN with
+	@param y_train: The target training data to fit kNN with 
+	"""
 	# Load randomly sampled HPC voxels
 	X_hpc = utils.get_hpc_data(sample_size=50000)
 	X_hpc = utils.filter_zeros(X_hpc)
@@ -71,17 +88,22 @@ def fit_subset(X_train, y_train):
 
 
 def fit_full(X_train, y_train):
+	"""
+	Load all HPC data and make predictions for all of them
+	Also plot a heat plot of results
+	@param X_train: The input training data to fit kNN with
+	@param y_train: The target training data to fit kNN with 
+	"""
 	# Load full HPC dataset
 	X_hpc = utils.load_nib_data('./data/hpc/data.nii.gz')
-	print('Done loading')
 
 	hpc_dimensions = X_hpc.shape
 	X_hpc = X_hpc.reshape(-1, 288)
-	print('Done reshaping')
 
 	noNonzeros = np.count_nonzero(X_hpc, axis=1)
 	mask = np.where(noNonzeros == 0)
 
+	print('Beginning kNN')
 	predictions = knn(X_train, y_train, X_hpc)
 	predictions[mask[0]] = 0
 
@@ -89,6 +111,8 @@ def fit_full(X_train, y_train):
 
 	for i in range(0, hpc_dimensions[2]):
 		heat_plot(spatialPredictions[:, :, i], './plots/heat-plot-z-slice-' + str(i) + '.png', show=False)
+
+	predictions_plot(y_train, predictions, show=False)
 
 if __name__ == '__main__':
 	# Load the generated dataset

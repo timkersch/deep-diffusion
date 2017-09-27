@@ -38,8 +38,14 @@ def get_param_eval_data(split_ratio=0.7):
 
 	X, y = _load_data(files, targets)
 
+	# Load newly generated search data
 	train, val, test = dataset.load_dataset(288, './data/search/gen/', split_ratio=(1,0,0))
+	X = np.concatenate((train[0], X))
+	y = y[:,0].reshape(-1,1)
+	y = np.concatenate((train[1], y))
 
+	# TODO Remove? (Load all data)
+	train, val, test = dataset.load_dataset(288, './data/gen/', split_ratio=(1,0,0))
 	X = np.concatenate((train[0], X))
 	y = y[:,0].reshape(-1,1)
 	y = np.concatenate((train[1], y))
@@ -141,6 +147,11 @@ def read_float(filename):
 
 
 def filter_zeros(X):
+	"""
+	Helper method to filter zeros
+	@param X: The matrix to filter out zeros from
+	@return: The matrix with zeros filtered out
+	"""
 	noNonzeros = np.count_nonzero(X, axis=1)
 	mask = np.where(noNonzeros > 0)
 	return X[mask[0], :]
