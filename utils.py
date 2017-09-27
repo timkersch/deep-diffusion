@@ -13,19 +13,6 @@ def get_param_eval_data(split_ratio=0.7):
 	@return: (X_train, y_train, X_test, y_test)
 	"""
 
-	# Files used for simulated voxel files for searching
-	#files = ['./data/search/1000voxels_uniform_p=0_rad=0.1E-6_sep=1.1E-6_HPC-scheme.bfloat',
-	#		 './data/search/1000voxels_uniform_p=0_rad=0.1E-6_sep=2.1E-6_HPC-scheme.bfloat',
-	#		 './data/search/1000voxels_uniform_p=0_rad=0.5E-6_sep=1.1E-6_HPC-scheme.bfloat',
-	#		 './data/search/1000voxels_uniform_p=0_rad=1.5E-6_sep=3.1E-6_HPC-scheme.bfloat',
-	#		 './data/search/1000voxels_uniform_p=0_rad=1E-6_sep=3.1E-6_HPC-scheme.bfloat',
-	#		 './data/search/1000voxels_uniform_p=0_rad=2E-6_sep=4.1E-6_HPC-scheme.bfloat',
-	#		 './data/search/1000voxels_uniform_p=0_rad=1.5E-7_sep=1.1E-6_HPC-scheme.bfloat',
-	#		 './data/search/1000voxels_uniform_p=0_rad=1E-7_sep=1.1E-6_HPC-scheme.bfloat',
-	#		 './data/search/1000voxels_uniform_p=0_rad=1E-8_sep=1.1E-6_HPC-scheme.bfloat',
-	#		 './data/search/1000voxels_uniform_p=0_rad=2E-7_sep=1.1E-6_HPC-scheme.bfloat',
-	#		 './data/search/1000voxels_uniform_p=0_rad=5E-8_sep=1.1E-6_HPC-scheme.bfloat']
-
 	files = [
 	'data/search/1000voxels_uniform_p=0_rad=0.5E-6_sep=1.1E-6_HPC-scheme.bfloat',
 	'data/search/1000voxels_uniform_p=0_rad=1.5E-7_sep=1.1e-6_HPC-scheme.bfloat',
@@ -47,7 +34,6 @@ def get_param_eval_data(split_ratio=0.7):
 			   (2E-7, 0),
 			   (2E-8, 0),
 			   (5E-8, 0)]
-
 
 	X, y = _load_data(files, targets)
 
