@@ -11,7 +11,7 @@ np.random.seed(int(round(time.time())))
 
 
 def run2(no_voxels=1000):
-	cylinder_rads = [1e-15, 1e-14, 1e-13]
+	cylinder_rads = [1e-6, 5e-6, 1e-5]
 	print 'Begin data generation with ' + str(len(cylinder_rads)) + ' iterations and ' + str(no_voxels) + ' in every iteration'
 	for i in range(0, len(cylinder_rads)):
 		print('Running iteration ' + str(i+1) + ' of ' + str(len(cylinder_rads)))
@@ -22,7 +22,7 @@ def run2(no_voxels=1000):
 		radius = cylinder_rads[i]
 
 		# Get a config file from describing the generated data
-		config = _get_config(voxels=no_voxels, cylinder_rad=radius, cylinder_sep=1.1E-6, dir_name=dirname)
+		config = _get_config(voxels=no_voxels, cylinder_rad=radius, cylinder_sep=2*radius, dir_name=dirname)
 		# Perform the actual data generation
 		_generate_data(config)
 

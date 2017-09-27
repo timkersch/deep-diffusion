@@ -1,0 +1,11 @@
+{
+    "cylinder_rad": 5e-06, 
+    "cylinder_sep": 1e-05, 
+    "dir_name": "./data/search/gen/1-2017-09-27T12:09:32.558210/", 
+    "out_name": "./data/search/gen/1-2017-09-27T12:09:32.558210/cylinders.bfloat", 
+    "p": 0.0, 
+    "scheme_path": "./data/hpc.scheme", 
+    "tmax": 1000, 
+    "voxels": 1000, 
+    "walkers": 100000
+}
