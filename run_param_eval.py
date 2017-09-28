@@ -72,7 +72,7 @@ def knn(input, targets, hpc):
 	return predictions
 
 
-def fit_subset(X_train, y_train):
+def fit_predict_subset(X_train, y_train):
 	"""
 	Load randomly sampeld HPC data and make predictions on them
 	Also plot the predictions in a histogram
@@ -84,10 +84,10 @@ def fit_subset(X_train, y_train):
 	X_hpc = utils.filter_zeros(X_hpc)
 
 	predictions = knn(X_train, y_train, X_hpc)
-	predictions_plot(y_train, predictions, show=True)
+	predictions_plot(y_train, predictions, show=False)
 
 
-def fit_full(X_train, y_train):
+def fit_predict_full(X_train, y_train):
 	"""
 	Load all HPC data and make predictions for all of them
 	Also plot a heat plot of results
@@ -103,7 +103,6 @@ def fit_full(X_train, y_train):
 	noNonzeros = np.count_nonzero(X_hpc, axis=1)
 	mask = np.where(noNonzeros == 0)
 
-	print('Beginning kNN')
 	predictions = knn(X_train, y_train, X_hpc)
 	predictions[mask[0]] = 0
 
@@ -116,7 +115,7 @@ def fit_full(X_train, y_train):
 
 if __name__ == '__main__':
 	# Load the generated dataset
-	X_train, y_train, _, _ = utils.get_param_eval_data(split_ratio=1.0)
+	X_train, y_train, _, _ = utils.get_search_data(split_ratio=1.0, include_fit_data=False)
 
-	fit_full(X_train, y_train)
-	#fit_subset(X_train, y_train)
+	#fit_predict_full(X_train, y_train)
+	fit_predict_subset(X_train, y_train)

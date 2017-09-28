@@ -6,28 +6,31 @@ import numpy as np
 import time
 import datetime
 
-# Seed the random generator
-np.random.seed(int(round(time.time())))
 
-
-def run2(no_voxels=1000):
-	cylinder_rads = [1e-6, 5e-6, 1e-5]
+def run_specific(cylinder_rads, cylinder_sep_fraction=2, no_voxels=1000):
+	"""
+	Method for generating (specific) data with camino
+	Calls bash-script which in turn calls camino to generate data
+	@param cylinder_rads: List of cylinder radiuses to simulate
+	@param cylinder_sep_fraction: Fraction of the cylinder radius separation (for example 2 gives separation 2*cylinder radius)
+	@param no_voxels: Number of voxels
+	"""
 	print 'Begin data generation with ' + str(len(cylinder_rads)) + ' iterations and ' + str(no_voxels) + ' in every iteration'
 	for i in range(0, len(cylinder_rads)):
 		print('Running iteration ' + str(i+1) + ' of ' + str(len(cylinder_rads)))
 		print(time.strftime("%c"))
-		dirname = "./data/search/gen/" + str(i) + '-' + str(datetime.datetime.now().isoformat()) + '/'
+		dirname = "./data/search/" + str(i) + '-' + str(datetime.datetime.now().isoformat()) + '/'
 
 		# Get radius
 		radius = cylinder_rads[i]
 
 		# Get a config file from describing the generated data
-		config = _get_config(voxels=no_voxels, cylinder_rad=radius, cylinder_sep=2*radius, dir_name=dirname)
+		config = _get_config(voxels=no_voxels, cylinder_rad=radius, cylinder_sep=cylinder_sep_fraction*radius, dir_name=dirname)
 		# Perform the actual data generation
 		_generate_data(config)
 
 
-def run(no_iter=100, no_voxels=1000, cylinder_rad_from=1E-8, cylinder_rad_to=1E-6, cylinder_sep_from=1.1E-6, cylinder_sep_to=1.1E-6):
+def run_random(no_iter=100, no_voxels=1000, cylinder_rad_from=1E-8, cylinder_rad_to=1E-6, cylinder_sep_from=1.1E-6, cylinder_sep_to=1.1E-6):
 	"""
 	Main method for generating data with camino
 	Calls bash-script which in turn calls camino to generate data 
@@ -37,8 +40,9 @@ def run(no_iter=100, no_voxels=1000, cylinder_rad_from=1E-8, cylinder_rad_to=1E-
 	@param cylinder_rad_to: random cylinder radius in range to
 	@param cylinder_sep_from: random cylinder separation in range from
 	@param cylinder_sep_to: random cylinder separation in range to
-	@return: nothing
 	"""
+	# Seed the random generator
+	np.random.seed(int(round(time.time())))
 	print 'Begin data generation with ' + str(no_iter) + ' iterations and ' + str(no_voxels) + ' in every iteration'
 	for i in range(0, no_iter):
 		print('Running iteration ' + str(i+1) + ' of ' + str(no_iter))
@@ -96,4 +100,4 @@ def _get_config(walkers=100000, tmax=1000, voxels=1, p=0.0, scheme_path='./data/
 
 
 if __name__ == '__main__':
-	run2()
+	run_random()

@@ -7,79 +7,26 @@ import dataset
 import nibabel as nib
 
 
-def get_param_eval_data(split_ratio=0.7):
+def get_search_data(split_ratio=1, include_fit_data=False):
 	"""
 	Method to load and split param_eval data 
-	@param split_ratio: Ratio to split data into training and testing set 0.7 -> 70% training 30% testing 
+	@param include_fit_data: if true then include all data in data/gen as well, i.e fitting data
 	@return: (X_train, y_train, X_test, y_test)
 	"""
-
-	files = [
-	'data/search/1000voxels_uniform_p=0_rad=0.5E-6_sep=1.1E-6_HPC-scheme.bfloat',
-	'data/search/1000voxels_uniform_p=0_rad=1.5E-7_sep=1.1e-6_HPC-scheme.bfloat',
-	'data/search/1000voxels_uniform_p=0_rad=1E-7_sep=1.1e-6_HPC-scheme.bfloat',
-	'data/search/1000voxels_uniform_p=0_rad=1E-8_sep=1.1e-6_HPC-scheme.bfloat',
-	'data/search/1000voxels_uniform_p=0_rad=1E-9_sep=1.1e-6_HPC-scheme.bfloat',
-	'data/search/1000voxels_uniform_p=0_rad=1E-10_sep=1.1e-6_HPC-scheme.bfloat',
-	'data/search/1000voxels_uniform_p=0_rad=2E-7_sep=1.1e-6_HPC-scheme.bfloat',
-	'data/search/1000voxels_uniform_p=0_rad=2E-8_sep=1.1e-6_HPC-scheme.bfloat',
-	'data/search/1000voxels_uniform_p=0_rad=5E-8_sep=1.1e-6_HPC-scheme.bfloat']
-
-	# A list of targets for the simulations (Cylinder rad, Cylinder sep)
-	targets = [(5E-7, 0),
-			   (1.5E-7, 0),
-			   (1E-7, 0),
-			   (1E-8, 0),
-			   (1E-9, 0),
-			   (1E-10, 0),
-			   (2E-7, 0),
-			   (2E-8, 0),
-			   (5E-8, 0)]
-
-	X, y = _load_data(files, targets)
-
 	# Load newly generated search data
-	train, val, test = dataset.load_dataset(288, './data/search/gen/', split_ratio=(1,0,0))
-	X = np.concatenate((train[0], X))
-	y = y[:,0].reshape(-1,1)
-	y = np.concatenate((train[1], y))
+	train, _, _ = dataset.load_dataset(288, './data/search/', split_ratio=(1, 0, 0))
+	X = train[0]
+	y = train[1][:,0].reshape(-1,1)
 
-	# TODO Remove? (Load all data)
-	train, val, test = dataset.load_dataset(288, './data/gen/', split_ratio=(1,0,0))
-	X = np.concatenate((train[0], X))
-	y = y[:,0].reshape(-1,1)
-	y = np.concatenate((train[1], y))
+	if include_fit_data:
+		train, _, _ = dataset.load_dataset(288, './data/gen/', split_ratio=(1, 0, 0))
+		X = np.concatenate((train[0], X))
+		y = np.concatenate((train[1][:,0].reshape(-1,1), y))
 
 	split = int(X.shape[0] * split_ratio)
 	indices = np.random.permutation(X.shape[0])
 	training_idx, test_idx = indices[:split], indices[split:]
 	return X[training_idx, :], y[training_idx, :], X[test_idx, :], y[test_idx, :]
-
-
-def _load_data(file_list, target_list):
-	"""
-	Helper method to load param-eval data from files
-	@param file_list: list of data-files  
-	@param target_list: list of target-files
-	@return: (X, y) tuple of data where X are inputs and y are targets
-	"""
-	X = np.empty((len(file_list) * 1000, 288))
-	y = np.empty((len(file_list) * 1000, 2))
-
-	start = 0
-	end = 1000
-	for i in xrange(0, len(file_list)):
-		file = file_list[i]
-		target_tuple = target_list[i]
-		vals = to_voxels(read_float(file), skip_ones=True)
-
-		X[start:end] = vals
-		y[start:end] = np.array(target_tuple)
-
-		start = end
-		end = end + 1000
-
-	return X, y
 
 
 def get_hpc_data(filename='./data/hpc/50000_scanned_voxels.Bfloat', sample_size=None):
@@ -111,30 +58,6 @@ def load_nib_data(filename, sample_size=None):
 	return data
 
 
-def plot_features(inputs, nbins=50):
-	"""
-	Helper method for plotting each feature in a histogram 
-	@param inputs: the inputs to plot
-	@return: nothing but shows a plot
-	"""
-	for i in range(0, inputs.shape[1]):
-		x = inputs[:, i]
-		n, bins, patches = hist(x, bins=nbins, range=None, rwidth=0.8, normed=False, weights=None, cumulative=False, bottom=None)
-		print('BINS: %i', bins)
-		print('N: %i', n)
-		plt.show()
-
-
-def plot_targets(targets):
-	"""
-	Helper method for plotting targets in histogram
-	@param targets: the targets to plot
-	@return: nothing but shows a plot
-	"""
-	hist(targets, bins='auto', range=None, normed=False, weights=None, cumulative=False, bottom=None)
-	plt.show()
-
-
 def read_float(filename):
 	"""
 	Helper method for reading binary float file 
@@ -157,18 +80,15 @@ def filter_zeros(X):
 	return X[mask[0], :]
 
 
-def to_voxels(arr, channels=288, skip_ones=True):
+def to_voxels(arr, channels=288):
 	"""
 	Helper method to convert 1D-array to voxel arranged data	
 	@param arr: the 1D array to convert
 	@param channels: number of DWIs, i.e the number of channels / features in the data
-	@param skip_ones: if the 1x1x1 (voxel dimensions) should be skipped in result
-	@return: either a n x 1 x 1 x 1 x channels array or a n x channels array
+	@return: a n x array
 	"""
 	no_samples = int(arr.size / channels)
-	if skip_ones:
-		return np.reshape(arr, (no_samples, channels))
-	return np.reshape(arr, (no_samples, 1, 1, 1, channels))
+	return np.reshape(arr, (no_samples, channels))
 
 
 def diff_plot(targets, predictions, filename, remove_outliers=False):
@@ -279,6 +199,30 @@ def model_comp_plot(id_model_list, filename):
 	plt.close()
 
 
+def plot_features(inputs, nbins=50):
+	"""
+	Helper method for plotting each feature in a histogram 
+	@param inputs: the inputs to plot
+	@return: nothing but shows a plot
+	"""
+	for i in range(0, inputs.shape[1]):
+		x = inputs[:, i]
+		n, bins, patches = hist(x, bins=nbins, range=None, rwidth=0.8, normed=False, weights=None, cumulative=False, bottom=None)
+		print('BINS: %i', bins)
+		print('N: %i', n)
+		plt.show()
+
+
+def plot_targets(targets):
+	"""
+	Helper method for plotting targets in histogram
+	@param targets: the targets to plot
+	@return: nothing but shows a plot
+	"""
+	hist(targets, bins='auto', range=None, normed=False, weights=None, cumulative=False, bottom=None)
+	plt.show()
+
+
 def r2(t, y):
 	"""
 	Method that computes R2 score
@@ -299,7 +243,6 @@ def mae(t, y):
 	return mean_absolute_error(t, y)
 
 
-# Method that computes mean squared error
 def mse(t, y, rmse=False):
 	"""
 	Method that computes the mean squared error

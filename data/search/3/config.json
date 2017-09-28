@@ -1,0 +1,11 @@
+{
+    "cylinder_rad": 1e-07, 
+    "cylinder_sep": 1.1e-06, 
+    "dir_name": "./data/search/3/", 
+    "out_name": "./data/search/3/cylinders.bfloat", 
+    "p": 0.0, 
+    "scheme_path": "./data/hpc.scheme", 
+    "tmax": 1000, 
+    "voxels": 1000, 
+    "walkers": 100000
+}

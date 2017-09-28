@@ -12,7 +12,7 @@ import sys
 import utils
 import numpy as np
 import argparse
-from generate_data import run
+from generate_data import run_random
 import datetime
 
 sys.setrecursionlimit(50000)
@@ -215,7 +215,7 @@ if __name__ == '__main__':
 		preds = network.predict(data).reshape(-1)
 		preds.tofile(args.save_file)
 	elif args.which == 'generate':
-		run(no_iter=args.no_iter, no_voxels=args.no_voxels)
+		run_random(no_iter=args.no_iter, no_voxels=args.no_voxels)
 	elif args.which == 'search':
 		parameter_search()
 	else:
