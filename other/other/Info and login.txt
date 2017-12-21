@@ -1,0 +1,54 @@
+Username: s030 
+Password: ahSa7OR= 
+
+————————————————————————————————————————————————————————————————————————————————
+
+
+The computers are in room 02.05.014
+Their status is shown here:
+https://adm9.in.tum.de/prakt/02.05.014
+
+Usually the room is open. The door requires a gentle push (not a harsh one). If the room is locked for some reason, someone at the chair (rooms 02.09.*) or the security guard (across the main entrance) should be able to unlock it.
+
+You can also access the computers remotely through SSH on port 58022 with the following hostnames:
+atcremers45.informatik.tu-muenchen.de
+to
+atcremers65.informatik.tu-muenchen.de
+
+Use the command
+screen -xR
+if you want a persistent virtual session on that computer that remains even if you disconnect, i.e. in which you can train the neural network etc.
+
+Larger GPUs can be made available upon request. Please do not use a larger GPU than needed.
+
+Please make sure to not block/crash each other's computations. Useful commands are: 
+Checking who's logged in: finger 
+Checking CPU usage: top 
+Checking GPU usage: nvidia-smi -l 1 
+
+You can use different computers, your home directory is global.
+
+Temporary data can be stored on the local hard drive: /work/<username>/
+(accessible as /remwork/ from other computers).
+Improtant data can be stored in
+/usr/data/cvpr_shared/
+for example:
+Most projects from blue slides: /usr/data/cvpr_shared/biology/
+Project from grey slide: /usr/data/cvpr_shared/medimg/
+
+Please do not put too much data into your home directory.
+
+————
+Layers:
+
+voxnet.layers.Conv3dLayer
+uses
+theano.tensor.nnet.conv3d2d.conv3d
+
+voxnet.layers.Conv3dMMLayer
+uses
+theano.sandbox.cuda.blas.GpuCorr3dMM
+
+lasagne.layers.dnn.Conv3DDNNLayer
+uses
+theano.sandbox.cuda.dnn.dnn_conv3d
